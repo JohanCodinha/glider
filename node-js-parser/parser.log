@@ -1,0 +1,9 @@
+Listening on port: 3001
+DATA failling parse:
+ //isc_RPCResponseStart-->[{termcond:"https://www.environment.vic.gov.au/biodiversity/victorian-biodiversity-atlas/terms-and-conditions",help:"https://www.environment.vic.gov.au/biodiversity/victorian-biodiversity-atlas/about-the-vba",isDSResponse:true,invalidateCache:false,status:0,disclaimer:"https://www.environment.vic.gov.au/biodiversity/victorian-biodiversity-atlas/terms-and-conditions",privacy:"https://www.environment.vic.gov.au/biodiversity/victorian-biodiversity-atlas/terms-and-conditions",data:{accountNonExpired:true,accountNonLocked:true,admin:true,authorities:[{authority:"ROLE_ADMIN"}],batchUploadEnabled:true,contributor:false,credentialsNonExpired:true,dataPublicationDate:"12 Apr 2019",displayName:"johan codinha",enabled:true,expertReviewer:false,expertReviewerOrAbove:true,fullAccess:true,gisUrl:"/dotmap/gis_map",largeAreaSiteForReport:10000.0,needsToAcceptTC:false,needsToChangePassword:false,password:"***REMOVED***",taxonManager:false,totalSiteRows:0,userRole:"ROLE_ADMIN",userUid:10660,username:"codeforvic",viewer:false},copyright:"https://www.environment.vic.gov.au/biodiversity/victorian-biodiversity-atlas/terms-and-conditions"}]//isc_RPCResponeEnd
+Eval function error:
+ SyntaxError: Unexpected end of input
+    at parse (/home/johan/work/vba-api/node-js-parser/main.js:17:17)
+    at app (/home/johan/work/vba-api/node-js-parser/main.js:27:26)
+    at processTicksAndRejections (internal/process/task_queues.js:86:5)
+{"req":{"headers":{"host":"localhost:3001","user-agent":"curl/7.64.1","accept":"*/*","content-length":"1174","content-type":"application/x-www-form-urlencoded","expect":"100-continue"},"method":"POST","url":"/"},"res":{"statusCode":200}}
