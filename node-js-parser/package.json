@@ -1,0 +1,10 @@
+{
+  "name": "node-js-parser",
+  "version": "1.0.0",
+  "description": "Simple http server to parse js object",
+  "main": "main.js",
+  "license": "MIT",
+  "dependencies": {
+    "paperplane": "^2.3.0"
+  }
+}
