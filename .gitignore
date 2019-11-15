@@ -1,3 +1,4 @@
 .nrepl-port
 .cpcache
 secrets
+node-js-parser/node_modules
