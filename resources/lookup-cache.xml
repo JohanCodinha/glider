@@ -1,0 +1,2120 @@
+{:lookup-sampling-method-lut-af [{:depend-on-cde "af"
+:enabled true
+:id "19"
+:label "Angling (general)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "59"
+:label "Bait Pump"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "51"
+:label "Bait Trap (+bait)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "42"
+:label "Bait Trap (+light stick)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "44"
+:label "Bait Trap (+light stick+bait)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "8"
+:label "Bait Trap (general)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "60"
+:label "Burrow Tube Trap"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "71"
+:label "Cathedral Net/Trap"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "12"
+:label "Dip Net"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "38"
+:label "Drift diving/Snorkling"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "7"
+:label "Drum Net"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "14"
+:label "Electrofishing (backpack larval sweep)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "16"
+:label "Electrofishing (backpack)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "17"
+:label "Electrofishing (bankmounted)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "18"
+:label "Electrofishing (boat - general)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "15"
+:label "Electrofishing (general)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "48"
+:label "Electrofishing (large boat)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "49"
+:label "Electrofishing (medium boat)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "50"
+:label "Electrofishing (small boat)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "58"
+:label "Excavation"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "EXT"
+:label "External data"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "13"
+:label "Fishway Trap"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "52"
+:label "Fyke Net (double wing)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "62"
+:label "Fyke Net (fine mesh)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "4"
+:label "Fyke Net (general)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "3"
+:label "Fyke Net (larval)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "53"
+:label "Fyke Net (single wing)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "9000"
+:label "General observations"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "2"
+:label "Gill Net"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "47"
+:label "Hand (picked up)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "10"
+:label "Hoop Net"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "INC"
+:label "Incidental"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "68"
+:label "Larval Light Trap"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "67"
+:label "Larval Net"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "23"
+:label "Observation"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "9"
+:label "Opera House Net"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "24"
+:label "Other method"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "22"
+:label "Piscicide"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "61"
+:label "Pitfall Trap"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "41"
+:label "Plankton Tow"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "43"
+:label "Seine Net"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "21"
+:label "Set Line"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "SPL"
+:label "Species List for Defined Area"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "SPEC"
+:label "Specimen"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "36"
+:label "Stocking"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "70"
+:label "Targeted search"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "37"
+:label "Translocation"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "39"
+:label "Trawl"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "af"
+:enabled true
+:id "69"
+:label "Visual search"
+:type "SAMPLING_METHOD_LUT"}]
+:lookup-incidental-obs-type [{:depend-on-cde nil
+:enabled true
+:id "caught"
+:label "Caught"
+:type "Incidental Obs Type"}
+{:depend-on-cde nil
+:enabled true
+:id "dead"
+:label "Dead"
+:type "Incidental Obs Type"}
+{:depend-on-cde nil
+:enabled true
+:id "inc"
+:label "Incidental"
+:type "Incidental Obs Type"}
+{:depend-on-cde nil
+:enabled true
+:id "if"
+:label "Incidental flora"
+:type "Incidental Obs Type"}]
+:lookup-taxon-level [{:depend-on-cde nil
+:enabled true
+:id "spec"
+:label "Species"
+:type "Taxon Level"}
+{:depend-on-cde nil
+:enabled true
+:id "gen"
+:label "Genus"
+:type "Taxon Level"}
+{:depend-on-cde nil
+:enabled true
+:id "trib"
+:label "Tribe"
+:type "Taxon Level"}
+{:depend-on-cde nil
+:enabled true
+:id "subf"
+:label "Subfamily"
+:type "Taxon Level"}
+{:depend-on-cde nil
+:enabled true
+:id "fam"
+:label "Family"
+:type "Taxon Level"}
+{:depend-on-cde nil
+:enabled true
+:id "supf"
+:label "Superfamily"
+:type "Taxon Level"}
+{:depend-on-cde nil
+:enabled true
+:id "info"
+:label "Infraorder"
+:type "Taxon Level"}
+{:depend-on-cde nil
+:enabled true
+:id "subo"
+:label "Suborder"
+:type "Taxon Level"}
+{:depend-on-cde nil
+:enabled true
+:id "ord"
+:label "Order"
+:type "Taxon Level"}
+{:depend-on-cde nil
+:enabled true
+:id "supo"
+:label "Superorder"
+:type "Taxon Level"}
+{:depend-on-cde nil
+:enabled true
+:id "infc"
+:label "Infraclass"
+:type "Taxon Level"}
+{:depend-on-cde nil
+:enabled true
+:id "subc"
+:label "Subclass"
+:type "Taxon Level"}
+{:depend-on-cde nil
+:enabled true
+:id "cla"
+:label "Class"
+:type "Taxon Level"}
+{:depend-on-cde nil
+:enabled true
+:id "supc"
+:label "Superclass"
+:type "Taxon Level"}
+{:depend-on-cde nil
+:enabled true
+:id "subp"
+:label "Subphylum"
+:type "Taxon Level"}
+{:depend-on-cde nil
+:enabled true
+:id "infp"
+:label "Infra-phyllum"
+:type "Taxon Level"}
+{:depend-on-cde nil
+:enabled true
+:id "div"
+:label "Division"
+:type "Taxon Level"}
+{:depend-on-cde nil
+:enabled true
+:id "phy"
+:label "Phylum"
+:type "Taxon Level"}
+{:depend-on-cde nil
+:enabled true
+:id "king"
+:label "Kingdom"
+:type "Taxon Level"}]
+:lookup-reliability [{:depend-on-cde nil
+:enabled true
+:id "acc"
+:label "Acceptable"
+:type "Reliability"}
+{:depend-on-cde nil
+:enabled true
+:id "con"
+:label "Confirmed"
+:type "Reliability"}
+{:depend-on-cde nil
+:enabled true
+:id "dbt"
+:label "Unconfirmed"
+:type "Reliability"}
+{:depend-on-cde nil
+:enabled true
+:id "del"
+:label "Deleted"
+:type "Reliability"}]
+:lookup-sampling-method-lut-ai [{:depend-on-cde "ai"
+:enabled true
+:id "64"
+:label "Air lift sampler"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ai"
+:enabled true
+:id "34"
+:label "Artificial Substrates"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ai"
+:enabled true
+:id "66"
+:label "Core sampler"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "12"
+:label "Dip Net"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "EXT"
+:label "External data"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "9000"
+:label "General observations"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ai"
+:enabled true
+:id "32"
+:label "Grab sampler"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ai"
+:enabled true
+:id "63"
+:label "Hess sampler"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "INC"
+:label "Incidental"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ai"
+:enabled true
+:id "25"
+:label "Kick Net"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ai"
+:enabled true
+:id "33"
+:label "Snag Bag"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "SPL"
+:label "Species List for Defined Area"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "SPEC"
+:label "Specimen"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ai"
+:enabled true
+:id "30"
+:label "Surber sampler"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ai"
+:enabled true
+:id "27"
+:label "Sweep Net"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "70"
+:label "Targeted search"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "37"
+:label "Translocation"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ai"
+:enabled true
+:id "31"
+:label "Trawl/Plankton Tow"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ai"
+:enabled true
+:id "65"
+:label "Zooplankton Trap"
+:type "SAMPLING_METHOD_LUT"}]
+:lookup-conservation-status [{:depend-on-cde nil
+:enabled true
+:id "epbc"
+:label "EPBC"
+:type "Conservation Status"}
+{:depend-on-cde nil
+:enabled true
+:id "ffg"
+:label "FFG"
+:type "Conservation Status"}
+{:depend-on-cde nil
+:enabled true
+:id "intr"
+:label "Introduced"
+:type "Conservation Status"}
+{:depend-on-cde nil
+:enabled true
+:id "da"
+:label "Victorian Advisory List"
+:type "Conservation Status"}]
+:lookup-project-status [{:depend-on-cde nil
+:enabled true
+:id "del"
+:label "Deleted"
+:type "Project status"}
+{:depend-on-cde nil
+:enabled true
+:id "pub"
+:label "Published"
+:type "Project status"}]
+:lookup-count-accuracy [{:depend-on-cde nil
+:enabled true
+:id "acc"
+:label "Accurate"
+:type "Count Accuracy"}
+{:depend-on-cde nil
+:enabled true
+:id "abs"
+:label "Absent"
+:type "Count Accuracy"}
+{:depend-on-cde nil
+:enabled true
+:id "aa"
+:label "Approximate abundance"
+:type "Count Accuracy"}
+{:depend-on-cde nil
+:enabled true
+:id "ec15"
+:label "Estimate (range)"
+:type "Count Accuracy"}
+{:depend-on-cde nil
+:enabled true
+:id "est"
+:label "Estimate (single value)"
+:type "Count Accuracy"}
+{:depend-on-cde nil
+:enabled true
+:id "no"
+:label "No count"
+:type "Count Accuracy"}
+{:depend-on-cde nil
+:enabled true
+:id "nc"
+:label "Not counted"
+:type "Count Accuracy"}
+{:depend-on-cde nil
+:enabled true
+:id "nr"
+:label "Number released"
+:type "Count Accuracy"}
+{:depend-on-cde nil
+:enabled true
+:id "nrm"
+:label "Number released or more"
+:type "Count Accuracy"}
+{:depend-on-cde nil
+:enabled true
+:id "nt"
+:label "Number translocated"
+:type "Count Accuracy"}
+{:depend-on-cde nil
+:enabled true
+:id "oa"
+:label "Observed abundance"
+:type "Count Accuracy"}
+{:depend-on-cde nil
+:enabled true
+:id "ogt"
+:label "Observed greater than"
+:type "Count Accuracy"}
+{:depend-on-cde nil
+:enabled true
+:id "pnc"
+:label "Present not counted"
+:type "Count Accuracy"}
+{:depend-on-cde nil
+:enabled true
+:id "unk"
+:label "Unknown accuracy"
+:type "Count Accuracy"}]
+:lookup-extra [{:depend-on-cde nil
+:enabled true
+:id "w"
+:label "Beach washed"
+:type "Extra"}
+{:depend-on-cde nil
+:enabled true
+:id "b"
+:label "Breeding"
+:type "Extra"}
+{:depend-on-cde nil
+:enabled true
+:id "carni"
+:label "Carnivore bait"
+:type "Extra"}
+{:depend-on-cde nil
+:enabled true
+:id "cult"
+:label "Cultivated"
+:type "Extra"}
+{:depend-on-cde nil
+:enabled true
+:id "e"
+:label "Escapee"
+:type "Extra"}
+{:depend-on-cde nil
+:enabled true
+:id "past"
+:label "Evidence of past use"
+:type "Extra"}
+{:depend-on-cde nil
+:enabled true
+:id "k"
+:label "Found dead"
+:type "Extra"}
+{:depend-on-cde nil
+:enabled true
+:id "herbi"
+:label "Herbivore bait"
+:type "Extra"}
+{:depend-on-cde nil
+:enabled true
+:id "z"
+:label "In predator scat"
+:type "Extra"}
+{:depend-on-cde nil
+:enabled true
+:id "x"
+:label "No longer present at site"
+:type "Extra"}
+{:depend-on-cde nil
+:enabled true
+:id "r"
+:label "Released/Introduced"
+:type "Extra"}
+{:depend-on-cde nil
+:enabled true
+:id "c"
+:label "Roost site"
+:type "Extra"}
+{:depend-on-cde nil
+:enabled true
+:id "s"
+:label "Salvaged"
+:type "Extra"}
+{:depend-on-cde nil
+:enabled true
+:id "f"
+:label "Sub fossil"
+:type "Extra"}
+{:depend-on-cde nil
+:enabled true
+:id "v"
+:label "Voucher specimen"
+:type "Extra"}]
+:lookup-batch-upload-status [{:depend-on-cde nil
+:enabled true
+:id "queue"
+:label "Scheduled"
+:type "Batch Upload Status"}
+{:depend-on-cde nil
+:enabled true
+:id "comp"
+:label "Completed"
+:type "Batch Upload Status"}
+{:depend-on-cde nil
+:enabled true
+:id "fail"
+:label "Failed"
+:type "Batch Upload Status"}
+{:depend-on-cde nil
+:enabled true
+:id "process"
+:label "Running"
+:type "Batch Upload Status"}]
+:lookup-cover-abundance [{:depend-on-cde nil
+:enabled true
+:id "+"
+:label "+ BB < 1% projective foliage
+few individuals (braun-blanquet)"
+:type "Cover Abundance"}
+{:depend-on-cde nil
+:enabled true
+:id "1"
+:label "1 BB 1-5% projective foliage cover or < 1% many individuals (braun-blanquet)"
+:type "Cover Abundance"}
+{:depend-on-cde nil
+:enabled true
+:id "2"
+:label "2 BB 5-25% projective foliage cover or < 5% numerous individuals (braun-blanquet)"
+:type "Cover Abundance"}
+{:depend-on-cde nil
+:enabled true
+:id "3"
+:label "3 BB 26-50% projective foliage cover (braun-blanquet)"
+:type "Cover Abundance"}
+{:depend-on-cde nil
+:enabled true
+:id "4"
+:label "4 BB 51-75% projective foliage cover (braun-blanquet)"
+:type "Cover Abundance"}
+{:depend-on-cde nil
+:enabled true
+:id "5"
+:label "5 BB 76-100% projective foliage cover (braun-blanquet)"
+:type "Cover Abundance"}
+{:depend-on-cde nil
+:enabled true
+:id "r"
+:label "r BB Rare or solitary with negligible cover (braun-blanquet)"
+:type "Cover Abundance"}
+{:depend-on-cde nil
+:enabled true
+:id "+ dom"
+:label "+ Dom < 1% projective foliage cover
+few individuals (domin scale)"
+:type "Cover Abundance"}
+{:depend-on-cde nil
+:enabled true
+:id "1 dom"
+:label "1 Dom < 1% projective foliage cover
+several individuals (domin scale)"
+:type "Cover Abundance"}
+{:depend-on-cde nil
+:enabled true
+:id "2 dom"
+:label "2 Dom 1-4% projective foliage cover
+many individuals (domin scale)"
+:type "Cover Abundance"}
+{:depend-on-cde nil
+:enabled true
+:id "3 dom"
+:label "3 Dom 4-10% projective foliage cover (domin scale)"
+:type "Cover Abundance"}
+{:depend-on-cde nil
+:enabled true
+:id "4 dom"
+:label "4 Dom 10-25% projective foliage cover (domin scale)"
+:type "Cover Abundance"}
+{:depend-on-cde nil
+:enabled true
+:id "5 dom"
+:label "5 Dom 25-33% projective foliage cover (domin scale)"
+:type "Cover Abundance"}
+{:depend-on-cde nil
+:enabled true
+:id "6 dom"
+:label "6 Dom 33-50% projective foliage cover (domin scale)"
+:type "Cover Abundance"}
+{:depend-on-cde nil
+:enabled true
+:id "7 dom"
+:label "7 Dom 50-75% projective foliage cover (domin scale)"
+:type "Cover Abundance"}
+{:depend-on-cde nil
+:enabled true
+:id "8 dom"
+:label "8 Dom 75-90% projective foliage cover (domin scale)"
+:type "Cover Abundance"}
+{:depend-on-cde nil
+:enabled true
+:id "9 dom"
+:label "9 Dom 90-100% projective foliage cover (domin scale)"
+:type "Cover Abundance"}]
+:lookup-other-agency [{:depend-on-cde nil
+:enabled true
+:id "cavs"
+:label "CAVS code"
+:type "Other Agency"}
+{:depend-on-cde nil
+:enabled true
+:id "flora"
+:label "Victorian flora site database"
+:type "Other Agency"}
+{:depend-on-cde nil
+:enabled true
+:id "epa"
+:label "EPA code"
+:type "Other Agency"}
+{:depend-on-cde nil
+:enabled true
+:id "caab"
+:label "CAAB code"
+:type "Other Agency"}
+{:depend-on-cde nil
+:enabled true
+:id "marine"
+:label "Marine database"
+:type "Other Agency"}
+{:depend-on-cde nil
+:enabled true
+:id "afd"
+:label "Aquatic Fauna database ID"
+:type "Other Agency"}
+{:depend-on-cde nil
+:enabled true
+:id "atlas"
+:label "Atlas of Victorian Wildlife ID"
+:type "Other Agency"}]
+:lookup-project-user-type [{:depend-on-cde nil
+:enabled true
+:id "c"
+:label "Contributor"
+:type "Project User Type"}
+{:depend-on-cde nil
+:enabled true
+:id "o"
+:label "Owner"
+:type "Project User Type"}
+{:depend-on-cde nil
+:enabled true
+:id "de"
+:label "Data enterer"
+:type "Project User Type"}]
+:lookup-taxon-type [{:depend-on-cde nil
+:enabled true
+:id "dico"
+:label "Dicotyledons"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "mono"
+:label "Monocotyledons"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "fern"
+:label "Fern and allies"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "coni"
+:label "Conifers"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "moss"
+:label "Mosses"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "live"
+:label "Liverworts"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "alga"
+:label "Algae"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "lich"
+:label "Lichens"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "fung"
+:label "Fungi"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "cyan"
+:label "Cyanobacteria"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "bac"
+:label "Bacteria"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "bat"
+:label "Bats"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "amph"
+:label "Amphibians"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "rept"
+:label "Reptiles"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "marbir"
+:label "Marine birds"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "waders"
+:label "Waders"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "invert"
+:label "Invertebrates"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "mamm"
+:label "Mammals"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "nonpassb"
+:label "Other Non-passerine birds"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "passb"
+:label "Passerine birds"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "fish"
+:label "Fish"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "deccrus"
+:label "Mussels
+decopod crustacea"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "aqinvert"
+:label "Aquatic inverts"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "marinverts"
+:label "Marine invertebrates"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "echino"
+:label "Echinoderms"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "fans"
+:label "Sea fans/corals"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "ascidi"
+:label "Ascidians"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "sponge"
+:label "Sponges"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "dele"
+:label "Deleted"
+:type "Taxon Type"}
+{:depend-on-cde nil
+:enabled true
+:id "misc"
+:label "Miscellaneous"
+:type "Taxon Type"}]
+:lookup-sc-discipline [{:depend-on-cde nil
+:enabled true
+:id "tf"
+:label "Terrestrial fauna"
+:type "SC Discipline"}
+{:depend-on-cde nil
+:enabled true
+:id "fl"
+:label "Flora"
+:type "SC Discipline"}
+{:depend-on-cde nil
+:enabled true
+:id "af"
+:label "Aquatic fauna"
+:type "SC Discipline"}
+{:depend-on-cde nil
+:enabled true
+:id "ai"
+:label "Aquatic invertebrates"
+:type "SC Discipline"}
+{:depend-on-cde nil
+:enabled true
+:id "ma"
+:label "Marine"
+:type "SC Discipline"}
+{:depend-on-cde nil
+:enabled true
+:id "all"
+:label "All disciplines"
+:type "SC Discipline"}]
+:lookup-sampling-method-lut-fl [{:depend-on-cde "all"
+:enabled true
+:id "12"
+:label "Dip Net"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "EXT"
+:label "External data"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "fl"
+:enabled true
+:id "GRID"
+:label "FIS Grid data"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "9000"
+:label "General observations"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "INC"
+:label "Incidental"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "fl"
+:enabled true
+:id "MON"
+:label "Monitoring"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "fl"
+:enabled true
+:id "QUAD"
+:label "Quadrat"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "SPL"
+:label "Species List for Defined Area"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "SPEC"
+:label "Specimen"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "70"
+:label "Targeted search"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "37"
+:label "Translocation"
+:type "SAMPLING_METHOD_LUT"}]
+:lookup-type [{:depend-on-cde nil
+:enabled true
+:id "n"
+:label "Birds australia nest record card"
+:type "Type"}
+{:depend-on-cde nil
+:enabled true
+:id "cap"
+:label "Captured"
+:type "Type"}
+{:depend-on-cde nil
+:enabled true
+:id "t"
+:label "Captured and released"
+:type "Type"}
+{:depend-on-cde nil
+:enabled true
+:id "h"
+:label "Heard"
+:type "Type"}
+{:depend-on-cde nil
+:enabled true
+:id "d"
+:label "Identified from bat detector recording"
+:type "Type"}
+{:depend-on-cde nil
+:enabled true
+:id "a"
+:label "Identified from hair or scats"
+:type "Type"}
+{:depend-on-cde nil
+:enabled true
+:id "i"
+:label "Indirect evidence"
+:type "Type"}
+{:depend-on-cde nil
+:enabled true
+:id "l"
+:label "Literature"
+:type "Type"}
+{:depend-on-cde nil
+:enabled true
+:id "mon"
+:label "Monitored species"
+:type "Type"}
+{:depend-on-cde nil
+:enabled true
+:id "m"
+:label "Museum specimen"
+:type "Type"}
+{:depend-on-cde nil
+:enabled true
+:id "o"
+:label "Observation"
+:type "Type"}
+{:depend-on-cde nil
+:enabled true
+:id "x"
+:label "Observation with supporting evidence"
+:type "Type"}
+{:depend-on-cde nil
+:enabled true
+:id "p"
+:label "Pers. Comm."
+:type "Type"}
+{:depend-on-cde nil
+:enabled true
+:id "r"
+:label "Released"
+:type "Type"}
+{:depend-on-cde nil
+:enabled true
+:id "s"
+:label "Seen"
+:type "Type"}]
+:lookup-published-status [{:depend-on-cde nil
+:enabled true
+:id "del"
+:label "Deleted"
+:type "Published Status"}
+{:depend-on-cde nil
+:enabled true
+:id "dnp"
+:label "Do Not Publish"
+:type "Published Status"}
+{:depend-on-cde nil
+:enabled true
+:id "draft"
+:label "Draft"
+:type "Published Status"}
+{:depend-on-cde nil
+:enabled true
+:id "pd"
+:label "Pending deletion"
+:type "Published Status"}
+{:depend-on-cde nil
+:enabled true
+:id "pp"
+:label "Pending publishing"
+:type "Published Status"}
+{:depend-on-cde nil
+:enabled true
+:id "pub"
+:label "Published"
+:type "Published Status"}]
+:lookup-sampling-method-lut-all [{:depend-on-cde "all"
+:enabled true
+:id "12"
+:label "Dip Net"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "EXT"
+:label "External data"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "9000"
+:label "General observations"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "INC"
+:label "Incidental"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "SPL"
+:label "Species List for Defined Area"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "SPEC"
+:label "Specimen"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "70"
+:label "Targeted search"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "37"
+:label "Translocation"
+:type "SAMPLING_METHOD_LUT"}]
+:lookup-sampling-method-lut-ma [{:depend-on-cde "ma"
+:enabled true
+:id "ALGAABUN"
+:label "Algal quadrat point-intercept count"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "12"
+:label "Dip Net"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "EXT"
+:label "External data"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "g01"
+:label "G01"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "g02"
+:label "G02"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "g03"
+:label "G03"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "g04"
+:label "G04"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "g05"
+:label "G05"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "g06"
+:label "G06"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "g07"
+:label "G07"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "g08"
+:label "G08"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "g09"
+:label "G09"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "g10"
+:label "G10"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "g11"
+:label "G11"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "g12"
+:label "G12"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "g13"
+:label "G13"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "g14"
+:label "G14"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "g15"
+:label "G15"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "g16"
+:label "G16"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "g17"
+:label "G17"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "g18"
+:label "G18"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "g19"
+:label "G19"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "g20"
+:label "G20"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "9000"
+:label "General observations"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "GRAZABUN"
+:label "Grazing invertebrate density from quadrat"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "INC"
+:label "Incidental"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "INVESIZE"
+:label "Length measure of abalone & rock lobster"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "m01"
+:label "M01"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "m02"
+:label "M02"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "m03"
+:label "M03"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "m04"
+:label "M04"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "m05"
+:label "M05"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "m06"
+:label "M06"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "m07"
+:label "M07"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "m08"
+:label "M08"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "m09"
+:label "M09"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "m10"
+:label "M10"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "m11"
+:label "M11"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "m12"
+:label "M12"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "m13"
+:label "M13"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "m14"
+:label "M14"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "m15"
+:label "M15"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "m16"
+:label "M16"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "m17"
+:label "M17"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "m18"
+:label "M18"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "m19"
+:label "M19"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "m20"
+:label "M20"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "B"
+:label "Macroalgae & sessile invert point-intercept count"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "MACRABUN"
+:label "Macrocystis angustifolia transect count"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "INVEABUN"
+:label "Megafaunal invert & cryptic fish transect count"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "FISHABUND"
+:label "Mobile fish and cephalopod transect count"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "A"
+:label "Mobile invert quadrat & gastropod shell length"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "p01"
+:label "P01"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "p02"
+:label "P02"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "p03"
+:label "P03"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "p04"
+:label "P04"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "p05"
+:label "P05"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "p06"
+:label "P06"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "p07"
+:label "P07"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "p08"
+:label "P08"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "p09"
+:label "P09"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "p10"
+:label "P10"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "p11"
+:label "P11"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "p12"
+:label "P12"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "p13"
+:label "P13"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "p14"
+:label "P14"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "p15"
+:label "P15"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "p16"
+:label "P16"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "p17"
+:label "P17"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "p18"
+:label "P18"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "p19"
+:label "P19"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "p20"
+:label "P20"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "SPL"
+:label "Species List for Defined Area"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "SPEC"
+:label "Specimen"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "ma"
+:enabled true
+:id "MUSEUM"
+:label "Specimen collection"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "70"
+:label "Targeted search"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "37"
+:label "Translocation"
+:type "SAMPLING_METHOD_LUT"}]
+:lookup-sampling-method-lut-tf [{:depend-on-cde "tf"
+:enabled true
+:id "9034"
+:label "1 km block count"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9042"
+:label "Aquatic invertebrate search"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9024"
+:label "Artificial Substrate"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9066"
+:label "Bat detector"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9005"
+:label "Bat trap"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9007"
+:label "Bat tripline"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9115"
+:label "Bioacoustic monitoring"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9030"
+:label "Bird count"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9015"
+:label "Bird transect"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9062"
+:label "Birds Australia 2ha search"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9063"
+:label "Birds Australia 500m area search"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9064"
+:label "Birds Australia 5km area search"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9077"
+:label "Birds Australia bird list"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9078"
+:label "Birds Australia breeding territory monitoring"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9076"
+:label "Birds Australia fixed route survey"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9065"
+:label "Birds Australia incidental search"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9088"
+:label "Both cage/elliot and bat/fishing line trip line"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9038"
+:label "Breeding bird census"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9002"
+:label "Cage trap"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9090"
+:label "Camera - Surveillance/Remote"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9086"
+:label "Camera - Thermal imaging"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "12"
+:label "Dip Net"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9044"
+:label "Dusk watch"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9060"
+:label "Electro-fishing (Bank Mounted)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9001"
+:label "Elliott trap"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9056"
+:label "Elliott trap Large"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "EXT"
+:label "External data"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9061"
+:label "Faunatech hair tubes(bait type in X)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9080"
+:label "Fish Survey"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9082"
+:label "Frog Triangulation"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9029"
+:label "Frog census"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9031"
+:label "Frog transect"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9091"
+:label "Funnel Trap Drift Fence"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9004"
+:label "Funnel trap"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9092"
+:label "Fyke Net (Turtle)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9114"
+:label "GPS Tracking"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "9000"
+:label "General observations"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9043"
+:label "Giant Gippsland Earthworm Survey"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9072"
+:label "Golden Sun Moth Adult Survey"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9074"
+:label "Golden Sun Moth Lavae Survey"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9073"
+:label "Golden Sun Moth Pupae Survey"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9052"
+:label "Grey Crowned Babbler Surveys"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9117"
+:label "Ground truth remote sensed data"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9013"
+:label "Hair tube"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9055"
+:label "Helmeted Honeyeater survey"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9041"
+:label "Herp census - active"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9046"
+:label "Herp census - passive"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9036"
+:label "Herp spot count"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9037"
+:label "Herp transect"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9040"
+:label "Herp transect - passive"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9069"
+:label "Hog Deer Tagging Program"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "INC"
+:label "Incidental"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9112"
+:label "Invertebrate Search - active"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9113"
+:label "Invertebrate Search - passive"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9051"
+:label "Invertebrate pitfall trapping"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9053"
+:label "Koala Translocation"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9003"
+:label "Large cage trap"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9020"
+:label "Large hair tubes"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9045"
+:label "Listening"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9006"
+:label "Mist net"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "MONS"
+:label "Monitored species"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9089"
+:label "More than one type of bat trap"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9067"
+:label "Nest box"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9071"
+:label "New Holland Mouse Monitoring"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9087"
+:label "No. of caves/mines/hollows searched"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "P54"
+:label "Nocturnal Flight Call Count"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9039"
+:label "Nocturnal Investigation"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9116"
+:label "Occupancy survey"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9023"
+:label "Owl census"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9009"
+:label "Pitfall"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9008"
+:label "Pitfall with drift fence"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9033"
+:label "Plains-wanderer survey"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9048"
+:label "Platypus Survey APC"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9068"
+:label "Playback"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9022"
+:label "Point spot count"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9016"
+:label "Scat analysis"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9028"
+:label "Scat census"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9021"
+:label "Small hair tubes"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9050"
+:label "Southern Right Whale Monitoring"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "SPL"
+:label "Species List for Defined Area"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "SPEC"
+:label "Specimen"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9025"
+:label "Spenceri census"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9010"
+:label "Spotlighting"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9027"
+:label "Spotlighting by area"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9018"
+:label "Spotlighting on foot"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9019"
+:label "Stag watching"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9049"
+:label "Swift Parrot Survey"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9057"
+:label "Tadpole Trapping"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "70"
+:label "Targeted search"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9081"
+:label "Tile (roof) census"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9054"
+:label "Timed area stag watch"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9011"
+:label "Timed bird census"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "all"
+:enabled true
+:id "37"
+:label "Translocation"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9026"
+:label "Trap (unspecified)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9017"
+:label "Treadle Trap"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9075"
+:label "Under Paver (concrete)"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9070"
+:label "Warrandyte State Park Koala Survey"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "9035"
+:label "Wetland count"
+:type "SAMPLING_METHOD_LUT"}
+{:depend-on-cde "tf"
+:enabled true
+:id "P60"
+:label "eBird Pelagic Protocol"
+:type "SAMPLING_METHOD_LUT"}]
+:lookup-date-accuracy [{:depend-on-cde nil
+:enabled true
+:id "dd"
+:label "Day"
+:type "Date Accuracy"}
+{:depend-on-cde nil
+:enabled true
+:id "mm"
+:label "Month"
+:type "Date Accuracy"}
+{:depend-on-cde nil
+:enabled true
+:id "yy"
+:label "Year"
+:type "Date Accuracy"}
+{:depend-on-cde nil
+:enabled true
+:id "dec"
+:label "Decade"
+:type "Date Accuracy"}
+{:depend-on-cde nil
+:enabled true
+:id "nd"
+:label "No date"
+:type "Date Accuracy"}]
+:lookup-discipline [{:depend-on-cde nil
+:enabled true
+:id "af"
+:label "Aquatic fauna"
+:type "Discipline"}
+{:depend-on-cde nil
+:enabled true
+:id "ai"
+:label "Aquatic invertebrates"
+:type "Discipline"}
+{:depend-on-cde nil
+:enabled true
+:id "fl"
+:label "Flora"
+:type "Discipline"}
+{:depend-on-cde nil
+:enabled true
+:id "ma"
+:label "Marine"
+:type "Discipline"}
+{:depend-on-cde nil
+:enabled true
+:id "tf"
+:label "Terrestrial fauna"
+:type "Discipline"}]}

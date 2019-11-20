@@ -38,7 +38,7 @@
 (comment
   "s/\\r/\r/g"
   "s/\\" / "/g"
-  (->> (parse-xml "resources/user-details.xml")
+  (->> (parse-xml "resources/survey.xml")
        (clojure.walk/prewalk
         (fn [node]
           (if (map? node)

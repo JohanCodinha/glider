@@ -2,6 +2,7 @@
   (:require [clojure.zip :as zip]
             [glider.wrapper.js-parser :refer [parse-js-object]]
             [clojure.data.zip.xml :as zx]
+            [glider.wrapper.xml :refer [parse-xml]]
             [clj-http.client :refer [request] :as http]))
 
 (defn http-post-request [transaction cookie]
@@ -59,5 +60,16 @@
         :body
         (doto throw-when-login-required)
         (parse-js-object)
-        (doto throw-when-invalid-response)
-        :data)))
+        (doto throw-when-invalid-response))))
+
+(defn println-to-str [m]
+  (with-out-str (clojure.pprint/pprint m)))
+
+(defn parse-xml-file [path]
+  (->> (parse-xml path)
+       (clojure.walk/prewalk
+         (fn [node]
+           (if (map? node)
+             (into {} (filter second node))
+             node)))
+       println-to-str) )

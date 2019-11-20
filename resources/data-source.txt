@@ -1,0 +1,1359 @@
+isc.DataSource.create({
+    ID:"SurveyWaterQualityId_DS",
+    dataSourceVersion:"1",
+    fields:[
+        {
+            name:"surveyId",
+            title:"Survey ID",
+            type:"integer"
+        },
+        {
+            name:"waterQualityId",
+            title:"Water Quality ID",
+            type:"integer"
+        },
+        {
+            name:"waterQualityParameterCde",
+            title:"Water Quality Parameter Cde",
+            type:"text"
+        }
+    ]
+})
+isc.DataSource.create({
+    ID:"SurveyWaterQuality_DS",
+    dataSourceVersion:"1",
+    fields:[
+        {
+            name:"creationTsp",
+            title:"Creation Tsp",
+            type:"datetime"
+        },
+        {
+            name:"modifiedTsp",
+            title:"Modified Tsp",
+            type:"datetime"
+        },
+        {
+            name:"surveyWaterQualityDateSdt",
+            title:"Survey Water Quality Date Sdt",
+            type:"date"
+        },
+        {
+            name:"wqInstrumentTxt",
+            title:"Wq Instrument Txt",
+            type:"text"
+        },
+        {
+            name:"wqValueNum",
+            title:"Wq Value Num",
+            type:"float"
+        }
+    ]
+})
+isc.DataSource.create({
+    ID:"SurveyWeatherDetail_DS",
+    dataSourceVersion:"1",
+    operationBindings:[
+        {
+            operationType:"fetch",
+            serverMethod:"fetchWeather"
+        },
+        {
+            operationType:"custom",
+            serverMethod:"saveOptionalSurveyInfo",
+            operationId:"saveOptionalSurveyInfo"
+        }
+    ],
+    fields:[
+        {
+            name:"beaufortScaleCde",
+            title:"Beaufort Scale",
+            type:"text"
+        },
+        {
+            name:"cloudCoverCde",
+            title:"Cloud Cover",
+            type:"text"
+        },
+        {
+            name:"creationTsp",
+            title:"Creation Tsp",
+            type:"datetime"
+        },
+        {
+            name:"inundationCde",
+            title:"Inundation",
+            type:"text"
+        },
+        {
+            name:"modifiedTsp",
+            title:"Modified Tsp",
+            type:"datetime"
+        },
+        {
+            name:"precipitationIntensityCde",
+            title:"Rainfall Intensity",
+            type:"text"
+        },
+        {
+            name:"rainfallDurationCde",
+            title:"Rainfall Duration",
+            type:"text"
+        },
+        {
+            name:"rainfallTypeCde",
+            title:"Rainfall Type",
+            type:"text"
+        },
+        {
+            hidden:true,
+            name:"surveyId",
+            primaryKey:true,
+            title:"Survey ID",
+            type:"integer"
+        }
+    ]
+})
+isc.DataSource.create({
+    dropExtraFields:true,
+    ID:"Survey_DS",
+    dataSourceVersion:"1",
+    operationBindings:[
+        {
+            operationType:"fetch",
+            serverMethod:"fetchGeneralObservations",
+            outputs:"surveyId,site,siteNme,contributors,expertReviewStatusCde,surveyStartSdt,modifiedTsp",
+            operationId:"fetchGeneralObservations"
+        },
+        {
+            operationType:"fetch",
+            serverMethod:"fetchSurvey",
+            operationId:"fetchSurvey"
+        },
+        {
+            operationType:"fetch",
+            serverMethod:"fetchSurveyProgress",
+            operationId:"fetchSurveyProgress"
+        },
+        {
+            operationType:"fetch",
+            serverMethod:"fetchObseverForNewSurvey",
+            outputs:"id,givenNme,userUid,userTypeCde,surnameNme,fullName,loginNameNme",
+            operationId:"fetchObseverForNewSurvey"
+        },
+        {
+            operationType:"fetch",
+            serverMethod:"fetchObseverForExistingSurvey",
+            outputs:"givenNme,userUid,userTypeCde,userTypeDes,surnameNme,fullName,loginNameNme",
+            operationId:"fetchObseverForExistingSurvey"
+        },
+        {
+            operationType:"fetch",
+            serverMethod:"fetchTaxonRecordsForReview",
+            outputs:"surveyId,siteId,taxonRecordedId,surveyNme,surveyStartSdt,localityDesc,latitudeddNum,longitudeddNum,contributors,contributorId,typeCde,extraCde,totalCountInt,count",
+            operationId:"fetchTaxonRecordsForReview"
+        },
+        {
+            operationType:"fetch",
+            serverMethod:"fetchSitesForSiteMap",
+            outputs:"siteId,siteNme,siteLocationDesc,surveyId,surveyStartSdt,surveyNme,latitudeddNum,longitudeddNum,accuracyTxt,waterBodyNme,riverBasinNme,contributors",
+            operationId:"fetchSitesForSiteMap"
+        },
+        {
+            operationType:"fetch",
+            serverMethod:"fetchSitesForTaxon",
+            outputs:"siteId,siteNme,siteLocationDesc,surveyId,surveyStartSdt,surveyNme,latitudeddNum,longitudeddNum,accuracyTxt,contributors,totalCountInt",
+            operationId:"fetchSitesForTaxon"
+        },
+        {
+            operationType:"fetch",
+            serverMethod:"fetchSurveysForTaxon",
+            outputs:"siteId,siteNme,siteLocationDesc,surveyId,surveyStartSdt,surveyNme,latitudeddNum,longitudeddNum,accuracyTxt,contributors,totalCountInt,surveyStartSdt,surveyEndSdt,surveyNme,surveyId,projectId,licenceName,licenceId,denaturedSite,licencedSiteCount,reliabilityCde,extraCde",
+            operationId:"fetchSurveysForTaxon"
+        },
+        {
+            operationType:"fetch",
+            serverMethod:"fetchSurveyUserList",
+            outputs:"userUid,loginNameNme,givenNme,surnameNme",
+            operationId:"fetchSurveyUserList"
+        },
+        {
+            operationType:"fetch",
+            serverMethod:"fetchSurveySpeciesReportData",
+            outputs:"taxonId,scientificDisplayNme,commonNme,conservationStatus,coverAbundanceCde,totalCountInt,surveyStartSdt,surveyEndSdt,surveyId,siteLocationDesc,samplingMethodCde,waterBodyNme,observerFullName,extraCde,typeCde,reliabilityCde,altitudeInt,latitudeddNum,longitudeddNum,latLongAccuracyddNum,siteId,siteNme,drainageDivisionNameTxt,riverBasinNme,waterBodyDesc,epbcCode,ffgListingCde,dseAdvisoryCde,originCategoryCde,restrictedAccessCde",
+            operationId:"fetchSurveySpeciesReportData"
+        },
+        {
+            operationType:"custom",
+            serverMethod:"saveSurvey",
+            operationId:"saveSurvey"
+        },
+        {
+            operationType:"custom",
+            serverMethod:"bulkSubmitForReview",
+            operationId:"bulkSubmitForReview"
+        },
+        {
+            operationType:"custom",
+            serverMethod:"saveSiteLocationChange",
+            operationId:"saveSiteLocationChange"
+        },
+        {
+            operationType:"fetch",
+            serverMethod:"fetchSurveySheetMain",
+            outputs:"surveyId,surveyNme,expertReviewStatusCde,surveyStartSdt,surveyEndSdt,primaryDisciplineCde,modifiedTsp,restrictedFlagCde",
+            operationId:"viewSurveySheetMain"
+        },
+        {
+            operationType:"custom",
+            serverMethod:"saveOptionalSurveyInformation",
+            operationId:"saveOptionalSurveyInformation"
+        },
+        {
+            operationType:"fetch",
+            serverMethod:"fetchSurveyById",
+            operationId:"fetchSurveyById"
+        },
+        {
+            operationType:"fetch",
+            serverMethod:"fetchSurveysForTDC",
+            operationId:"fetchSurveysForTDC"
+        },
+        {
+            operationType:"custom",
+            serverMethod:"performTDC",
+            operationId:"performTDC"
+        },
+        {
+            operationType:"custom",
+            serverMethod:"getSurveyOptionInfo",
+            operationId:"getSurveyOptionInfo"
+        },
+        {
+            operationType:"custom",
+            serverMethod:"saveSurveyOptionInfo",
+            operationId:"saveSurveyOptionInfo"
+        },
+        {
+            operationType:"custom",
+            serverMethod:"submitForExpertReview",
+            operationId:"submitForExpertReview"
+        },
+        {
+            operationType:"custom",
+            serverMethod:"rollbackToDraft",
+            operationId:"rollbackToDraft"
+        },
+        {
+            operationType:"custom",
+            serverMethod:"deleteSurvey",
+            operationId:"deleteSurvey"
+        },
+        {
+            operationType:"custom",
+            serverMethod:"checkTaxonDistribution",
+            operationId:"checkTaxonDistribution"
+        }
+    ],
+    fields:[
+        {
+            name:"creationTsp",
+            title:"Creation Tsp",
+            type:"datetime"
+        },
+        {
+            name:"dateAccuracyCde",
+            title:"Date Accuracy",
+            type:"text"
+        },
+        {
+            length:"20",
+            name:"endHhmmTxt",
+            title:"End Time",
+            type:"text"
+        },
+        {
+            name:"expertReviewStatusCde",
+            title:"Status",
+            type:"text"
+        },
+        {
+            name:"modifiedTsp",
+            title:"Modified Tsp",
+            type:"datetime"
+        },
+        {
+            name:"monitoringProtocolCde",
+            title:"Monitoring Protocol",
+            type:"text"
+        },
+        {
+            length:"20",
+            name:"originalSiteidTxt",
+            title:"Original Siteid Txt",
+            type:"text"
+        },
+        {
+            length:"50",
+            name:"originalSurveyidTxt",
+            title:"Original Surveyid Txt",
+            type:"text"
+        },
+        {
+            name:"primaryDisciplineCde",
+            title:"Primary Discipline",
+            type:"text"
+        },
+        {
+            canEdit:true,
+            javaClass:"com.dialog.vba.server.model.Project",
+            multiple:false,
+            name:"project",
+            title:"Project",
+            type:"Project_DS"
+        },
+        {
+            canEdit:true,
+            javaClass:"com.dialog.vba.server.model.Site",
+            multiple:false,
+            name:"site",
+            title:"Site",
+            type:"Site_DS"
+        },
+        {
+            length:"20",
+            name:"startHhmmTxt",
+            title:"Start Time",
+            type:"text"
+        },
+        {
+            length:"4000",
+            name:"surveyCommentTxt",
+            title:"Survey Comment",
+            type:"text"
+        },
+        {
+            name:"surveyEndSdt",
+            title:"End Date",
+            type:"date"
+        },
+        {
+            hidden:true,
+            name:"surveyId",
+            primaryKey:true,
+            title:"Survey ID",
+            type:"integer"
+        },
+        {
+            length:"125",
+            name:"surveyNme",
+            title:"Survey Name",
+            type:"text"
+        },
+        {
+            name:"surveyStartSdt",
+            title:"Start Date",
+            type:"date"
+        },
+        {
+            length:"100",
+            name:"userRefTxt",
+            title:"User Reference",
+            type:"text"
+        }
+    ]
+})
+isc.DataSource.create({
+    ID:"SystemCorrespondence_DS",
+    dataSourceVersion:"1",
+    fields:[
+        {
+            name:"creationTsp",
+            title:"Creation Tsp",
+            type:"datetime"
+        },
+        {
+            hidden:true,
+            name:"messageId",
+            primaryKey:true,
+            title:"Message ID",
+            type:"integer"
+        },
+        {
+            name:"messageOrderSeq",
+            title:"Message Order Seq",
+            type:"float"
+        },
+        {
+            name:"messageTxt",
+            title:"Message Txt",
+            type:"text"
+        },
+        {
+            name:"messageTypeCde",
+            title:"Message Type Cde",
+            type:"text"
+        },
+        {
+            name:"modifiedTsp",
+            title:"Modified Tsp",
+            type:"datetime"
+        }
+    ]
+})
+isc.DataSource.create({
+    ID:"TableFieldHelpLinkId_DS",
+    dataSourceVersion:"1",
+    fields:[
+        {
+            name:"fieldNme",
+            title:"Field Nme",
+            type:"text"
+        },
+        {
+            name:"tableId",
+            title:"Table ID",
+            type:"integer"
+        }
+    ]
+})
+isc.DataSource.create({
+    ID:"TableFieldHelpLink_DS",
+    dataSourceVersion:"1",
+    fields:[
+        {
+            name:"creationTsp",
+            title:"Creation Tsp",
+            type:"datetime"
+        },
+        {
+            name:"filterTypeCde",
+            title:"Filter Type Cde",
+            type:"text"
+        },
+        {
+            name:"filterTypeSubCde",
+            title:"Filter Type Sub Cde",
+            type:"text"
+        },
+        {
+            name:"lookupTypeTxt",
+            title:"Lookup Type Txt",
+            type:"text"
+        },
+        {
+            name:"modifiedTsp",
+            title:"Modified Tsp",
+            type:"datetime"
+        }
+    ]
+})
+isc.DataSource.create({
+    ID:"TableList_DS",
+    dataSourceVersion:"1",
+    fields:[
+        {
+            name:"creationTsp",
+            title:"Creation Tsp",
+            type:"datetime"
+        },
+        {
+            name:"modifiedTsp",
+            title:"Modified Tsp",
+            type:"datetime"
+        },
+        {
+            hidden:true,
+            name:"tableId",
+            primaryKey:true,
+            title:"Table ID",
+            type:"integer"
+        },
+        {
+            name:"tableNme",
+            title:"Table Nme",
+            type:"text"
+        }
+    ]
+})
+isc.DataSource.create({
+    ID:"TaxonAcceptedDistributionId_DS",
+    dataSourceVersion:"1",
+    fields:[
+        {
+            name:"regionCde",
+            title:"Region Cde",
+            type:"text"
+        },
+        {
+            name:"taxonId",
+            title:"Taxon ID",
+            type:"integer"
+        }
+    ]
+})
+isc.DataSource.create({
+    ID:"TaxonAcceptedDistribution_DS",
+    dataSourceVersion:"1",
+    fields:[
+        {
+            name:"creationTsp",
+            title:"Creation Tsp",
+            type:"datetime"
+        },
+        {
+            name:"earliestRecordSdt",
+            title:"Earliest Record Sdt",
+            type:"date"
+        },
+        {
+            name:"latestRecordSdt",
+            title:"Latest Record Sdt",
+            type:"date"
+        },
+        {
+            name:"modifiedTsp",
+            title:"Modified Tsp",
+            type:"datetime"
+        }
+    ]
+})
+isc.DataSource.create({
+    ID:"TaxonColourId_DS",
+    dataSourceVersion:"1",
+    fields:[
+        {
+            name:"colourCde",
+            title:"Colour Cde",
+            type:"text"
+        },
+        {
+            name:"taxonId",
+            title:"Taxon ID",
+            type:"integer"
+        }
+    ]
+})
+isc.DataSource.create({
+    ID:"TaxonColour_DS",
+    dataSourceVersion:"1",
+    operationBindings:[
+        {
+            operationType:"fetch",
+            serverMethod:"fetchTaxonColour"
+        },
+        {
+            operationType:"add",
+            serverMethod:"dummyAdd"
+        },
+        {
+            operationType:"remove",
+            serverMethod:"dummyRemove"
+        }
+    ],
+    fields:[
+        {
+            name:"creationTsp",
+            title:"Creation Tsp",
+            type:"datetime"
+        },
+        {
+            name:"modifiedTsp",
+            title:"Modified Tsp",
+            type:"datetime"
+        },
+        {
+            foreignKey:"Lookup_DS.id",
+            name:"colourCde",
+            primaryKey:true,
+            title:"Colour Code",
+            type:"text"
+        },
+        {
+            name:"taxonId",
+            title:"Taxon ID",
+            type:"integer"
+        },
+        {
+            name:"label",
+            title:"Description",
+            type:"text"
+        }
+    ]
+})
+isc.DataSource.create({
+    dropExtraFields:true,
+    ID:"TaxonDescription_DS",
+    dataSourceVersion:"1",
+    operationBindings:[
+        {
+            operationType:"fetch",
+            serverMethod:"fetchTaxonDescription",
+            operationId:"fetchTaxonDescription"
+        }
+    ],
+    fields:[
+        {
+            name:"attachmentMethodDesc",
+            title:"Attachment Method",
+            type:"text"
+        },
+        {
+            name:"beakDesc",
+            title:"Beak",
+            type:"text"
+        },
+        {
+            name:"callVoiceDesc",
+            title:"Call / Voice",
+            type:"text"
+        },
+        {
+            name:"coveringDesc",
+            title:"Covering Description (scale, feathers, fur etc)",
+            type:"text"
+        },
+        {
+            name:"creationTsp",
+            title:"Creation Tsp",
+            type:"datetime"
+        },
+        {
+            name:"dangerousDesc",
+            title:"Dangerous",
+            type:"text"
+        },
+        {
+            name:"dietDesc",
+            title:"Diet",
+            type:"text"
+        },
+        {
+            name:"distributionDesc",
+            title:"Known Distribution",
+            type:"text"
+        },
+        {
+            name:"earDesc",
+            title:"Length Range - Ear (mm)",
+            type:"text"
+        },
+        {
+            name:"ecologyDesc",
+            title:"Ecology",
+            type:"text"
+        },
+        {
+            name:"eyesDesc",
+            title:"Eyes",
+            type:"text"
+        },
+        {
+            name:"feedingMethodTypeDesc",
+            title:"Feeding Method / Type",
+            type:"text"
+        },
+        {
+            name:"forearmDesc",
+            title:"Length Range - Forearm (mm)",
+            type:"text"
+        },
+        {
+            name:"fruitDesc",
+            title:"Fruit",
+            type:"text"
+        },
+        {
+            name:"functionalFeedingGrpDesc",
+            title:"Functional Feeding Group",
+            type:"text"
+        },
+        {
+            name:"generalDesc",
+            title:"General Description",
+            type:"text"
+        },
+        {
+            name:"habitatDesc",
+            title:"Habitat",
+            type:"text"
+        },
+        {
+            name:"headBodyDesc",
+            title:"Length Range - Head / Body (mm)",
+            type:"text"
+        },
+        {
+            name:"heightMmDesc",
+            title:"Plant Height (cm)",
+            type:"text"
+        },
+        {
+            name:"hindfootMmDesc",
+            title:"Length Range - Hindfoot (mm)",
+            type:"text"
+        },
+        {
+            name:"inflorescenceFlowerDesc",
+            title:"Inflorescence / Flower",
+            type:"text"
+        },
+        {
+            name:"leafDesc",
+            title:"Leaf",
+            type:"text"
+        },
+        {
+            name:"legsFeetToeDesc",
+            title:"Legs / Feet / Toe Description",
+            type:"text"
+        },
+        {
+            name:"lifeCycleReproductionDesc",
+            title:"Life Cycle / Reproduction",
+            type:"text"
+        },
+        {
+            name:"modifiedTsp",
+            title:"Modified Tsp",
+            type:"datetime"
+        },
+        {
+            name:"mouthpartsDesc",
+            title:"Mouthparts",
+            type:"text"
+        },
+        {
+            name:"scatsDesc",
+            title:"Scats",
+            type:"text"
+        },
+        {
+            name:"seedDrupeDesc",
+            title:"Seed / Drupe",
+            type:"text"
+        },
+        {
+            name:"snoutUrostyleMmDesc",
+            title:"Length Range - Snout-urostyle (mm)",
+            type:"text"
+        },
+        {
+            name:"snoutVentMmDesc",
+            title:"Length Range - Snout-vent (mm)",
+            type:"text"
+        },
+        {
+            name:"tailMmDesc",
+            title:"Length Range - Tail (mm)",
+            type:"text"
+        },
+        {
+            hidden:true,
+            name:"taxonId",
+            primaryKey:true,
+            title:"Taxon ID",
+            type:"integer"
+        },
+        {
+            name:"teethDesc",
+            title:"Teeth",
+            type:"text"
+        },
+        {
+            name:"totalMmDesc",
+            title:"Length Range - Total (mm)",
+            type:"text"
+        },
+        {
+            name:"weightGmDesc",
+            title:"Weight Range (gm)",
+            type:"text"
+        },
+        {
+            name:"wingFinDesc",
+            title:"Fin",
+            type:"text"
+        }
+    ]
+})
+isc.DataSource.create({
+    ID:"TaxonDisciplineId_DS",
+    dataSourceVersion:"1",
+    fields:[
+        {
+            name:"disciplineCde",
+            primaryKey:true,
+            title:"Discipline Cde",
+            type:"text"
+        },
+        {
+            name:"taxonId",
+            primaryKey:true,
+            title:"Taxon ID",
+            type:"integer"
+        }
+    ]
+})
+isc.DataSource.create({
+    dropExtraFields:true,
+    ID:"TaxonDiscipline_DS",
+    dataSourceVersion:"1",
+    fields:[
+        {
+            name:"creationTsp",
+            title:"Creation Tsp",
+            type:"datetime"
+        },
+        {
+            name:"modifiedTsp",
+            title:"Modified Tsp",
+            type:"datetime"
+        }
+    ]
+})
+isc.DataSource.create({
+    ID:"TaxonDocumentLinkId_DS",
+    dataSourceVersion:"1",
+    fields:[
+        {
+            name:"documentId",
+            primaryKey:true,
+            title:"Document ID",
+            type:"integer"
+        },
+        {
+            name:"taxonId",
+            primaryKey:true,
+            title:"Taxon ID",
+            type:"integer"
+        }
+    ]
+})
+isc.DataSource.create({
+    ID:"TaxonDocumentLink_DS",
+    dataSourceVersion:"1",
+    fields:[
+    ]
+})
+isc.DataSource.create({
+    ID:"TaxonExternalId_DS",
+    dataSourceVersion:"1",
+    fields:[
+        {
+            name:"otherAgencyCde",
+            primaryKey:true,
+            title:"Other Agency Cde",
+            type:"text"
+        },
+        {
+            name:"otherAgencyTaxonCodeTxt",
+            primaryKey:true,
+            title:"Other Agency Taxon Code Txt",
+            type:"text"
+        },
+        {
+            name:"taxonId",
+            primaryKey:true,
+            title:"Taxon ID",
+            type:"integer"
+        }
+    ]
+})
+isc.DataSource.create({
+    dropExtraFields:true,
+    ID:"TaxonExternal_DS",
+    dataSourceVersion:"1",
+    fields:[
+        {
+            name:"creationTsp",
+            title:"Creation Tsp",
+            type:"datetime"
+        },
+        {
+            name:"modifiedTsp",
+            title:"Modified Tsp",
+            type:"datetime"
+        },
+        {
+            name:"otherAgencyCde",
+            title:"Other Agency",
+            type:"text"
+        },
+        {
+            name:"otherAgencyTaxonCodeTxt",
+            title:"Other Agency Taxon ID",
+            type:"text"
+        }
+    ]
+})
+isc.DataSource.create({
+    dropExtraFields:true,
+    ID:"TaxonLifestyle_DS",
+    dataSourceVersion:"1",
+    operationBindings:[
+        {
+            operationType:"fetch",
+            serverMethod:"fetchLifestyle"
+        }
+    ],
+    fields:[
+        {
+            name:"activeTimeOfDayCde",
+            title:"Active Time of the Day",
+            type:"text"
+        },
+        {
+            name:"creationTsp",
+            title:"Creation Tsp",
+            type:"datetime"
+        },
+        {
+            name:"dietCde",
+            title:"Taxon Diet",
+            type:"text"
+        },
+        {
+            name:"hollowDependenceCde",
+            title:"Hollow Dependence",
+            type:"text"
+        },
+        {
+            name:"modifiedTsp",
+            title:"Modified Tsp",
+            type:"datetime"
+        },
+        {
+            hidden:true,
+            name:"taxonId",
+            primaryKey:true,
+            title:"Taxon ID",
+            type:"integer"
+        }
+    ]
+})
+isc.DataSource.create({
+    ID:"TaxonMultimediaLinkId_DS",
+    dataSourceVersion:"1",
+    fields:[
+        {
+            name:"multimediaId",
+            primaryKey:true,
+            title:"Multimedia ID",
+            type:"integer"
+        },
+        {
+            name:"taxonId",
+            primaryKey:true,
+            title:"Taxon ID",
+            type:"integer"
+        }
+    ]
+})
+isc.DataSource.create({
+    ID:"TaxonMultimediaLink_DS",
+    dataSourceVersion:"1",
+    fields:[
+        {
+            name:"creationTsp",
+            title:"Creation Tsp",
+            type:"datetime"
+        },
+        {
+            name:"modifiedTsp",
+            title:"Modified Tsp",
+            type:"datetime"
+        },
+        {
+            name:"publishedFlagCde",
+            title:"Published Flag Cde",
+            type:"text"
+        }
+    ]
+})
+isc.DataSource.create({
+    ID:"TaxonRecordedId_DS",
+    dataSourceVersion:"1",
+    fields:[
+        {
+            name:"behaviourCde",
+            title:"Behaviour Cde",
+            type:"text"
+        },
+        {
+            name:"componentId",
+            title:"Component ID",
+            type:"integer"
+        },
+        {
+            name:"contributorContactedSdt",
+            title:"Contributor Contacted Sdt",
+            type:"date"
+        },
+        {
+            name:"contributorFeedbackSdt",
+            title:"Contributor Feedback Sdt",
+            type:"date"
+        },
+        {
+            name:"countAccuracyCde",
+            title:"Count Accuracy Cde",
+            type:"text"
+        },
+        {
+            name:"coverAbundanceCde",
+            title:"Cover Abundance Cde",
+            type:"text"
+        },
+        {
+            name:"creationTsp",
+            title:"Creation Tsp",
+            type:"datetime"
+        },
+        {
+            name:"curatedFlagCde",
+            title:"Curated Flag Cde",
+            type:"text"
+        },
+        {
+            name:"externalTaxaidTxt",
+            title:"External Taxaid Txt",
+            type:"text"
+        },
+        {
+            name:"extraCde",
+            title:"Extra Cde",
+            type:"text"
+        },
+        {
+            name:"incidentalObsTypeCde",
+            title:"Incidental Obs Type Cde",
+            type:"text"
+        },
+        {
+            name:"modifiedTsp",
+            title:"Modified Tsp",
+            type:"datetime"
+        },
+        {
+            name:"originalScIdTxt",
+            title:"Original Sc ID Txt",
+            type:"text"
+        },
+        {
+            name:"originalTrIdTxt",
+            title:"Original Tr ID Txt",
+            type:"text"
+        },
+        {
+            name:"ratingInt",
+            title:"Rating Int",
+            type:"float"
+        },
+        {
+            name:"reliabilityCde",
+            title:"Reliability Cde",
+            type:"text"
+        },
+        {
+            name:"reviewCommentTxt",
+            title:"Review Comment Txt",
+            type:"text"
+        },
+        {
+            name:"taxonId",
+            primaryKey:true,
+            title:"Taxon ID",
+            type:"integer"
+        },
+        {
+            name:"taxonRecordedId",
+            primaryKey:true,
+            title:"Taxon Recorded ID",
+            type:"integer"
+        },
+        {
+            name:"totalCountInt",
+            title:"Total Count Int",
+            type:"float"
+        },
+        {
+            name:"trCommentTxt",
+            title:"Tr Comment Txt",
+            type:"text"
+        },
+        {
+            name:"typeCde",
+            title:"Type Cde",
+            type:"text"
+        }
+    ]
+})
+isc.DataSource.create({
+    ID:"TaxonRecordedMonitoringOld_DS",
+    dataSourceVersion:"1",
+    fields:[
+        {
+            name:"anyThreatCde",
+            primaryKey:true,
+            title:"Any Threat Cde",
+            type:"text"
+        },
+        {
+            name:"extinctionCde",
+            primaryKey:true,
+            title:"Extinction Cde",
+            type:"text"
+        },
+        {
+            name:"optimalMonitoringYearInt",
+            primaryKey:true,
+            title:"Optimal Monitoring Year Int",
+            type:"integer"
+        }
+    ]
+})
+isc.DataSource.create({
+    dropExtraFields:true,
+    ID:"TaxonRecordedQualifier_DS",
+    dataSourceVersion:"1",
+    fields:[
+        {
+            length:"10",
+            name:"countInt",
+            title:"Count",
+            type:"float"
+        },
+        {
+            canEdit:true,
+            javaClass:"com.dialog.vba.server.model.CountQualifierLut",
+            multiple:false,
+            name:"countQualifierLut",
+            title:"Count Qualifier Lut",
+            type:"CountQualifierLut_DS"
+        },
+        {
+            name:"creationTsp",
+            title:"Creation Tsp",
+            type:"datetime"
+        },
+        {
+            name:"modifiedTsp",
+            title:"Modified Tsp",
+            type:"datetime"
+        },
+        {
+            name:"originalRcIdTxt",
+            title:"Original Rc ID",
+            type:"text"
+        },
+        {
+            name:"originalTrIdTxt",
+            title:"Original Tr ID",
+            type:"text"
+        },
+        {
+            hidden:true,
+            name:"recordedCountId",
+            primaryKey:true,
+            title:"Recorded Count ID",
+            type:"integer"
+        }
+    ]
+})
+isc.DataSource.create({
+    dropExtraFields:true,
+    ID:"TaxonRecorded_DS",
+    dataSourceVersion:"1",
+    operationBindings:[
+        {
+            operationType:"fetch",
+            serverMethod:"fetchTaxonRecorded",
+            operationId:"fetchTaxonRecorded"
+        },
+        {
+            operationType:"custom",
+            serverMethod:"saveTaxonRecorded",
+            operationId:"saveTaxonRecorded"
+        },
+        {
+            operationType:"custom",
+            serverMethod:"assignObserver",
+            operationId:"assignObserver"
+        },
+        {
+            operationType:"custom",
+            serverMethod:"saveBatchUpdates",
+            operationId:"saveBatchUpdates"
+        },
+        {
+            operationType:"fetch",
+            serverMethod:"fetchForVROTPop",
+            operationId:"fetchForVROTPop"
+        },
+        {
+            operationType:"custom",
+            serverMethod:"removeDataLicence",
+            operationId:"removeDataLicence"
+        },
+        {
+            operationType:"custom",
+            serverMethod:"deleteRecords",
+            operationId:"deleteRecords"
+        },
+        {
+            operationType:"fetch",
+            serverMethod:"fetchTaxonDistributionList",
+            outputs:"taxonId,scientificNme,commonNme,ratingInt",
+            operationId:"fetchTaxonDistributionList"
+        }
+    ],
+    fields:[
+        {
+            length:"10",
+            name:"behaviourCde",
+            title:"Behaviour Cde",
+            type:"text"
+        },
+        {
+            name:"contributorContactedSdt",
+            title:"Contributor Contacted Sdt",
+            type:"date"
+        },
+        {
+            name:"contributorFeedbackSdt",
+            title:"Contributor Feedback Sdt",
+            type:"date"
+        },
+        {
+            length:"10",
+            name:"countAccuracyCde",
+            title:"Count Accuracy Cde",
+            type:"text"
+        },
+        {
+            length:"10",
+            name:"coverAbundanceCde",
+            title:"Cover Abundance Cde",
+            type:"text"
+        },
+        {
+            name:"creationTsp",
+            title:"Creation Tsp",
+            type:"datetime"
+        },
+        {
+            length:"10",
+            name:"curatedFlagCde",
+            title:"Curated Flag Cde",
+            type:"text"
+        },
+        {
+            length:"50",
+            name:"externalTaxaidTxt",
+            title:"External Taxaid Txt",
+            type:"text"
+        },
+        {
+            length:"10",
+            name:"extraCde",
+            title:"Extra Cde",
+            type:"text"
+        },
+        {
+            length:"10",
+            name:"incidentalObsTypeCde",
+            title:"Incidental Obs Type Cde",
+            type:"text"
+        },
+        {
+            name:"modifiedTsp",
+            title:"Modified Tsp",
+            type:"datetime"
+        },
+        {
+            length:"20",
+            name:"originalScIdTxt",
+            title:"Original Sc ID Txt",
+            type:"text"
+        },
+        {
+            length:"20",
+            name:"originalTrIdTxt",
+            title:"Original Tr ID Txt",
+            type:"text"
+        },
+        {
+            name:"ratingInt",
+            title:"Rating Int",
+            type:"float"
+        },
+        {
+            length:"10",
+            name:"reliabilityCde",
+            title:"Reliability Cde",
+            type:"text"
+        },
+        {
+            length:"4000",
+            name:"reviewCommentTxt",
+            title:"Review Comment Txt",
+            type:"text"
+        },
+        {
+            canEdit:true,
+            javaClass:"com.dialog.vba.server.model.SurveyComponent",
+            multiple:false,
+            name:"surveyComponent",
+            title:"Survey Method",
+            type:"SurveyComponent_DS"
+        },
+        {
+            canEdit:true,
+            javaClass:"com.dialog.vba.server.model.Taxon",
+            multiple:false,
+            name:"taxon",
+            title:"Taxon",
+            type:"Taxon_DS"
+        },
+        {
+            hidden:true,
+            name:"taxonRecordedId",
+            primaryKey:true,
+            title:"Record ID",
+            type:"integer"
+        },
+        {
+            canEdit:true,
+            ignore:false,
+            javaClass:"com.dialog.vba.server.model.TaxonRecordedQualifier",
+            multiple:true,
+            name:"taxonRecordedQualifiers",
+            title:"Taxon Recorded Qualifier",
+            type:"TaxonRecordedQualifier_DS"
+        },
+        {
+            length:"10",
+            name:"totalCountInt",
+            title:"Total Count",
+            type:"float"
+        },
+        {
+            length:"4000",
+            name:"trCommentTxt",
+            title:"Tr Comment Txt",
+            type:"text"
+        },
+        {
+            length:"10",
+            name:"typeCde",
+            title:"Type Cde",
+            type:"text"
+        },
+        {
+            name:"observerId",
+            title:"Observer ID",
+            type:"integer"
+        }
+    ]
+})
