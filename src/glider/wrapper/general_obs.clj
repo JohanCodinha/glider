@@ -1,9 +1,10 @@
 (ns glider.wrapper.general-obs
-  (:require [clj-http.client :refer [request] :as http]
-            [clojure.data.xml :refer [emit-str]]
-            [glider.wrapper.js-parser :refer [parse-js-object]]
+  (:require [clojure.data.xml :refer [emit-str]]
             [glider.wrapper.utils
-             :refer [http-post-request paginate-xml page-stream]]))
+             :refer [http-post-request
+                     send-request
+                     paginate-xml
+                     page-stream]]))
 
 (defn user-general-obs []
   {:tag :transaction
@@ -43,43 +44,25 @@
            :attrs {:xsi:type "xsd:boolean"}
            :content ["true"]}]}]}]}]})
 
-#_(defn get-user-general-obs-old [s e]
-  (let [cookies (login->cookie "codeforvic" "***REMOVED***")
-        endRow e
-        res (->
-             (paginate-xml (user-general-obs) s endRow)
-             emit-str
-             (http-post-request cookies)
-             :body
-             parse-js-object)]
-    res))
-
 (defn general-obs-request [cookie start-row end-row]
   (-> (paginate-xml (user-general-obs) start-row end-row)
       emit-str
       (http-post-request cookie)))
 
 (defn get-user-general-obs [cookie]
-  (let [pagination (page-stream 75)
-        responses
-        (reduce
-          (fn [acc [start-row end-row]]
-            (let [res (-> (general-obs-request
-                            cookie
-                            start-row
-                            end-row)
-                          request
-                          :body
-                          parse-js-object)
-                  acc-data
-                  (conj acc
-                        (merge res
-                               {:request-startRow start-row
-                                :request-endRow end-row}))]
-              (println
-                (str "fetched " (-> res :data count) " record"))
-              (if (>= (:totalRows res) end-row)
-                acc-data
-                (reduced acc-data))))
-          [] pagination)]
-    (mapcat :data responses)))
+  (->>
+    (reduce
+      (fn [acc [start-row end-row]]
+        (let [res (-> (general-obs-request
+                        cookie
+                        start-row
+                        end-row)
+                      send-request)
+              acc-data (conj acc res)]
+          (println
+            (str "fetched " (-> res :data count) " record"))
+          (if (>= (:totalRows res) end-row)
+            acc-data
+            (reduced acc-data))))
+      [] (page-stream 75))
+    (mapcat :data)))

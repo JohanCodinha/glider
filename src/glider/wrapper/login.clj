@@ -56,4 +56,10 @@
   (let [options (http-post-request (user-details-transaction) cookie)]
     (-> options
         send-request
-        (select-keys [:userUid :batchUploadEnabled :admin :displayName :username]))))
+        first
+        :data
+        (select-keys [:user-uid
+                      :batch-upload-enabled
+                      :admin
+                      :display-name
+                      :username]))))
