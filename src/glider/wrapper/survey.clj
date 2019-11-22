@@ -40,6 +40,7 @@
 (defn get-survey [surveyId cookie]
   (-> (http-post-request (emit-str (survey-transaction surveyId)) cookie)
       send-request
+      first
       :data))
 
 
