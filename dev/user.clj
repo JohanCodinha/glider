@@ -51,19 +51,30 @@
    :expertReviewStatusCde "del"}
 
   (def cfasurvey (survey/get-survey 1394300 cookie))
+  (require '[clojure.walk :refer [postwalk]])
+
+
+  (postwalk (fn [item] 
+              (if (and (vector? item) (= 2 (count item)) (keyword? (first item)) (number? (second item)))
+                (do (println "made it")
+                [(str (first item)) (inc (second item))])
+                item))
+            {:a 1 :b {:c 2}})
 
   (with-out-str
     (pprint
       (dissoc cfasurvey :project)))
 
-  {:primary-discipline-cde -> :lookup-type-txt "Discipline"
-   :date-accuracy-cde -> :lookup-type-txt "Date Accuracy"
-   :monitoring-protocol-cde -> :lookup-type-txt "Monitoring Protocol"
-   :expert-review-status-cde -> :lookup-type-txt "Expert Review"
+  {:primary-discipline-cde :discipline
+   :date-accuracy-cde :date-accuracy 
+   :monitoring-protocol-cde :monitoring-protocol
+   :expert-review-status-cde :expert-review}
 
 (spit "resources/lookup.txt" (lookup/lookups cookie))
 
 (def lo (lookup/lookups cookie))
+
+(lookup/resolve-key (dissoc cfasurvey :project) lo)
 
 (count lo)
 
@@ -72,18 +83,18 @@
 (->> (filter #(= "Discipline" (:lookup-type-txt %)) lo)
    (map :lookup-desc))
 ("Terrestrial fauna" "Aquatic fauna" "Flora" "Aquatic invertebrates" "Marine")
+
 (->> (filter #(= "SC Discipline" (:lookup-type-txt %)) lo)
    (map :lookup-desc))
 ("Terrestrial fauna" "Flora" "Marine" "Aquatic invertebrates" "Aquatic fauna" "All disciplines")
 
-
 (keys lookup-cache)
+
 (:lookup-sampling-method-lut-af
 :lookup-incidental-obs-type
 :lookup-taxon-level
 :lookup-reliability
 :lookup-sampling-method-lut-ai
-:invalidate-cache
 :lookup-conservation-status
 :lookup-project-status
 :lookup-count-accuracy
@@ -105,17 +116,8 @@
 
 (:lookup-sc-discipline lookup-cache)
 
-
-
 (spit "resources/lookup-cache.xml"
 (dissoc lookup-cache :invalidate-cache :status :is-ds-response :data))
-
-[{:depend-on-cde nil, :enabled true, :id "tf", :label "Terrestrial fauna", :type "SC Discipline"
-  :depend-on-cde nil, :enabled true, :id "fl", :label "Flora", :type "SC Discipline"
-  :depend-on-cde nil, :enabled true, :id "af", :label "Aquatic fauna", :type "SC Discipline"
-  :depend-on-cde nil, :enabled true, :id "ai", :label "Aquatic invertebrates", :type "SC Discipline"
-  :depend-on-cde nil, :enabled true, :id "ma", :label "Marine", :type "SC Discipline"
-  :depend-on-cde nil, :enabled true, :id "all", :label "All disciplines", :type "SC Discipline"}]
 
 )
 

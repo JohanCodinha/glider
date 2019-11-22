@@ -1,11 +1,19 @@
 (ns glider.wrapper.lookup
   (:require [clojure.data.xml :refer [emit-str]]
+            [camel-snake-kebab.core :refer [->kebab-case-keyword]]
+            [clojure.walk :refer [postwalk]]
             [glider.wrapper.utils
              :refer [http-post-request
                      send-request
                      paginate-xml
                      parse-xml-file
                      page-stream]]))
+
+(def lookup-table
+  {:primary-discipline-cde :discipline
+   :date-accuracy-cde :date-accuracy 
+   :monitoring-protocol-cde :monitoring-protocol
+   :expert-review-status-cde :expert-review})
 
 (def lookup-transaction
   {:tag :transaction,
@@ -55,14 +63,42 @@
         {:tag :operation, :content ["fetchLookupCache"]}
         {:tag :oldValues, :attrs {:xsi:type "xsd:Object"}}]}]}]})
 
-(defn lookups [cookie]
-  (-> (http-post-request (emit-str lookup-transaction) cookie)
-      send-request
-      first
-      :data))
-
 (defn lookups-cache [cookie]
   (-> (http-post-request (emit-str lookup-cache-transaction) cookie)
       send-request
       first))
 
+(defn get-lookups [cookie]
+  (-> (http-post-request (emit-str lookup-transaction) cookie)
+      send-request
+      first
+      :data))
+
+(def get-lookups-memo (memoize get-lookups))
+
+(defn lookups [cookie]
+  (->> (get-lookups-memo cookie)
+       (group-by :lookup-type-txt)
+       (map (fn [[ k v]] [(->kebab-case-keyword k) v]))
+       (into {})))
+
+
+(defn match [k v lookup-table]
+  (let [match (get lookup-table k)]
+    (if match
+      (some #()))))
+
+(defn resolve-key [m lookup]
+  (postwalk
+    (fn [item]
+      #_(println item)
+      (if-let [match (and (vector? item)
+                          (->> (get lookup-table (first item))
+                               (get lookup)))]
+        [(first item)
+         (some #(when
+                  (= (:lookup-cde %) (second item))
+                  (:lookup-desc %))
+               match)]
+        item))
+    m))

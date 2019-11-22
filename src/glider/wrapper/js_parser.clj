@@ -1,10 +1,17 @@
 (ns glider.wrapper.js-parser
-  (:require [clj-http.client :refer [request] :as http]))
+  (:require [clojure.string :as string]
+            [camel-snake-kebab.core :as csk]
+            [clj-http.client :refer [request] :as http]
+            [cheshire.core :refer [parse-string]]))
 
 (defn parse-js-object [s]
   "Send js object to a node process and get json back"
-  (-> (http/post "http://localhost:3001" {:body s #_ #_ :as :json-string-keys})
-      #_:body
+  (-> (http/post "http://localhost:3001" {:body s})
+      :body
+      (parse-string (fn [k]
+                      (csk/->kebab-case-keyword k)
+                      ))
+      #_:data
       #_first))
 
 (defn key-string->keyword [m]
