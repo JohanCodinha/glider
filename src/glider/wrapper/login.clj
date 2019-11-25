@@ -3,7 +3,7 @@
             [clojure.data.xml :refer [emit-str]]
             [diehard.core :as dh]
             [glider.wrapper.utils
-             :refer [http-post-request send-request]]))
+             :refer [http-post-request process-request]]))
 
 (defn login-request
   [username password]
@@ -55,9 +55,7 @@
 (defn get-user-details [cookie]
   (let [options (http-post-request (user-details-transaction) cookie)]
     (-> options
-        send-request
-        first
-        :data
+        process-request
         (select-keys [:user-uid
                       :batch-upload-enabled
                       :admin

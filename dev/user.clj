@@ -16,6 +16,8 @@
             [glider.wrapper.login :as login]
             [glider.wrapper.survey :as survey]
             [glider.wrapper.lookup :as lookup]
+            [glider.wrapper.project :as project]
+            [glider.wrapper.site :as site]
             [glider.wrapper.general-obs :as general-obs]))
 
 (ig-repl/set-prep! (fn [] system/system-config))
@@ -36,6 +38,8 @@
   (def admin_password (System/getenv "admin_password"))
   (def cookie ((memoize login/login->cookie)
                admin_username admin_password))
+(def cookie ((memoize login/login->cookie)
+               admin_username admin_password))
   (try 
     (-> cookie
         login/get-user-details)
@@ -43,6 +47,7 @@
       (println e)))
 
   (def cfaobs (general-obs/get-user-general-obs cookie)) 
+
   {:contributors "johan codinha"
    :modifiedTsp 1499912034725
    :siteNme "user location"
@@ -51,6 +56,8 @@
    :expertReviewStatusCde "del"}
 
   (def cfasurvey (survey/get-survey 1394300 cookie))
+  ;get-survey return full site information
+
   (require '[clojure.walk :refer [postwalk]])
 
 
@@ -72,52 +79,32 @@
 
 (spit "resources/lookup.txt" (lookup/lookups cookie))
 
-(def lo (lookup/lookups cookie))
+(spit "resources/lookup-table.edn" (pr-str lo))
 
+(read-string (slurp "resources/lookup-table.edn"))
+
+(def lo (lookup/lookups cookie))
+(spit "resources/lookup.")
 (lookup/resolve-key (dissoc cfasurvey :project) lo)
 
-(count lo)
+(-> (lookup/resolve-key (dissoc cfasurvey :project) lo)
+    :site
+    :site-id)
+936419
 
-(into #{} (map :lookup-type-txt lo))
 
-(->> (filter #(= "Discipline" (:lookup-type-txt %)) lo)
-   (map :lookup-desc))
-("Terrestrial fauna" "Aquatic fauna" "Flora" "Aquatic invertebrates" "Marine")
+;; Project
+(def project (project/get-project 3556 cookie))
+(def project-surveys (project/get-project-surveys 5742 cookie))
 
-(->> (filter #(= "SC Discipline" (:lookup-type-txt %)) lo)
-   (map :lookup-desc))
-("Terrestrial fauna" "Flora" "Marine" "Aquatic invertebrates" "Aquatic fauna" "All disciplines")
-
-(keys lookup-cache)
-
-(:lookup-sampling-method-lut-af
-:lookup-incidental-obs-type
-:lookup-taxon-level
-:lookup-reliability
-:lookup-sampling-method-lut-ai
-:lookup-conservation-status
-:lookup-project-status
-:lookup-count-accuracy
-:lookup-extra
-:lookup-batch-upload-status
-:lookup-cover-abundance
-:lookup-other-agency
-:lookup-project-user-type
-:lookup-taxon-type
-:lookup-sc-discipline
-:lookup-sampling-method-lut-fl
-:lookup-type
-:lookup-published-status
-:lookup-sampling-method-lut-all
-:lookup-sampling-method-lut-ma
-:lookup-sampling-method-lut-tf
-:lookup-date-accuracy
-:lookup-discipline)
-
-(:lookup-sc-discipline lookup-cache)
+(lookup/resolve-key project5756 lo)
 
 (spit "resources/lookup-cache.xml"
 (dissoc lookup-cache :invalidate-cache :status :is-ds-response :data))
+
+(def site-936419 (site/get-site 936419 cookie))
+
+(= site-936419 (:site (lookup/resolve-key (dissoc cfasurvey :project) lo)))
 
 )
 

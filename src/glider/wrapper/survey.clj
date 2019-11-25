@@ -4,7 +4,7 @@
             [glider.wrapper.js-parser :refer [parse-js-object]]
             [glider.wrapper.utils
              :refer [http-post-request
-                     send-request
+                     process-request
                      paginate-xml
                      parse-xml-file
                      page-stream]]))
@@ -39,8 +39,6 @@
 
 (defn get-survey [surveyId cookie]
   (-> (http-post-request (emit-str (survey-transaction surveyId)) cookie)
-      send-request
-      first
-      :data))
+      process-request))
 
 

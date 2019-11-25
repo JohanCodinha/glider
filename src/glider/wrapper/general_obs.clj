@@ -61,7 +61,7 @@
               acc-data (conj acc res)]
           (println
             (str "fetched " (-> res :data count) " record"))
-          (if (>= (:totalRows res) end-row)
+          (if (>= (:total-rows res) end-row)
             acc-data
             (reduced acc-data))))
       [] (page-stream 75))

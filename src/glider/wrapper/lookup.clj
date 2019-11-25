@@ -4,7 +4,7 @@
             [clojure.walk :refer [postwalk]]
             [glider.wrapper.utils
              :refer [http-post-request
-                     send-request
+                     process-request
                      paginate-xml
                      parse-xml-file
                      page-stream]]))
@@ -13,7 +13,11 @@
   {:primary-discipline-cde :discipline
    :date-accuracy-cde :date-accuracy 
    :monitoring-protocol-cde :monitoring-protocol
-   :expert-review-status-cde :expert-review})
+   :expert-review-status-cde :expert-review
+   :project-status-cde :project-status
+   :user-status-cde :project-user-status
+   :user-type-cde :project-user-type
+   :project-expedited-cde :expedited-project})
 
 (def lookup-transaction
   {:tag :transaction,
@@ -41,38 +45,9 @@
         {:tag :operation, :content ["LookupExpansion_DS_fetch"]}
         {:tag :oldValues, :attrs {:xsi:type "xsd:Object"}}]}]}]})
 
-(def lookup-cache-transaction
-  {:tag :transaction,
-   :attrs
-   {:xsi:type "xsd:Object",
-    :xmlns:xsi "http://www.w3.org/2000/10/XMLSchema-instance"},
-   :content
-   [{:tag :operations,
-     :attrs {:xsi:type "xsd:List"},
-     :content
-     [{:tag :elem,
-       :attrs {:xsi:type "xsd:Object"},
-       :content
-       [{:tag :criteria, :attrs {:xsi:type "xsd:Object"}}
-        {:tag :operationConfig,
-         :attrs {:xsi:type "xsd:Object"},
-         :content
-         [{:tag :dataSource, :content ["Lookup_DS"]}
-          {:tag :operationType, :content ["fetch"]}]}
-        {:tag :appID, :content ["builtinApplication"]}
-        {:tag :operation, :content ["fetchLookupCache"]}
-        {:tag :oldValues, :attrs {:xsi:type "xsd:Object"}}]}]}]})
-
-(defn lookups-cache [cookie]
-  (-> (http-post-request (emit-str lookup-cache-transaction) cookie)
-      send-request
-      first))
-
 (defn get-lookups [cookie]
   (-> (http-post-request (emit-str lookup-transaction) cookie)
-      send-request
-      first
-      :data))
+      process-request))
 
 (def get-lookups-memo (memoize get-lookups))
 
@@ -82,23 +57,22 @@
        (map (fn [[ k v]] [(->kebab-case-keyword k) v]))
        (into {})))
 
-
-(defn match [k v lookup-table]
-  (let [match (get lookup-table k)]
-    (if match
-      (some #()))))
+(defn trim-keyword [k regex]
+  (-> k
+      name
+      (clojure.string/replace regex "")
+      keyword))
 
 (defn resolve-key [m lookup]
   (postwalk
     (fn [item]
-      #_(println item)
       (if-let [match (and (vector? item)
                           (->> (get lookup-table (first item))
-                               (get lookup)))]
-        [(first item)
-         (some #(when
-                  (= (:lookup-cde %) (second item))
-                  (:lookup-desc %))
-               match)]
+                               (get lookup)
+                               (some #(when
+                                        (= (:lookup-cde %) (second item))
+                                        (:lookup-desc %)))))]
+        [(trim-keyword (first item) #"-cde$")
+         match]
         item))
     m))
