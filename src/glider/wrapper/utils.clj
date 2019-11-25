@@ -3,6 +3,7 @@
             [glider.wrapper.js-parser :refer [parse-js-object]]
             [clojure.data.zip.xml :as zx]
             [glider.wrapper.xml :refer [parse-xml]]
+            [glider.wrapper.lookup :refer [resolve-key]]
             [clj-http.client :refer [request] :as http]))
 
 (defn http-post-request [transaction cookie]
@@ -60,7 +61,17 @@
         :body
         (doto throw-when-login-required)
         (parse-js-object)
-        (doto throw-when-invalid-response))))
+        (doto throw-when-invalid-response)
+        first)))
+
+(def lookup-table
+  (read-string (slurp "resources/lookup-table.edn")))
+
+(defn process-request [options]
+  (-> (send-request options)
+      (doto println)
+      :data
+      (resolve-key lookup-table)))
 
 (defn println-to-str [m]
   (with-out-str (clojure.pprint/pprint m)))
