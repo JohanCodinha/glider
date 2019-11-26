@@ -1,9 +1,11 @@
 (ns glider.wrapper.utils
   (:require [clojure.zip :as zip]
+            [camel-snake-kebab.core :refer [->kebab-case-keyword]]
+            [clojure.data.xml :refer [emit-str]]
             [glider.wrapper.js-parser :refer [parse-js-object]]
             [clojure.data.zip.xml :as zx]
             [glider.wrapper.xml :refer [parse-xml]]
-            [glider.wrapper.lookup :refer [resolve-key]]
+            [glider.wrapper.lookup :refer [resolve-key lookup-transaction]]
             [clj-http.client :refer [request] :as http]))
 
 (defn http-post-request [transaction cookie]
@@ -69,7 +71,6 @@
 
 (defn process-request [options]
   (-> (send-request options)
-      (doto println)
       :data
       (resolve-key lookup-table)))
 
@@ -84,3 +85,15 @@
              (into {} (filter second node))
              node)))
        println-to-str) )
+
+(defn get-lookups [cookie]
+  (-> (http-post-request (emit-str lookup-transaction) cookie)
+      process-request))
+
+(def get-lookups-memo (memoize get-lookups))
+
+(defn lookups [cookie]
+  (->> (get-lookups-memo cookie)
+       (group-by :lookup-type-txt)
+       (map (fn [[ k v]] [(->kebab-case-keyword k) v]))
+       (into {})))
