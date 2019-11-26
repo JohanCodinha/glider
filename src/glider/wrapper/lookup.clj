@@ -1,13 +1,5 @@
 (ns glider.wrapper.lookup
-  (:require [clojure.data.xml :refer [emit-str]]
-            [camel-snake-kebab.core :refer [->kebab-case-keyword]]
-            [clojure.walk :refer [postwalk]]
-            [glider.wrapper.utils
-             :refer [http-post-request
-                     process-request
-                     paginate-xml
-                     parse-xml-file
-                     page-stream]]))
+  (:require [clojure.walk :refer [postwalk]]))
 
 (def lookup-table
   {:primary-discipline-cde :discipline
@@ -44,18 +36,6 @@
         {:tag :appID, :content ["builtinApplication"]}
         {:tag :operation, :content ["LookupExpansion_DS_fetch"]}
         {:tag :oldValues, :attrs {:xsi:type "xsd:Object"}}]}]}]})
-
-(defn get-lookups [cookie]
-  (-> (http-post-request (emit-str lookup-transaction) cookie)
-      process-request))
-
-(def get-lookups-memo (memoize get-lookups))
-
-(defn lookups [cookie]
-  (->> (get-lookups-memo cookie)
-       (group-by :lookup-type-txt)
-       (map (fn [[ k v]] [(->kebab-case-keyword k) v]))
-       (into {})))
 
 (defn trim-keyword [k regex]
   (-> k

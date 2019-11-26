@@ -12,7 +12,8 @@
                      send-request
                      paginate-xml
                      parse-xml-file
-                     page-stream]]
+                     page-stream]
+             :as utils]
             [glider.wrapper.login :as login]
             [glider.wrapper.survey :as survey]
             [glider.wrapper.lookup :as lookup]
@@ -36,12 +37,14 @@
 (comment
   (def admin_username (System/getenv "admin_username"))
   (def admin_password (System/getenv "admin_password"))
+  (def mel_username (System/getenv "mel_username"))
+  (def mel_password (System/getenv "mel_password"))
   (def cookie ((memoize login/login->cookie)
                admin_username admin_password))
-(def cookie ((memoize login/login->cookie)
-               admin_username admin_password))
+  (def mel_cookie ((memoize login/login->cookie)
+               mel_username mel_password))
   (try 
-    (-> cookie
+    (-> mel_cookie
         login/get-user-details)
     (catch Exception e
       (println e)))
@@ -58,16 +61,6 @@
   (def cfasurvey (survey/get-survey 1394300 cookie))
   ;get-survey return full site information
 
-  (require '[clojure.walk :refer [postwalk]])
-
-
-  (postwalk (fn [item] 
-              (if (and (vector? item) (= 2 (count item)) (keyword? (first item)) (number? (second item)))
-                (do (println "made it")
-                [(str (first item)) (inc (second item))])
-                item))
-            {:a 1 :b {:c 2}})
-
   (with-out-str
     (pprint
       (dissoc cfasurvey :project)))
@@ -83,7 +76,8 @@
 
 (read-string (slurp "resources/lookup-table.edn"))
 
-(def lo (lookup/lookups cookie))
+(def lo (utils/lookups mel_cookie))
+
 (spit "resources/lookup.")
 (lookup/resolve-key (dissoc cfasurvey :project) lo)
 
@@ -95,6 +89,7 @@
 
 ;; Project
 (def project (project/get-project 3556 cookie))
+(= (project/get-project 3556 cookie) (project/get-project 3556 mel_cookie) )
 (def project-surveys (project/get-project-surveys 5742 cookie))
 
 (lookup/resolve-key project5756 lo)
