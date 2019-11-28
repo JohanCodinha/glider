@@ -63,16 +63,15 @@
         :body
         (doto throw-when-login-required)
         (parse-js-object)
-        (doto throw-when-invalid-response)
-        first)))
+        first
+        (doto throw-when-invalid-response))))
 
 (def lookup-table
   (read-string (slurp "resources/lookup-table.edn")))
 
 (defn process-request [options]
   (-> (send-request options)
-      :data
-      (resolve-key lookup-table)))
+      :data))
 
 (defn println-to-str [m]
   (with-out-str (clojure.pprint/pprint m)))
@@ -95,5 +94,5 @@
 (defn lookups [cookie]
   (->> (get-lookups-memo cookie)
        (group-by :lookup-type-txt)
-       (map (fn [[ k v]] [(->kebab-case-keyword k) v]))
+       (map (fn [[k v]] [(->kebab-case-keyword k) v]))
        (into {})))
