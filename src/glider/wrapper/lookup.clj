@@ -1,5 +1,6 @@
 (ns glider.wrapper.lookup
-  (:require [clojure.walk :refer [postwalk]]))
+  (:require [clj-fuzzy.metrics :as fuzzy]
+            [clojure.walk :refer [postwalk]]))
 
 (def lookup-table
   {:primary-discipline-cde :discipline
