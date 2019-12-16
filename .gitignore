@@ -1,4 +1,5 @@
 .nrepl-port
 .cpcache
 secrets
+postgres_secrets.env
 node-js-parser/node_modules
