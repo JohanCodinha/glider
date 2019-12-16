@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  postgres:
+    image:  postgres 
+    restart: always
+    container_name: glider-postgresql
+    ports:
+      - "5432:5432"
+    env_file:
+      - postgres_secrets.env
+    volumes:
+      - database:/var/lib/postgresql/glider
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    depends_on:
+      - postgres
+    ports:
+      - "5555:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    restart: unless-stopped
+    volumes:
+      - pgadmin:/root/.pgadmin
+
+volumes:
+  database:
+  pgadmin:
