@@ -13,11 +13,19 @@
          org.clojure/data.xml {:mvn/version "0.2.0-alpha6"}
          diehard {:mvn/version "0.9.0"}
          org.clojure/tools.reader {:mvn/version "1.3.2"}
-         org.clojure/data.zip {:mvn/version "0.1.3" }}
+         org.clojure/data.zip {:mvn/version "0.1.3" }
+         org.clojure/data.csv {:mvn/version "0.1.4"}
+         metosin/malli {:git/url "https://github.com/metosin/malli"
+                        :sha "0cf10b4aee2f6d6a4bb273d9898ff3e2f93b9ec4"}
+         metosin/reitit {:mvn/version "0.4.2"}
+         clojure.java-time {:mvn/version "0.3.2"}
+         hashp {:mvn/version "0.1.0"}}
+
  :aliases {:nrepl {:extra-deps {nrepl {:mvn/version "0.6.0"}
                                 reply {:mvn/version "0.4.4"}
                                 cider/cider-nrepl {:mvn/version "0.22.4"}}
-                   :main-opts ["-m" "nrepl.cmdline"
+                   :main-opts ["-e" "(require,'hashp.core)"
+                               "-m" "nrepl.cmdline"
                                "--middleware" "[cider.nrepl/cider-middleware]"]}
            :reply {:extra-deps  {reply {:mvn/version "0.4.4"}}
                    :main-opts ["-m" "reply.main"
