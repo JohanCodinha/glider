@@ -1,6 +1,7 @@
 (ns glider.system
   (:require [integrant.core :as ig]
-            [ring.adapter.jetty :as jetty]))
+            [ring.adapter.jetty :as jetty]
+            [glider.api.handler :as ring-handler]))
 
 (def system-config
   {:glider/jetty {:port 8080 :handler (ig/ref :glider/api)}
@@ -12,7 +13,7 @@
   (jetty/run-jetty handler {:port port :join? false}))
 
 (defmethod ig/init-key :glider/api [_ {:keys [db]}]
-  (fn [_] {:status 200 :body "GoodBye ~orld"}))
+  (ring-handler/create-app db))
 
 (defmethod ig/init-key :glider/postgresql [_ _]
  nil)
