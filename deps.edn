@@ -17,6 +17,7 @@
          org.clojure/data.csv {:mvn/version "0.1.4"}
          metosin/malli {:git/url "https://github.com/metosin/malli"
                         :sha "0cf10b4aee2f6d6a4bb273d9898ff3e2f93b9ec4"}
+         dk.ative/docjure {:mvn/version "1.12.0"}
          metosin/reitit {:mvn/version "0.4.2"}
          clojure.java-time {:mvn/version "0.3.2"}
          hashp {:mvn/version "0.1.0"}}

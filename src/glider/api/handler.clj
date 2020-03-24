@@ -33,33 +33,44 @@
        ["/record"
         {:coercion malli-coercion/coercion
          :post {:summary "Upload a record of a species observation to the VBA"
-               ;:parameters {:query [:map [:cmd string?] [:data map?]]}
-               ;:responses {200 {:body [:map [:res string?]]}}
-               :parameters {:body [:map
-                                   [:latitude int?]
-                                   [:latitude int?]
-                                   [:accuracy int?]
-                                   [:location-description string?]
-                                   [:common-name string?]
-                                   [:scientific-name string?]
-                                   [:taxon-id string?]
-                                   [:date-time string?]
-                                   [:count int?]
-                                   [:user-id string?]
-                                   [:notes string?]
-                                   [:observer-name string?]
-                                   [:discipine [:enum "fi" "cd" "np"]]]}
-               :swagger {:responses {200 {:schema {:type "string"}
-                                          :description "record id"}}}
-               :responses {200 {:body [:map [:number int?]]}
-                           500 {:description "fail"}}
-               :handler (fn [req #_ {{{:keys [x y]} :query
-                                      {:keys [z]} :path} :parameters}]
-                          (let [{{{:keys [x y]} :query
-                                  {:keys [z]} :path} :parameters} req]
-                            (println "made it")
-                            (prn x y z)
-                            {:status 200, :body {:total ((fnil + 0 0 0) x y z)}}))}}]
+                :info {:title "my-api"
+                       :description "with reitit-http"}
+                ;:parameters {:query [:map [:cmd string?] [:data map?]]}
+                ;:responses {200 {:body [:map [:res string?]]}}
+                :parameters {:body [:map
+                                    {:name "train"
+                                     :swagger {:example {:true "god"}
+                                               :id "query"
+                                               :description "hello desc"
+                                               :default "nope"
+                                               :parameter "Body"
+                                               :name "booty"
+                                               :json-schema/default "perch"
+                                               }}
+                                    [:latitude int?]
+                                    [:latitude int?]
+                                    [:accuracy int?]
+                                    [:location-description string?]
+                                    [:common-name string?]
+                                    [:scientific-name string?]
+                                    [:taxon-id string?]
+                                    [:date-time string?]
+                                    [:count int?]
+                                    [:user-id string?]
+                                    [:notes string?]
+                                    [:observer-name string?]
+                                    [:discipine [:enum "fi" "cd" "np"]]]}
+                :swagger {:responses {200 {:schema {:type "string"}
+                                           :description "record id"}}}
+                :responses {200 {:body [:map [:number int?]]}
+                            500 {:description "fail"}}
+                :handler (fn [req #_ {{{:keys [x y]} :query
+                                       {:keys [z]} :path} :parameters}]
+                           (let [{{{:keys [x y]} :query
+                                   {:keys [z]} :path} :parameters} req]
+                             (println "made it")
+                             (prn x y z)
+                             {:status 200, :body {:total ((fnil + 0 0 0) x y z)}}))}}]
        ["/api"
         {:interceptors [(interceptor 1)]}
 
@@ -70,8 +81,11 @@
                 :summary "add numbers"
                 ;:parameters {:query [:map [:cmd string?] [:data map?]]}
                 ;:responses {200 {:body [:map [:res string?]]}}
-                :parameters {:body [:maybe [:vector int?]]
-                             :path [:map [:z int?]]}
+                :parameters {:body [:maybe {:description "please"}
+                                    [:vector int?]
+                                    
+                                    ]
+                             #_ #_ :path [:map [:z int?]]}
                 :swagger {:responses {400 {:schema {:type "string"}
                                            :description "some num"}}}
                 :responses {200 {:body [:map [:number int?]]}
