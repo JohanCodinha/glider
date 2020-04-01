@@ -18,7 +18,11 @@
   {:post [(m/validate command-schema %)]}
   (->command (uuid) name (timestamp) data))
 
+(defn publish-observation [data] (make-command ::publish-observation data))
+
+:glider.commands/publish-observation
 (comment
+  (make-command :publish-observation {:name :possum})
   (m/explain command-schema
              {:id (uuid)
               :timestamp 12345
