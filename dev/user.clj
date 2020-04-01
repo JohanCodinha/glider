@@ -5,6 +5,7 @@
             [clojure.pprint :refer [pprint]]
             [clojure.repl :refer :all]
             [clojure.tools.namespace.repl :refer [refresh]]
+            [integrant.core :as ig]
             [integrant.repl :as ig-repl]
             [clojure.data.xml :refer [emit-str]]
             [clj-http.client :refer [request] :as http]
@@ -38,6 +39,8 @@
 
 (ig-repl/set-prep! (fn [] system/system-config))
 
+(ig/load-namespaces system/system-config)
+
 (def go ig-repl/go)
 (def halt ig-repl/halt)
 (def reset ig-repl/reset)
@@ -54,8 +57,10 @@
   (def admin_password (System/getenv "admin_password"))
   (def mel_username (System/getenv "mel_username"))
   (def mel_password (System/getenv "mel_password"))
+
   (def cookie ((memoize login/login->cookie)
                admin_username admin_password))
+
   (def mel_cookie ((memoize login/login->cookie)
                    mel_username mel_password))
   (try 
@@ -108,7 +113,7 @@
       :site-id)
   936419
 
-
+  (def cookie (login/login->cookie "melvba" "***REMOVED***"))
   ;; Project
   (def project (project/get-project 3556 cookie))
   (= (project/get-project 3556 cookie) (project/get-project 3556 mel_cookie) )
@@ -122,6 +127,7 @@
 
   ;; All projects
   (def all-projects (project/get-projects cookie))
+  (prn all-projects)
   (def project-surveys (project/get-project-surveys 540 cookie))
   (def site-details (survey/get-site-details 1207405 cookie))
 

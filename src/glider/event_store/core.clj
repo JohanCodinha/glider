@@ -1,10 +1,15 @@
 (ns glider.event-store.core
-  (:require [java-time :refer [local-date local-date-time as] :as jt]
+  (:require #_[java-time :refer
+             [local-date local-date-time as] :as jt]
             [malli.core :as m]
             [malli.util :as mu]
             [malli.error :as me]
             [malli.generator :as mg]
-            [malli.transform :as mt]))
+            [malli.transform :as mt]
+            [glider.db :as db]
+            [next.jdbc :as jdbc]
+            [next.jdbc.sql :refer [insert! query delete!]]
+            [cheshire.core :refer [generate-string parse-string]] ))
 
 ;add to event
 ;read event
@@ -32,41 +37,13 @@
   (mg/generate
      taxon-was-observed-schema))
 
-(generate-event)
+(defn append-to-stream [stream-id version events]
+  (db/insert! :events {:stream_id 1 :data {"bar" "foo" "list" [1 2 3]} }))
 
-(def store (atom []))
-
-(defn add-event [event]
-  (swap! store #(conj % event)))
-
-(defn read-events []
-  @store)
-
-(add-event {:id 2})
-
-(take 3 (read-events))
-
-(defmulti command-handler :command)
-
-(defmethod
-  command-handler
-  :create-taxon-observation [{:keys [observation]}]
-  ;create event metadata
-  {:type :taxon-was-observed
-   :uuid ...
-   :creation-date ...
-   :payload observation}
-  ;merge in payloads
-  (-> #p (m/encode
-           taxon-was-observed-schema
-           observation
-           mt/json-transformer)
-      add-event)
+(defn read-from-stream [stream-id]
+ ;return list of events 
   )
 
-(command-handler
-  {:command :create-taxon-observation
-   :observation (generate-event)})
 
 ; http request | cli request
 ; |-> request handler (check auth - parse params ...)

@@ -38,7 +38,7 @@
                 ;:parameters {:query [:map [:cmd string?] [:data map?]]}
                 ;:responses {200 {:body [:map [:res string?]]}}
                 :parameters {:body [:map
-                                    {:name "train"
+                                    #_{:name "train"
                                      :swagger {:example {:true "god"}
                                                :id "query"
                                                :description "hello desc"
@@ -83,13 +83,13 @@
                 ;:responses {200 {:body [:map [:res string?]]}}
                 :parameters {:body [:maybe {:description "please"}
                                     [:vector int?]
-                                    
+
                                     ]
                              #_ #_ :path [:map [:z int?]]}
                 :swagger {:responses {400 {:schema {:type "string"}
                                            :description "some num"}}}
                 :responses {200 {:body [:map [:number int?]]}
-                                  500 {:description "fail"}}
+                            500 {:description "fail"}}
                 :handler (fn [req #_ {{{:keys [x y]} :query
                                        {:keys [z]} :path} :parameters}]
                            (let [{{{:keys [x y]} :query
@@ -97,54 +97,52 @@
                              (println "made it")
                              (prn x y z)
                              {:status 200, :body {:total ((fnil + 0 0 0) x y z)}}))}}]]]
-      {;;:reitit.middleware/transform dev/print-request-diffs ;; pretty diffs
-       ;;:validate spec/validate ;; enable spec validation for route data
-       ;;:reitit.spec/wrap spell/closed ;; strict top-level validation
-       ;:exception pretty/exception
-       :data {:coercion (malli-coercion/create
-                          {;; set of keys to include in error messages
-                           :error-keys #{#_:type :coercion :in :schema :value :errors :humanized #_:transformed}
-                           ;; schema identity function (default: close all map schemas)
-                           :compile mu/closed-schema
-                           ;; strip-extra-keys (effects only predefined transformers)
-                           :strip-extra-keys true
-                           ;; add/set default values
-                           :default-values true
-                           ;; malli options
-                           :options nil})
-              :muuntaja m/instance
-              :interceptors [;; swagger feature
-                             swagger/swagger-feature
-                             ;; query-params & form-params
-                             (parameters/parameters-interceptor)
-                             ;; content-negotiation
-                             (muuntaja/format-negotiate-interceptor)
-                             ;; encoding response body
-                             (muuntaja/format-response-interceptor)
-                             ;; exception handling
-                             (exception/exception-interceptor)
-                             ;; decoding request body
-                             (muuntaja/format-request-interceptor)
-                             ;; coercing response bodys
-                             (coercion/coerce-response-interceptor)
-                             ;; coercing request parameters
-                             (coercion/coerce-request-interceptor)
-                             ;; multipart
-                             (multipart/multipart-interceptor)]
-              }})
-    ;; the default handler
-    ;(ring/create-default-handler)
-    (ring/routes
-      (swagger-ui/create-swagger-ui-handler
-        {:path "/"
-         :config {:validatorUrl nil
-                  :operationsSorter "alpha"}})
-      (ring/create-default-handler))
-    ;; executor
-    {:executor sieppari/executor}))
+      {:data
+       {:coercion
+        (malli-coercion/create
+          {;; set of keys to include in error messages
+           :error-keys #{:type :coercion :in :schema :value :errors :humanized :transformed}
+           ;; schema identity function (default: close all map schemas)
+           :compile mu/closed-schema
+           ;; strip-extra-keys (effects only predefined transformers)
+           :strip-extra-keys true
+           ;; add/set default values
+           :default-values true
+           ;; malli options
+           :options nil})
+        :muuntaja m/instance
+        :interceptors [;; swagger feature
+                       swagger/swagger-feature
+                       ;; query-params & form-params
+                       (parameters/parameters-interceptor)
+                       ;; content-negotiation
+                       (muuntaja/format-negotiate-interceptor)
+                       ;; encoding response body
+                       (muuntaja/format-response-interceptor)
+                       ;; exception handling
+                       (exception/exception-interceptor)
+                       ;; decoding request body
+                       (muuntaja/format-request-interceptor)
+                       ;; coercing response bodys
+                       (coercion/coerce-response-interceptor)
+                       ;; coercing request parameters
+                       (coercion/coerce-request-interceptor)
+                       ;; multipart
+                       (multipart/multipart-interceptor)]}})
+;; sawgger-ui and the default handler
+(ring/routes
+  (swagger-ui/create-swagger-ui-handler
+    {:path "/"
+     :config {:validatorUrl nil
+              :operationsSorter "alpha"}})
+  (ring/create-default-handler))
+;; executor
+{:executor sieppari/executor}))
 
 (comment
   (map (partial ns-unalias *ns*) (keys (ns-aliases *ns*)))
   ((create-app nil) {:request-method :get, :uri "/api/number/99", :query {:number 12}})
-  ((create-app nil) {:request-method :get, :uri "/swagger.json"}))
+  ((create-app nil)  {:request-method :get, :uri "/index.html"})
+  )
+
 ; {:status 404, :body "", :headers {}}
