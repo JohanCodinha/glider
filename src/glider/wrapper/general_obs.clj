@@ -58,6 +58,7 @@
                         start-row
                         end-row)
                       send-request)
+              _ (prn res)
               acc-data (conj acc res)]
           (println
             (str "fetched " (-> res :data count) " record"))

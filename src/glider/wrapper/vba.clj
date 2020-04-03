@@ -84,7 +84,7 @@
     (emit-str base-trans)))
 
 #_(defn get-species-by-survey-id [id]
-  (let [cookies (login->cookie "codeforvic" "***REMOVED***")
+  (let [cookies (login->cookie "codeforvic" "19910908")
         species (-> (survey-species-transaction id)
                     (http-post-request cookies)
                     request)]

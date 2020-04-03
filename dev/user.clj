@@ -53,7 +53,7 @@
   (reset-all))
 
 (comment
-  (def admin_username (System/getenv "admin_username"))
+  (def admin_username (get (System/getenv) "admin_username"))
   (def admin_password (System/getenv "admin_password"))
   (def mel_username (System/getenv "mel_username"))
   (def mel_password (System/getenv "mel_password"))
@@ -113,7 +113,7 @@
       :site-id)
   936419
 
-  (def cookie (login/login->cookie "melvba" "***REMOVED***"))
+  (def cookie (login/login->cookie "melvba" "vba123"))
   ;; Project
   (def project (project/get-project 3556 cookie))
   (= (project/get-project 3556 cookie) (project/get-project 3556 mel_cookie) )
