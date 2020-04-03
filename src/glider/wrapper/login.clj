@@ -52,9 +52,13 @@
               {:tag :oldValues, :attrs {:xsi:type "xsd:Object"}}]}]}]}]
     (emit-str transaction)))
 
+(request {:method :get
+          :url "http://google.com"})
+
 (defn get-user-details [cookie]
   (let [options (http-post-request (user-details-transaction) cookie)]
     (-> options
+        (doto prn)
         process-request
         (select-keys [:user-uid
                       :batch-upload-enabled

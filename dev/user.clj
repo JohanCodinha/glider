@@ -53,7 +53,7 @@
   (reset-all))
 
 (comment
-  (def admin_username (System/getenv "admin_username"))
+  (def admin_username (get (System/getenv) "admin_username"))
   (def admin_password (System/getenv "admin_password"))
   (def mel_username (System/getenv "mel_username"))
   (def mel_password (System/getenv "mel_password"))
