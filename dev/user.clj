@@ -53,7 +53,7 @@
   (reset-all))
 
 (comment
-  (def admin_username (get (System/getenv) "admin_username"))
+  (def admin_username (System/getenv "admin_username"))
   (def admin_password (System/getenv "admin_password"))
   (def mel_username (System/getenv "mel_username"))
   (def mel_password (System/getenv "mel_password"))
@@ -179,10 +179,10 @@
 (fuzzy/levenshtein (name :private-land-cd) "Private Land stuff")
 
 
-  (defn match-cde->lookup [lookup cde]
-    (take 3 (sort-by #(fuzzy/levenshtein % (name cde))
-             (->> (map :lookup-type-txt lookup-table)
-                  (into #{})))))
+(defn match-cde->lookup [lookup cde]
+  (take 3 (sort-by #(fuzzy/levenshtein % (name cde))
+                   (->> (map :lookup-type-txt lookup-table)
+                        (into #{})))))
 
 (into {} (map (juxt identity #(match-cde->lookup lookup-table %)) test-cde))
 
@@ -198,7 +198,7 @@
 :private-land-cde ("Threatened" "Discipline" "Wetland Phase")
 :restricted-flag-cde ("Restricted Site" "Restricted Level" "Restricted Access")}
 
-(match-cde->lookup (first test-cde) lookup-table)
+(match-cde->lookup lookup-table (first test-cde))
 
 
 

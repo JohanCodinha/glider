@@ -1,6 +1,6 @@
 (ns glider.batch-upload
   (:require [clojure.test :refer [deftest is run-tests]]
-            [glider.event-store.core :refer [append-to-stream uuid select]]
+            [glider.event-store.core :refer [append-to-stream uuid #_select]]
             [dk.ative.docjure.spreadsheet :as spreadsheet]
             [camel-snake-kebab.core :refer [->kebab-case-keyword]]))
 

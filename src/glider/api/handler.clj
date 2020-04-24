@@ -27,26 +27,22 @@
       [["/swagger.json"
         {:get {:no-doc true
                :swagger {:info {:title "Project Glider"
-                                :description "http ring malli project glider"}
-                         :tags [{:name "math", :description "math api"}]}
+                                :host "google.com"
+                                :basePath "/"
+                                :contact {:name "Johan Codinha | Biodiversity Foundation Systems Environment and Climate Change"
+                                          :email "johan.codinha@delwp.vic.gov.au"}
+                                :description "Replacement and upgrade solution for the VBA | Work in progress"}
+                         :servers [{:url "https://www.google.com" :description "Production server"}]
+                         :tags [{:name "Contribution", :description "Upload observations to the VBA"}
+                                {:name "Admin" :description "Administrator dashboard features"}
+                                {:name "Query" :description "Location and time base information retrieval"}]}
                :handler (swagger/create-swagger-handler)}}]
+
        ["/record"
         {:coercion malli-coercion/coercion
          :post {:summary "Upload a record of a species observation to the VBA"
-                :info {:title "my-api"
-                       :description "with reitit-http"}
-                ;:parameters {:query [:map [:cmd string?] [:data map?]]}
-                ;:responses {200 {:body [:map [:res string?]]}}
+                :tags ["Contribution"]
                 :parameters {:body [:map
-                                    #_{:name "train"
-                                     :swagger {:example {:true "god"}
-                                               :id "query"
-                                               :description "hello desc"
-                                               :default "nope"
-                                               :parameter "Body"
-                                               :name "booty"
-                                               :json-schema/default "perch"
-                                               }}
                                     [:latitude int?]
                                     [:latitude int?]
                                     [:accuracy int?]
@@ -60,10 +56,9 @@
                                     [:notes string?]
                                     [:observer-name string?]
                                     [:discipine [:enum "fi" "cd" "np"]]]}
-                :swagger {:responses {200 {:schema {:type "string"}
-                                           :description "record id"}}}
-                :responses {200 {:body [:map [:number int?]]}
-                            500 {:description "fail"}}
+                :responses {200 {:description "A record Id is returned on success"
+                                 :body [:map [:record_id uuid?]]}
+                            500 {:description "Server error, record was not save."}}
                 :handler (fn [req #_ {{{:keys [x y]} :query
                                        {:keys [z]} :path} :parameters}]
                            (let [{{{:keys [x y]} :query
@@ -71,32 +66,72 @@
                              (println "made it")
                              (prn x y z)
                              {:status 200, :body {:total ((fnil + 0 0 0) x y z)}}))}}]
-       ["/api"
-        {:interceptors [(interceptor 1)]}
 
-        ["/number/*z"
-         {:interceptors [(interceptor 10)]
-          :coercion malli-coercion/coercion
-          :get {:interceptors [(interceptor 100)]
-                :summary "add numbers"
-                ;:parameters {:query [:map [:cmd string?] [:data map?]]}
-                ;:responses {200 {:body [:map [:res string?]]}}
-                :parameters {:body [:maybe {:description "please"}
-                                    [:vector int?]
+       ["/upload"
+        {
+         :coercion malli-coercion/coercion
 
-                                    ]
-                             #_ #_ :path [:map [:z int?]]}
-                :swagger {:responses {400 {:schema {:type "string"}
-                                           :description "some num"}}}
-                :responses {200 {:body [:map [:number int?]]}
-                            500 {:description "fail"}}
-                :handler (fn [req #_ {{{:keys [x y]} :query
-                                       {:keys [z]} :path} :parameters}]
-                           (let [{{{:keys [x y]} :query
-                                   {:keys [z]} :path} :parameters} req]
-                             (println "made it")
-                             (prn x y z)
-                             {:status 200, :body {:total ((fnil + 0 0 0) x y z)}}))}}]]]
+         :post {:summary "Upload a species list CSV file"
+                :tags ["Contribution"]
+                :description "Accept a CSV file with column matching data model or darwin core field"
+                :parameters {:body [:map [:file string?]]}
+                :responses {200 {:body [:map [:batch-id uuid?]]}}
+                :handler (fn [{{{:keys [file]} :multipart} :parameters}]
+                           {:status 200
+                            :body {:name (:filename file)
+                                   :size (:size file)}})}}]
+       ["/dashboard"
+        {
+         :coercion malli-coercion/coercion
+         :get {:summary "System dashboard"
+                :tags ["Admin"]
+                :description "Features supporting admin to execute command against application state"
+                :parameters {:body [:map [:admin-username string?]]}
+                :handler (fn [{{{:keys [file]} :multipart} :parameters}]
+                           {:status 200
+                            :body {:name (:filename file)
+                                   :size (:size file)}})}}]
+       ["/spacial"
+        {
+         :coercion malli-coercion/coercion
+         :get {:summary "Run spacial queries against live system"
+                :tags ["Query"]
+                :description "Enabled by PostGIS"
+                :parameters {:body [:map
+                                    [:latitude string?]
+                                    [:longtude string?]
+                                    [:species_name string?]
+                                    [:species_id uuid?]]}
+                :handler (fn [{{{:keys [file]} :multipart} :parameters}]
+                           {:status 200
+                            :body {:name (:filename file)
+                                   :size (:size file)}})}}]
+       #_["/api"
+          {:interceptors [(interceptor 1)]}
+
+          ["/number/*z"
+           {:interceptors [(interceptor 10)]
+            :coercion malli-coercion/coercion
+            :get {:interceptors [(interceptor 100)]
+                  :summary "add numbers"
+                  ;:parameters {:query [:map [:cmd string?] [:data map?]]}
+                  ;:responses {200 {:body [:map [:res string?]]}}
+                  :parameters {:body [:maybe {:description "please"}
+                                      [:vector int?]
+
+                                      ]
+                               #_ #_ :path [:map [:z int?]]}
+                  :swagger {:responses {400 {:schema {:type "string"}
+                                             :description "some num"}}}
+                  :responses {200 {:body [:map [:number int?]]}
+                              500 {:description "fail"}}
+                  :handler (fn [req #_ {{{:keys [x y]} :query
+                                         {:keys [z]} :path} :parameters}]
+                             (let [{{{:keys [x y]} :query
+                                     {:keys [z]} :path} :parameters} req]
+                               (println "made it")
+                               (prn x y z)
+                               {:status 200, :body {:total ((fnil + 0 0 0) x y z)}}))}}]]]
       {:data
        {:coercion
         (malli-coercion/create

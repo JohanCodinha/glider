@@ -50,6 +50,7 @@
       (http-post-request cookie)))
 
 (defn get-user-general-obs [cookie]
+  "Fetch all general obs of the logged-in cookie"
   (->>
     (reduce
       (fn [acc [start-row end-row]]
@@ -58,7 +59,6 @@
                         start-row
                         end-row)
                       send-request)
-              _ (prn res)
               acc-data (conj acc res)]
           (println
             (str "fetched " (-> res :data count) " record"))

@@ -45,15 +45,19 @@
       keyword))
 
 (defn resolve-key [m lookup]
+  "Hydrate map with matching lookup for -cde keys"
   (postwalk
     (fn [item]
+      (println item)
       (if-let [match (and (vector? item)
                           (->> (get lookup-table (first item))
                                (get lookup)
                                (some #(when
                                         (= (:lookup-cde %) (second item))
                                         (:lookup-desc %)))))]
-        [(trim-keyword (first item) #"-cde$")
-         match]
+        {(trim-keyword (first item) #"-cde$")
+         match
+         (first item)
+         (second item)}
         item))
     m))
