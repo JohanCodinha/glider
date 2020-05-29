@@ -52,16 +52,35 @@
               {:tag :oldValues, :attrs {:xsi:type "xsd:Object"}}]}]}]}]
     (emit-str transaction)))
 
-(request {:method :get
-          :url "http://google.com"})
-
 (defn get-user-details [cookie]
   (let [options (http-post-request (user-details-transaction) cookie)]
     (-> options
-        (doto prn)
         process-request
-        (select-keys [:user-uid
-                      :batch-upload-enabled
-                      :admin
-                      :display-name
-                      :username]))))
+        (select-keys ["userUid"
+                      "admin"
+                      "batchUploadEnabled"
+                      "displayName"
+                      "username"]))))
+
+;; user-details available keys
+; "userRole"
+; "gisUrl"
+; "accountNonExpired"
+; "credentialsNonExpired"
+; "totalSiteRows"
+; "expertReviewer"
+; "largeAreaSiteForReport"
+; "enabled"
+; "authorities"
+; "fullAccess"
+; "viewer"
+; "needsToChangePassword"
+; "needsToAcceptTC"
+; "accountNonLocked"
+; "password"
+; "expertReviewerOrAbove"
+; "dataPublicationDate"
+; "contributor"
+; "userUid"
+; "taxonManager"
+

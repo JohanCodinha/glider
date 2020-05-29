@@ -20,6 +20,7 @@
             [glider.wrapper.survey :as survey]
             [glider.wrapper.lookup :as lookup]
             [glider.wrapper.project :as project]
+            [glider.wrapper.users :as users]
             [glider.wrapper.site :as site]
             [glider.wrapper.general-obs :as general-obs]))
 
@@ -63,6 +64,7 @@
 
   (def mel_cookie ((memoize login/login->cookie)
                    mel_username mel_password))
+  (def active-users (users/get-active-users cookie))
   (try 
     (-> mel_cookie
         login/get-user-details)

@@ -4,18 +4,18 @@
             [clj-http.client :refer [request] :as http]
             [cheshire.core :refer [parse-string]]))
 
-(defn parse-json [s]
-  (parse-string s
-                (fn [k]
-                  (csk/->kebab-case-keyword k))))
+(defn kebab-case-keyword [k]
+  (csk/->kebab-case-keyword k))
+
+(defn parse-json
+  ([s] (parse-string s))
+  ([s key-transform] (parse-string s key-transform)))
 
 (defn parse-js-object [s]
   "Send js object to a node process and get json back"
   (-> (http/post "http://localhost:3001" {:body s})
       :body
-      parse-json
-      #_ :data
-      #_ first))
+      parse-json))
 
 (defn key-string->keyword [m]
   (clojure.walk/prewalk
