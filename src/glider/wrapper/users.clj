@@ -73,9 +73,9 @@
 ;; extract reduce fn 
 ;; better reporting progress
 
-(defn get-active-users [cookie]
+(defn get-active-users! [cookie]
   "Fetch all active users"
-  (utils/fetch-rows active-users-transaction cookie))
+  (utils/fetch-rows! active-users-transaction 100 cookie))
 
 #_(defn get-active-users [cookie]
   (let [options (http-post-request (active-users-transaction) cookie)]

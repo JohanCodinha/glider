@@ -65,6 +65,17 @@
   (def mel_cookie ((memoize login/login->cookie)
                    mel_username mel_password))
   (def active-users (users/get-active-users cookie))
+  ;get a record
+  ;save it to db
+
+  (def a-users
+    (transduce 
+      (comp (take 1)
+            (map #(doto % utils/fetched-rows-report)))
+      conj []
+      (users/get-active-users! cookie)
+      ))
+
   (try 
     (-> mel_cookie
         login/get-user-details)

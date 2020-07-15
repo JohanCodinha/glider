@@ -9,18 +9,14 @@
             [glider.wrapper.lookup :refer [resolve-key lookup-transaction]]
             [clj-http.client :refer [request] :as http]))
 
-defn run-myfunc []
-  (let [start-time (System/nanoTime)]
-    (myfunc)
-    (/ (- (System/nanoTime) start-time) 1e9))
-
-(defmacro time-value
-  "Evaluates expr and return tuple with the time it took and return value."
-  {:added "1.0"}
+(defmacro time-request
+  "Merge response map with :receiving-time-ms time-in-ms"
   [expr]
   `(let [start# (. System (nanoTime))
          ret# ~expr]
-      [(/ (double (- (. System (nanoTime)) start#)) 1000000.0) ret#]))
+     (merge ret#
+            {:receiving-time-ms
+             (/ (double (- (. System (nanoTime)) start#)) 1000000.0)})))
 
 (defn http-post-request [transaction cookie]
   {:method :post
@@ -58,6 +54,13 @@ defn run-myfunc []
      [(inc end) (inc (+ end (- end start)))])
    [0 step]))
 
+(defn page-range
+  "Given a [last-page step] return an array with range of next pages"
+  ([step]
+   [0 step])
+  ([last-page step]
+   [(inc last-page) (+ last-page step)]))
+
 (defn login-required? [s]
   (boolean (re-find #"isc_loginRequired" s)))
 
@@ -67,9 +70,7 @@ defn run-myfunc []
       (http-post-request cookie)))
 
 (defn send-request [options]
-  (dh/with-retry {:retry-on          [
-                                      java.net.UnknownHostException
-                                      ]
+  (dh/with-retry {:retry-on          [java.net.UnknownHostException]
 ;                  :abort-on [java.net.UnknownHostException]
                   :max-retries       2
                   :on-retry          (fn [val ex] (prn ex "retrying..."))
@@ -110,36 +111,111 @@ defn run-myfunc []
         first
         (doto throw-when-invalid-response)))))
 
-(defn fetch-rows [transaction cookie]
-  "Fetch all rows for a given xml rpc payload"
-  (->>
-    (reduce
-      (fn [acc [start-row end-row]]
-        (let [req (paginate-request
-                        transaction
-                        cookie
-                        start-row
-                        end-row)
-              [res-time res] (time-value (send-request req))
-              acc-data (conj acc res)]
-          (println
-            (str "fetched " (-> (get res "data") count) " rows in " (format "%.2f" (/ res-time 1000)) "s"))
-          
-          (println
-            (str "percentage done : "
-                 (format "%.2f"
-                   (* 100
-                      (double
-                        (/ (count (mapcat #(get % "data") acc-data))
-                           (get res "totalRows")))))))
-          (println (str "total rows: " (-> (get res "totalRows"))))
-          (println (str "row left : "
-                        (- (-> (get res "totalRows")) (count acc-data))))
-          (if (>= (get res "totalRows") end-row)
-            acc-data
-            (reduced acc-data))))
-      [] (page-stream 150))
-    (mapcat #(get % "data"))))
+(def send-request-m (memoize send-request))
+
+(defn fetched-rows-report [res]
+  (println "report of" res)
+  (let [batch-fetched-rows-count (-> (get res "data") count)
+        fetched-rows-count (get res "endRow")
+        available-rows-count (get res "totalRows")
+        res-time-seconds (format "%.2f"
+                                 (/ (:receiving-time-ms res) 1000))
+        completion-percentage (format
+                                "%.2f"
+                                (* 100
+                                   (double
+                                     (/ (get res "endRow")
+                                        available-rows-count))))]
+    (println
+      (str "fetched " fetched-rows-count " rows in " res-time-seconds "s"))
+    (println
+      (str "percentage done : " completion-percentage))
+    (println (str "total rows: " (-> (get res "totalRows"))))
+    (println (str "row left : "
+                  (- available-rows-count fetched-rows-count)))) )
+
+(defn fetch-rows-request [start-row end-row transaction cookie]
+  (-> (paginate-xml transaction start-row end-row)
+      emit-str
+      (http-post-request cookie)))
+
+(defn fetch-rows! [transaction init-step cookie]
+  "Lazy Fetch all rows for a given xml rpc payload, double requested row if previous request time did not doube."
+  ((fn page-fetch [prev step]
+     (when (or (empty? prev)
+               (> (get prev "totalRows") (get prev "endRow")))
+       (lazy-seq
+         (let [[start-row end-row] (page-range (or (get prev "endRow") 0) step)
+               req (paginate-request transaction cookie start-row end-row)
+               res (time-request (send-request-m req))
+               res-time (:receiving-time-ms res)
+               prev-res-time (:receiving-time-ms prev)
+               n-step (if
+                        (and prev-res-time (<= res-time (* 2 prev-res-time)))
+                        (* 1.75 step)
+                        step)]
+           (cons res (page-fetch (dissoc res "data") n-step))))))
+   {} init-step))
+
+(comment
+  (transduce 
+    (comp (take 5))
+    conj []
+    ((fn step [x]
+       (when (< (count x) 10)
+         (lazy-seq
+           (let [y (rand-int 3)]
+             (do (Thread/sleep 500) (println "fetch" y) )
+             (cons y 
+                   (step y))))))
+     []))
+
+  (eduction 
+    (map :d)
+    ((fn step [x]
+       (when (< x 10)
+         (lazy-seq
+           (let [y (rand-int 3)]
+             (println x)
+             (println "fetch" y)
+             (cons {:m y :d {:y (rand-int 10)}} 
+                   (step (inc x)))))))
+     0))
+
+  (transduce 
+    (comp (take 5)
+          #(doto % prn)
+          (map :d))
+    conj
+    []
+    ((fn step [x]
+       (when (< x 10)
+         (lazy-seq
+           (let [y (rand-int 3)]
+             (println x)
+             (println "fetch" y)
+             (cons {:m y :d {:y (rand-int 10)}} 
+                   (step (inc x)))))))
+     0))
+
+  (defn fib 
+    ([]
+     (fib 1 1))
+    ([a b]
+
+     (lazy-seq (cons (do (println "hey") a) (fib b (+ a b))))))
+  (map
+    #(do (println %)
+         %)
+    (take 1
+          ((fn step [x]
+             (when (< x 10)
+               (let [y (inc x)]
+                 (do (Thread/sleep 500) (println "fetch" y) )
+                 (lazy-seq (cons y 
+                                 (step y))))))
+           1) 
+          )))
 
 (def lookup-table
   (read-string (slurp "resources/lookup-table.edn")))
