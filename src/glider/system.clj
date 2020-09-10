@@ -9,9 +9,10 @@
   {:glider/jetty {:port 8080 :handler (ig/ref :glider/api)}
    :glider/api {:db (ig/ref :glider.db/datasource)}
    :glider.db/datasource {:host "localhost"
-                          :user "scrappy"
-                          :dbname "scrappy"
-                          :password "surfing"}})
+                          :user "sugar"
+                          :dbname "glider"
+                          :password "surfing"
+                          :reWriteBatchedInserts true}})
 
 (defmethod ig/init-key :glider/jetty [_ {:keys [handler port]}]
   (prn "running jetty" port)

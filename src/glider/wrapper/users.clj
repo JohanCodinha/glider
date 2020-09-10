@@ -17,7 +17,8 @@
                 :content [{:tag :criteria
                            :attrs {:xsi:type "xsd:Object"}
                            :content [{:tag :statusCde
-                                      :content ["active"]}]}
+                                      :content ["active"]}]
+                           }
                           {:tag :operationConfig
                            :attrs {:xsi:type "xsd:Object"}
                            :content [{:tag :dataSource
@@ -37,7 +38,7 @@
                            :content [{:tag :statusCde
                                       :content ["active"]}]}]}]}]})
 
-(def active-users-transaction 
+(def all-users-transaction 
   {:tag :transaction
    :attrs
    {:xsi:type "xsd:Object"
@@ -49,8 +50,7 @@
                 :attrs {:xsi:type "xsd:Object"}
                 :content [{:tag :criteria
                            :attrs {:xsi:type "xsd:Object"}
-                           :content [{:tag :statusCde
-                                      :content ["active"]}]}
+                           :content []}
                           {:tag :operationConfig
                            :attrs {:xsi:type "xsd:Object"}
                            :content [{:tag :dataSource
@@ -67,23 +67,10 @@
                            :content ["userInfoMainSearch"]}
                           {:tag :oldValues
                            :attrs {:xsi:type "xsd:Object"}
-                           :content [{:tag :statusCde
-                                      :content ["active"]}]}]}]}]})
+                           :content []}]}]}]})
 
-;; extract reduce fn 
-;; better reporting progress
-
-(defn get-active-users! [cookie]
-  "Fetch all active users"
-  (utils/fetch-rows! active-users-transaction 100 cookie))
-
-#_(defn get-active-users [cookie]
-  (let [options (http-post-request (active-users-transaction) cookie)]
-    (-> options
-        process-request
-        #_(select-keys ["userUid"
-                      "admin"
-                      "batchUploadEnabled"
-                      "displayName"
-                      "username"]))))
+(defn get-all-users!
+  "Fetch all users, return a lazy seq"
+  [cookie]
+  (utils/fetch-rows! all-users-transaction 100 cookie))
 

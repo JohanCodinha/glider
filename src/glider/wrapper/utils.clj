@@ -56,10 +56,10 @@
 
 (defn page-range
   "Given a [last-page step] return an array with range of next pages"
-  ([step]
-   [0 step])
-  ([last-page step]
-   [(inc last-page) (+ last-page step)]))
+  ([first-row step]
+   (if (= first-row 0)
+     [0 (- step 1)]
+     [(inc first-row) (+ first-row step)])))
 
 (defn login-required? [s]
   (boolean (re-find #"isc_loginRequired" s)))
@@ -70,7 +70,7 @@
       (http-post-request cookie)))
 
 (defn send-request [options]
-  (dh/with-retry {:retry-on          [java.net.UnknownHostException]
+  (dh/with-retry {:retry-on          [java.net.UnknownHostException java.net.SocketException]
 ;                  :abort-on [java.net.UnknownHostException]
                   :max-retries       2
                   :on-retry          (fn [val ex] (prn ex "retrying..."))
@@ -114,9 +114,9 @@
 (def send-request-m (memoize send-request))
 
 (defn fetched-rows-report [res]
-  (println "report of" res)
+  (println (dissoc res "data"))
   (let [batch-fetched-rows-count (-> (get res "data") count)
-        fetched-rows-count (get res "endRow")
+        fetched-rows-count (+ 1 (get res "endRow"))
         available-rows-count (get res "totalRows")
         res-time-seconds (format "%.2f"
                                  (/ (:receiving-time-ms res) 1000))
@@ -125,9 +125,9 @@
                                 (* 100
                                    (double
                                      (/ (get res "endRow")
-                                        available-rows-count))))]
+                                        (dec available-rows-count)))))]
     (println
-      (str "fetched " fetched-rows-count " rows in " res-time-seconds "s"))
+      (str "fetched " batch-fetched-rows-count " rows in " res-time-seconds "s"))
     (println
       (str "percentage done : " completion-percentage))
     (println (str "total rows: " (-> (get res "totalRows"))))
@@ -139,48 +139,46 @@
       emit-str
       (http-post-request cookie)))
 
+(> (dec 11904) 11903)
+
 (defn fetch-rows! [transaction init-step cookie]
-  "Lazy Fetch all rows for a given xml rpc payload, double requested row if previous request time did not doube."
+  "Lazy Fetch all rows for a given xml rpc payload, double requested row if previous request time did not double."
   ((fn page-fetch [prev step]
      (when (or (empty? prev)
-               (> (get prev "totalRows") (get prev "endRow")))
+               (> (dec (get prev "totalRows")) (get prev "endRow")))
        (lazy-seq
-         (let [[start-row end-row] (page-range (or (get prev "endRow") 0) step)
+         (let [prev-last-row (get prev "endRow" 0)
+               [start-row end-row] (page-range prev-last-row step)
                req (paginate-request transaction cookie start-row end-row)
                res (time-request (send-request-m req))
                res-time (:receiving-time-ms res)
                prev-res-time (:receiving-time-ms prev)
-               n-step (if
+               n-step (int (if
                         (and prev-res-time (<= res-time (* 2 prev-res-time)))
                         (* 1.75 step)
-                        step)]
+                        step))]
            (cons res (page-fetch (dissoc res "data") n-step))))))
    {} init-step))
 
 (comment
   (transduce 
-    (comp (take 5))
+    (comp (take 1)
+          (mapcat :d)
+          )
     conj []
-    ((fn step [x]
-       (when (< (count x) 10)
-         (lazy-seq
-           (let [y (rand-int 3)]
-             (do (Thread/sleep 500) (println "fetch" y) )
-             (cons y 
-                   (step y))))))
-     []))
-
-  (eduction 
-    (map :d)
     ((fn step [x]
        (when (< x 10)
          (lazy-seq
            (let [y (rand-int 3)]
              (println x)
              (println "fetch" y)
-             (cons {:m y :d {:y (rand-int 10)}} 
+             (cons {:m y :d [{:y (rand-int 10)} {:y (rand-int 10)}]} 
                    (step (inc x)))))))
      0))
+
+  (eduction 
+    (map :d)
+    )
 
   (transduce 
     (comp (take 5)

@@ -16,13 +16,16 @@
                      parse-xml-file
                      page-stream]
              :as utils]
+            [glider.domains.legacy :as legacy]
             [glider.wrapper.login :as login]
             [glider.wrapper.survey :as survey]
             [glider.wrapper.lookup :as lookup]
             [glider.wrapper.project :as project]
             [glider.wrapper.users :as users]
             [glider.wrapper.site :as site]
-            [glider.wrapper.general-obs :as general-obs]))
+            [glider.wrapper.general-obs :as general-obs]
+            [glider.event-store.core :as es]
+            ))
 
 (defn trace! [v]
   (let [m    (meta v)
@@ -64,17 +67,31 @@
 
   (def mel_cookie ((memoize login/login->cookie)
                    mel_username mel_password))
-  (def active-users (users/get-active-users cookie))
+
   ;get a record
   ;save it to db
+  
+ (def fetched-user (legacy/fetch-user->save-as-event! cookie)) 
 
-  (def a-users
-    (transduce 
-      (comp (take 1)
-            (map #(doto % utils/fetched-rows-report)))
-      conj []
-      (users/get-active-users! cookie)
-      ))
+(events->rows-cols fetched-user)
+
+(str (-> fetched-user first :created-at))
+
+(doseq [event (take 1 fetched-user)] (es/append-to-stream
+                                      event))
+  (es/append-to-stream-multi!)
+ (def prev-user (mapcat #(get % "data") prev-user)) 
+
+ (def prev-user-Uid (set (map #(get % "userUid") prev-user)))
+
+ (def n-user (filter
+               (fn [u] (not (clojure.core/contains? prev-user-Uid (get u "userUid"))))
+               new-all-users))
+
+ (map
+    #(update % "modifiedTsp" (fn [d] (if d (java.util.Date. d) d)))
+    n-user
+   #_(filter #(= (get % "surnameNme") "La May") all-user))
 
   (try 
     (-> mel_cookie
