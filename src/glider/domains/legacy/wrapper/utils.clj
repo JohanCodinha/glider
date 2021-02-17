@@ -3,7 +3,7 @@
             [diehard.core :as dh]
             [camel-snake-kebab.core :refer [->kebab-case-keyword]]
             [clojure.data.xml :refer [emit-str]]
-            [glider.domains.legacy.wrapper.js-parser :refer [parse-js-object]]
+            [glider.domains.legacy.wrapper.js-parser :refer [parse-js-object!]]
             [clojure.data.zip.xml :as zx]
             [glider.domains.legacy.wrapper.xml :refer [parse-xml]]
             [glider.domains.legacy.wrapper.lookup :refer [resolve-key lookup-transaction]]
@@ -108,7 +108,7 @@
 
 
         :body
-        (parse-js-object)
+        (parse-js-object!)
         #_(doto throw-when-json-array-not-conform)
         #_first
         (doto throw-when-invalid-response)))))
