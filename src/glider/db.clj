@@ -4,6 +4,7 @@
             [next.jdbc.prepare :as prepare]
             [next.jdbc.result-set :as rs]
             [next.jdbc.sql :as jdbc.sql]
+            [next.jdbc.date-time]
             [clj-postgresql.core :as pg]
             [clj-postgresql.types]
             [cheshire.core :as json]
@@ -52,6 +53,10 @@
 ;; if a SQL parameter is a Clojure hash map or vector, it'll be transformed
 ;; to a PGobject for JSON/JSONB:
 (extend-protocol prepare/SettableParameter
+  clojure.lang.Keyword
+  (set-parameter [k ^PreparedStatement s i]
+    (.setObject s i (->pgobject k)))
+
   clojure.lang.IPersistentMap
   (set-parameter [m ^PreparedStatement s i]
     (.setObject s i (->pgobject m)))
@@ -69,6 +74,11 @@
   (read-column-by-index [^org.postgresql.util.PGobject v _2 _3]
     (<-pgobject v)))
 
+(extend-protocol cheshire.generate/JSONable
+  java.time.Instant  
+  (to-json [dt gen]
+    (cheshire.generate/write-string gen (str dt))))
+
 (def datasource (atom nil))
 
 (defn select [sql]
@@ -77,8 +87,27 @@
 (defn insert! [table row-map]
   (jdbc.sql/insert! @datasource table row-map))
 
-(defn instert-multi! [table row-maps]
-  )
+(defn insert-multi! [table cols rows]
+  (jdbc.sql/insert-multi! @datasource table cols rows))
+
+(defn insert-batch!
+  "Given a connectable object, a table name, a sequence of column names, and a vector of rows of data (vectors of column values), inserts the data as multiple rows in the database."
+  [table cols rows]
+  (with-open [con (jdbc/get-connection @datasource)
+              c (apply str (interpose "," (map name cols )))
+              r (apply str (interpose "," (map (constantly "?") cols )))
+              sql (str "insert into " (name table)
+                       " (" c ")"
+                       " values (" r ")")
+              ps  (jdbc/prepare con [sql])]
+    (prepare/execute-batch! ps rows)))
+
+(defn execute! [sql]
+  jdbc/execute! sql)
+
+;; utils
+(defn events->rows-cols [events]
+  [(->> events first keys) (map vals events)])
 
 (defmethod ig/init-key ::datasource [_ config]
   (let [ds (apply pg/spec (mapcat identity config))]
@@ -88,13 +117,13 @@
 
 (comment
   (java.util.UUID/fromString)
-  (jdbc/execute! @datasource ["CREATE TABLE events ( stream_id varchar NOT NULL, version smallint NOT NULL, stream_id uuid NOT NULL, created_at timestamp default current_timestamp, payload jsonb NOT NULL, metadata jsonb)"])
+  (jdbc/execute! @datasource ["CREATE TABLE events (id uuid NOT NULL, stream_id uuid NOT NULL, type varchar(50), version smallint NOT NULL, created_at timestamp default current_timestamp, payload jsonb NOT NULL, metadata jsonb)"])
   (jdbc/execute! @datasource ["DROP TABLE events"])
   (jdbc/query @datasource ["SELECT ?::json AS jsonobj" {"foo" "bar"}])
   (select ["SELECT * FROM events WHERE data #> '{nope}' = ?" 1])
-
+()
   (def res (select ["SELECT * FROM events WHERE uuid = ?" (java.util.UUID/fromString "bbaf95cb-b9c5-4bf5-871b-02c2340fea32")]))
-
+  (select ["SELECT * FROM events"])
   (-> res first :events/data)
   (prn @datasource) 
   ;

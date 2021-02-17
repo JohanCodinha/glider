@@ -1,4 +1,4 @@
-{:paths ["dev" "src" "test"]
+{:paths ["dev" "src" "test" "resources"]
  :deps  {org.clojure/clojure {:mvn/version "1.10.1"}
          integrant {:mvn/version "0.8.0-alpha2"}
          seancorfield/next.jdbc {:mvn/version "1.0.10"}
@@ -16,13 +16,13 @@
          org.clojure/tools.reader {:mvn/version "1.3.2"}
          org.clojure/data.zip {:mvn/version "0.1.3" }
          org.clojure/data.csv {:mvn/version "0.1.4"}
-         metosin/malli {:git/url "https://github.com/metosin/malli"
-                        :sha "10fd2a22f98ba3d50d82273cee0d3f053f9ad44c"}
+         metosin/malli {:mvn/version "0.2.1"}
          org.clojure/core.async {:mvn/version "1.3.610"}
          dk.ative/docjure {:mvn/version "1.12.0"}
-         metosin/reitit {:mvn/version "0.4.2"}
+         metosin/reitit {:mvn/version "0.5.12"}
          clojure.java-time {:mvn/version "0.3.2"}
-         hashp {:mvn/version "0.1.0"}}
+         hashp {:mvn/version "0.1.0"}
+         juji/editscript {:mvn/version "0.5.4"}}
 
  :aliases {:nrepl {:extra-deps {nrepl {:mvn/version "0.6.0"}
                                 reply {:mvn/version "0.4.4"}

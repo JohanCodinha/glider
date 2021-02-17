@@ -1,6 +1,6 @@
 (ns glider.domains.users
   (:require
-    [glider.wrapper.users :as users]
+    [glider.domains.legacy.wrapper.users :as users]
     [glider.event-store.core :as db]))
 
 

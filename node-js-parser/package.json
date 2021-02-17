@@ -5,6 +5,6 @@
   "main": "main.js",
   "license": "MIT",
   "dependencies": {
-    "paperplane": "^2.3.2"
+    "paperplane": "^3.1.2"
   }
 }
