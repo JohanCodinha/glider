@@ -103,7 +103,7 @@
     (prepare/execute-batch! ps rows)))
 
 (defn execute! [sql]
-  jdbc/execute! sql)
+  (jdbc/execute! @datasource sql))
 
 ;; utils
 (defn events->rows-cols [events]
@@ -115,10 +115,17 @@
     (prn ::datasource @datasource)
     @datasource))
 
+(def tables
+  {:authentication
+   ["CREATE TABLE authentication (uuid uuid NOT NULL UNIQUE, login_name varchar(50) UNIQUE, password varchar(60))"]
+   })
 (comment
   (java.util.UUID/fromString)
   (jdbc/execute! @datasource ["CREATE TABLE events (id uuid NOT NULL, stream_id uuid NOT NULL, type varchar(50), version smallint NOT NULL, created_at timestamp default current_timestamp, payload jsonb NOT NULL, metadata jsonb)"])
-  (jdbc/execute! @datasource ["DROP TABLE events"])
+  
+  (jdbc/execute! @datasource ["CREATE TABLE authentication (uuid uuid NOT NULL UNIQUE, login_name varchar(50) UNIQUE, password varchar(60))"])
+  
+  (jdbc/execute! @datasource ["DROP TABLE authentication"])
   (jdbc/query @datasource ["SELECT ?::json AS jsonobj" {"foo" "bar"}])
   (select ["SELECT * FROM events WHERE data #> '{nope}' = ?" 1])
 ()

@@ -1,5 +1,6 @@
 .nrepl-port
 .cpcache
+.clj-kondo
 secrets
 postgres_secrets.env
 node-js-parser/node_modules

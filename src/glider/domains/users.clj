@@ -1,8 +1,6 @@
 (ns glider.domains.users
-  (:require
-    [glider.domains.legacy.wrapper.users :as users]
-    [glider.event-store.core :as db]))
-
+  (:require [glider.domains.legacy.transaction.users :as users]
+            [glider.event-store.core :as db]))
 
 ; persist migrated user
 ; userUid

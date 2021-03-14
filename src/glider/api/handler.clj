@@ -134,7 +134,6 @@
                 :tags ["Contribution"]
                 :parameters {:body [:map
                                     [:latitude int?]
-                                    [:latitude int?]
                                     [:accuracy int?]
                                     [:location-description string?]
                                     [:common-name string?]

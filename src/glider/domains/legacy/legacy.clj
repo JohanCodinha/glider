@@ -1,16 +1,15 @@
 (ns glider.domains.legacy.legacy
-  (:require
-    [glider.domains.legacy.wrapper.users :as users]
-    [glider.domains.legacy.wrapper.utils :as utils]
-    [glider.event-store.core :as es]))
+  (:require [glider.domains.legacy.transaction.users :as users]
+            [glider.domains.legacy.transaction.utils :as utils]
+            [glider.event-store.core :as es]))
 
-(defn vba-user->user-retrieved-event
+#_(defn vba-user->user-retrieved-event
     "map an imported vba user to a saved event"
     [raw-json-user]
     (es/payload->events {:type ::retrieved-user
                          :payload raw-json-user}))
 
-(defn fetch-user->save-as-event!
+#_(defn fetch-user->save-as-event!
   [cookie]
   (transduce 
     (comp 
@@ -22,7 +21,7 @@
     conj []
     (users/get-all-users! cookie)))
 
-(comment
+#_(comment
   (doseq [event fetched-user] (es/append-to-stream ::user 1 event)))
 
 
