@@ -32,7 +32,7 @@
   [cookie]
   (utils/fetch-rows! users/all-users-transaction 100 cookie))
 
-(defn import-user-by-user-id! [user-id]
+(defn import-user-by-userUid! [user-id]
   ;;fetch user
   (let [{user-details "UserInfoView_DS"
          organisations "UserOrganisationLink_DS"
@@ -58,20 +58,15 @@
               [:username {:optional true} string?]]
              :fn '(fn [{:keys [user-id username]}]
                     (or user-id username))]
-
-    :effect (fn [{:keys [user-id username]}]
-              (if user-id
-                (import-user-by-user-id! user-id)
-                #_(import-user-by-username! username)))
+    :coeffects {:user
+                (fn [userUid]
+                  #_(get-collaborator-by-legacy-Uid userUid))}
+    :effect (fn [{:keys [cofx userUid username]}]
+              (import-user-by-userUid! userUid)
+              #_(if user-id
+                (import-user-by-username! username)))
     :return (fn [{:keys [system/effect-return]}]
-              effect-return)}])
+              effect-return)
+    :produce [:legacy-user-imported :legacy-user-updated]}])
 
 
-(comment
-  (doseq [event fetched-user] (es/append-to-stream ::user 1 event)))
-
-
-;fetch users
-;if users exist in db
-  ;persist change
-  ;persist users
