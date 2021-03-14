@@ -1,4 +1,4 @@
-(ns glider.domains.legacy.transaction.species-checklist
+(ns glider.legacy.transaction.species-checklist
   (:require 
     [malli.core :as m]
     [malli.error :as me]

@@ -1,6 +1,6 @@
-(ns glider.domains.legacy.transaction.general-obs
+(ns glider.legacy.transaction.general-obs
   (:require [clojure.data.xml :refer [emit-str]]
-            [glider.domains.legacy.transaction.utils
+            [glider.legacy.utils
              :refer
              [http-post-request page-stream paginate-xml send-request!]]))
 

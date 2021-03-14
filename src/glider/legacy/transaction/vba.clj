@@ -1,19 +1,15 @@
-(ns glider.domains.legacy.transaction.vba
+(ns glider.legacy.transaction.vba
   (:require [clj-http.client :as http :refer [request]]
             [clojure.data.xml :refer [emit-str]]
             [clojure.data.zip.xml :as zx]
             [clojure.string :as str]
             [clojure.zip :as zip]
-            [glider.domains.legacy.transaction.general-obs
-             :refer
-             [get-user-general-obs]]
-            [glider.domains.legacy.transaction.login
+            [glider.legacy.transaction.general-obs :refer [get-user-general-obs]]
+            [glider.legacy.transaction.login
              :refer
              [get-user-details login->cookie]]
-            [glider.domains.legacy.transaction.utils
-             :refer
-             [login-required? page-stream]]
-            [glider.domains.legacy.transaction.xml :refer [parse-xml]]))
+            [glider.legacy.transaction.xml :refer [parse-xml]]
+            [glider.legacy.utils :refer [login-required? page-stream]]))
 
 (comment
   (def cookie ((memoize login->cookie) "username" "password"))

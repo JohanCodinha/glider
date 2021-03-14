@@ -1,7 +1,6 @@
-(ns glider.domains.legacy.transaction.users
+(ns glider.legacy.transaction.users
   (:require [clojure.data.xml :refer [emit-str]]
-            #_[glider.domains.legacy.transaction.utils :as utils :refer [fetch-rows!]]
-            [glider.domains.legacy.transaction.xml :refer [parse-xml]]))
+            [glider.legacy.transaction.xml :refer [parse-xml]]))
 
 (comment (parse-xml "resources/user-basic-info.xml"))
 

@@ -1,16 +1,16 @@
-(ns glider.domains.legacy.transaction.utils
+(ns glider.legacy.utils
   (:require [camel-snake-kebab.core :refer [->kebab-case-keyword]]
             [clj-http.client :as http :refer [request]]
             [clojure.data.xml :refer [emit-str]]
             [clojure.data.zip.xml :as zx]
             [clojure.zip :as zip]
             [diehard.core :as dh]
-            [glider.domains.legacy.transaction.js-parser :refer [parse-js-object!]]
-            [glider.domains.legacy.transaction.lookup
+            [glider.legacy.auth :as legacy-auth]
+            [glider.legacy.transaction.js-parser :refer [parse-js-object!]]
+            [glider.legacy.transaction.lookup
              :refer
              [lookup-transaction resolve-key]]
-            [glider.domains.legacy.auth :as legacy-auth]
-            [glider.domains.legacy.transaction.xml :refer [parse-xml]]))
+            [glider.legacy.transaction.xml :refer [parse-xml]]))
 
 (defmacro time-request
   "Merge response map with :receiving-time-ms time-in-ms"

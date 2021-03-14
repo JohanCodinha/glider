@@ -1,4 +1,4 @@
-(ns glider.domains.legacy.transaction.js-parser
+(ns glider.legacy.transaction.js-parser
   (:require [clj-http.client :refer [post]]
             [cheshire.core :refer [parse-string]]))
 

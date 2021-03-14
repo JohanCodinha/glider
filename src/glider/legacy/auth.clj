@@ -1,4 +1,4 @@
-(ns glider.domains.legacy.auth
+(ns glider.legacy.auth
   (:require [clojure.string :as string]
             [clj-http.client :as http]))
 

@@ -1,12 +1,11 @@
-(ns glider.domains.legacy.users
+(ns glider.legacy.users
   (:require [clojure.data.xml :refer [emit-str]]
-            [glider.domains.legacy.transaction.users :as users]
-            [glider.domains.legacy.transaction.utils :as utils]
             [glider.event-store.core :as es]
-            [glider.domains.legacy.auth :as legacy-auth]
-            [glider.domains.legacy.transaction.users :as transactions]
-            [glider.system :as system]
-            [glider.domains.legacy.legacy :as legacy]))
+            [glider.legacy.auth :as legacy-auth]
+            [glider.legacy.legacy :as legacy]
+            [glider.legacy.transaction.users :as transactions]
+            [glider.legacy.utils :as utils]
+            [glider.system :as system]))
 
 ;; Aggregate
 ;; Handling users management sync with legacy system.

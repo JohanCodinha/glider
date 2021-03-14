@@ -1,14 +1,6 @@
-(ns glider.domains.legacy.transaction.survey
-  (:require #_[clj-http.client :as http :refer [request]]
-            [clojure.data.xml :refer [emit-str]]
-            [glider.domains.legacy.transaction.js-parser :refer [parse-json]]
-            #_[glider.domains.legacy.transaction.utils
-             :refer
-             [http-post-request
-              page-stream
-              paginate-xml
-              parse-xml-file
-              process-request]]))
+(ns glider.legacy.transaction.survey
+  (:require [clojure.data.xml :refer [emit-str]]
+            [glider.legacy.transaction.js-parser :refer [parse-json]]))
 
 (defn observation-attachements-transaction [record-id]
   {:tag :transaction,

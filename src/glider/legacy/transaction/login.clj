@@ -1,4 +1,4 @@
-(ns glider.domains.legacy.transaction.login
+(ns glider.legacy.transaction.login
   #_(:require [clj-http.client :as http :refer [request]]
             [clojure.data.xml :refer [emit-str]]
             [diehard.core :as dh]

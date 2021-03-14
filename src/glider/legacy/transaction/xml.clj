@@ -1,4 +1,4 @@
-(ns glider.domains.legacy.transaction.xml
+(ns glider.legacy.transaction.xml
   (:require #_[clojure.data.xml :refer [emit-str]]
             [clojure.xml :refer [parse] :as xml]
             [clojure.java.io :refer [input-stream]])

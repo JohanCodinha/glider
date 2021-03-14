@@ -8,14 +8,17 @@
             [clojure.tools.namespace.repl :refer [refresh]]
             [editscript.core :as c]
             [editscript.edit :as e]
-            [glider.domains.legacy.legacy :as legacy]
-            [glider.domains.legacy.transaction.general-obs :as general-obs]
-            [glider.domains.legacy.transaction.login :as login]
-            [glider.domains.legacy.transaction.lookup :as lookup]
-            [glider.domains.legacy.transaction.site :as site]
-            [glider.domains.legacy.transaction.survey :as survey]
-            [glider.domains.legacy.transaction.users :as legacy-users]
-            [glider.domains.legacy.transaction.utils
+            [glider.domains.legacy.transaction.project :as project]
+            [glider.event-store.core :as es]
+            [glider.legacy.legacy :as legacy]
+            [glider.legacy.transaction.general-obs :as general-obs]
+            [glider.legacy.transaction.login :as login]
+            [glider.legacy.transaction.lookup :as lookup]
+            [glider.legacy.transaction.site :as site]
+            [glider.legacy.transaction.survey :as survey]
+            [glider.legacy.transaction.users :as legacy-users]
+            [glider.legacy.users :as users]
+            [glider.legacy.utils
              :as
              utils
              :refer
@@ -24,14 +27,12 @@
               paginate-xml
               parse-xml-file
               send-request!]]
-            [glider.domains.legacy.users :as users]
-            [glider.domains.legacy.transaction.project :as project]
-            [glider.event-store.core :as es]
             [glider.system :as system]
             [integrant.core :as ig]
             [integrant.repl :as ig-repl])
   (:import com.impossibl.postgres.api.jdbc.PGNotificationListener
            com.impossibl.postgres.jdbc.PGDataSource))
+
 (comment
   (def datasource (doto (PGDataSource.)
                     (.setHost     "localhost") ; todo move into

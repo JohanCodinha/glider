@@ -1,7 +1,7 @@
-(ns glider.domains.legacy.legacy
-  (:require [glider.domains.legacy.transaction.users :as users]
-            [glider.domains.legacy.transaction.utils :as utils]
-            [glider.event-store.core :as es]))
+(ns glider.legacy.legacy
+  (:require [glider.event-store.core :as es]
+            [glider.legacy.transaction.users :as users]
+            [glider.legacy.utils :as utils]))
 
 #_(defn vba-user->user-retrieved-event
     "map an imported vba user to a saved event"

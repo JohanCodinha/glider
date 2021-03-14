@@ -1,4 +1,4 @@
-(ns glider.domains.legacy.transaction.lookup
+(ns glider.legacy.transaction.lookup
   (:require [clj-fuzzy.metrics :as fuzzy]
             [clojure.walk :refer [postwalk]]))
 
