@@ -18,5 +18,9 @@
   [file-path]
   (parse (input-stream file-path) non-validating))
 
-(comment (parse-xml "resources/user/user-details.xml"))
+(comment (parse-xml "resources/user/user-details.xml")
+
+         (parse-xml "resources/lookup-user-role.xml")
+        
+         )
 

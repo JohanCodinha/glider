@@ -1,5 +1,5 @@
 (ns glider.commands-handler
-  (:require [glider.domains.observation :as observation]))
+  (:require [glider.domain.observation :as observation]))
 
 (defmulti handler :name)
 

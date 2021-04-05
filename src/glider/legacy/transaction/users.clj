@@ -26,29 +26,40 @@
           {:tag :operationType, :attrs nil, :content ["fetch"]}]}
         {:tag :appID, :attrs nil, :content ["builtinApplication"]}
         {:tag :operation, :attrs nil, :content ["userInfoById"]}]}
-      {:tag :elem,
+      #_{:tag :elem,
        :attrs {:xsi:type "xsd:Object"},
        :content
        [{:tag :criteria,
          :attrs {:xsi:type "xsd:Object"},
          :content
-         [{:tag :USER_UID,
-           :attrs {:xsi:type "xsd:long"},
-           :content [userUid]}]}
+         [{:tag :type,
+           :attrs nil,
+           :content ["Preferred Contact Method"]}]}
         {:tag :operationConfig,
          :attrs {:xsi:type "xsd:Object"},
          :content
-         [{:tag :dataSource,
-           :attrs nil,
-           :content ["UserOrganisationLink_DS"]}
+         [{:tag :dataSource, :attrs nil, :content ["Lookup_DS"]}
           {:tag :operationType, :attrs nil, :content ["fetch"]}
-          {:tag :textMatchStyle, :attrs nil, :content ["exact"]}]}
-        {:tag :componentId, :attrs nil, :content ["isc_ListGrid_0"]}
+          {:tag :textMatchStyle, :attrs nil, :content ["startsWith"]}]}
         {:tag :appID, :attrs nil, :content ["builtinApplication"]}
-        {:tag :operation,
-         :attrs nil,
-         :content ["UserOrganisationLink_DS_fetch"]}
-        ]}
+        {:tag :operation, :attrs nil, :content ["Lookup_DS_fetch"]}]}
+      #_{:tag :elem,
+       :attrs {:xsi:type "xsd:Object"},
+       :content
+       [{:tag :criteria,
+         :attrs {:xsi:type "xsd:Object"},
+         :content
+         [{:tag :type,
+           :attrs nil,
+           :content ["User role"]}]}
+        {:tag :operationConfig,
+         :attrs {:xsi:type "xsd:Object"},
+         :content
+         [{:tag :dataSource, :attrs nil, :content ["Lookup_DS"]}
+          {:tag :operationType, :attrs nil, :content ["fetch"]}
+          {:tag :textMatchStyle, :attrs nil, :content ["startsWith"]}]}
+        {:tag :appID, :attrs nil, :content ["builtinApplication"]}
+        {:tag :operation, :attrs nil, :content ["Lookup_DS_fetch"]}]}
       {:tag :elem,
        :attrs {:xsi:type "xsd:Object"},
        :content
@@ -66,8 +77,7 @@
           {:tag :textMatchStyle, :attrs nil, :content ["exact"]}]}
         {:tag :componentId, :attrs nil, :content ["isc_ListGrid_1"]}
         {:tag :appID, :attrs nil, :content ["builtinApplication"]}
-        {:tag :operation, :attrs nil, :content ["fetchUserAddresses"]}
-        ]}
+        {:tag :operation, :attrs nil, :content ["fetchUserAddresses"]}]}
       {:tag :elem,
        :attrs {:xsi:type "xsd:Object"},
        :content
@@ -87,8 +97,7 @@
         {:tag :appID, :attrs nil, :content ["builtinApplication"]}
         {:tag :operation,
          :attrs nil,
-         :content ["fetchContactByUserUid"]}
-        ]}]}]})
+         :content ["fetchContactByUserUid"]}]}]}]})
 
 (def active-users-transaction 
   {:tag :transaction

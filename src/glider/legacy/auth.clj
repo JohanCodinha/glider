@@ -42,4 +42,5 @@
     (reset! admin-cookie cookie)
     @admin-cookie))
 
-(comment (refresh-cookie))
+(comment (refresh-cookie)
+         (reset! admin-cookie "JSESSIONID=070FEB520FD5CC1A884A18B33CF6B3.worker1"))

@@ -128,31 +128,27 @@
                   :on-failed-attempt (fn [_ _] (prn "failed attempt"))
                   #_#_:retry-if          (fn [val ex] (println "retry-if: ") (prn ex))
                   #_#_:abort-on [java.net.UnknownHostException]
-                  #_ #_:on-success        (fn [_] (prn "did it! success!"))}
-    (letfn [(throw-when-host-error [response]
-              (when (not= (-> (:headers response)
-                              (get "Content-Type"))
-                          "text/plain;charset=UTF-8")
-                (throw (ex-info "Host response was not plain text"
-                                {:type ::host-response
-                                 :response response}))))
-            (throw-when-login-required [response]
-              (when (login-required? (:body response))
-                (throw (ex-info "login is required"
-                                {:type ::login-required
-                                 :response response}))))
-            (throw-when-invalid-response [response]
+                  #_#_:on-success        (fn [_] (prn "did it! success!"))}
+    (letfn [(throw-when-invalid-response [response]
               (when (= -1 (:status response))
                 (throw (ex-info "Invalid response"
                                 {:type ::invalid-response
                                  :request options
                                  :response response}))))]
-      (-> (request options)
-        (doto throw-when-login-required)
-        (doto throw-when-host-error)
-        :body
-        (parse-js-object!)
-        (doto throw-when-invalid-response)))))
+      (let [response (request options)]
+        (cond
+          (login-required? (:body response))
+          {:system/error :login-required}
+
+          (not= (-> (:headers response)
+                    (get "Content-Type"))
+                "text/plain;charset=UTF-8")
+          (throw (ex-info "Host response was not plain text"
+                          {:type ::host-response
+                           :response response}))
+
+          :else
+          {:res (parse-js-object! (:body response))})))))
 
 (def send-request-m! (memoize send-request!))
 
@@ -201,16 +197,33 @@
           (cons res (page-fetch (dissoc res "data") n-step))))))
    {} init-step))
 
-(defn match-transaction-response [res xml]
-  (let [op-names (xml-datasources xml)
-        data (map #(get % "data") res)]
-    (into {} (map vector op-names data))))
+(defn xml-operations
+  "Return a list of datasource from the transactions"
+  [xml]
+  (mapcat
+   #(:content (zip/node %))
+   (-> (zip/xml-zip xml)
+       (zx/xml->
+        :transaction
+        :operations))))
 
-(defn request! [transaction]
-  (-> (emit-str transaction)
-      (http-post-request @legacy-auth/admin-cookie)
-      send-request!
-      (match-transaction-response transaction)))
+(defn hydrate-response-with-request [res xml]
+  (let [datasources (xml-datasources xml)
+        operations (xml-operations xml)
+        data (map #(get % "data") res)]
+    (map #(hash-map :data %1
+                    :data-source %2
+                    :operation %3)
+         data datasources operations)))
+
+(defn request! [transaction cookie]
+  (let [response (-> (emit-str transaction)
+                     (http-post-request cookie)
+                     send-request!)]
+    (tap> response)
+    (if (contains? response :res)
+      (update response :res #(hydrate-response-with-request % transaction))
+      response)))
 
 (defn request-raw! [xml cookie]
   (-> (emit-str xml)

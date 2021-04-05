@@ -1,0 +1,13 @@
+(comment
+  ;;milli timestamp to zoned date time and back to milli
+  (-> 1508971815276
+      time/instant
+      (time/zoned-date-time "Australia/Victoria")
+      (time/instant)
+      (.toEpochMilli)))
+
+(-> 1508971815276
+    time/instant
+    str
+    )
+"2017-10-25T22:50:15.276Z"
