@@ -31,7 +31,9 @@
         (fetch-credentials credentials)]
     (crypto/check password encrypted-passwrod)))
 
-(valid-credentials? {:password "1234" :uuid uuid})
+(comment
+  (def uuid "1234")
+  (valid-credentials? {:password "1234" :uuid uuid})
 
 (execute! ["DELETE FROM authentication WHERE uuid = ? OR login_name = ?"
                      uuid nil])
@@ -44,9 +46,8 @@
 (select ["SELECT * FROM authentication WHERE login_name = ?" "codeforvic"])
 (select ["SELECT * FROM authentication WHERE uuid = ?" uuid])
 
-(java.util.UUID/ "stream-id")
 (def encrypted (crypto/encrypt "foobars"))
 encrypted
 (take 100  (map (comp crypto/encrypt str) (range)))
 (map str (range 10))
-(crypto/check "foobar" encrypted)
+(crypto/check "foobar" encrypted))

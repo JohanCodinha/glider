@@ -33,6 +33,9 @@
            com.impossibl.postgres.jdbc.PGDataSource))
 
 (comment
+  (require 'hashp.core))
+
+(comment
   (def datasource (doto (PGDataSource.)
                     (.setHost     "localhost") ; todo move into
                     (.setPort     5432)

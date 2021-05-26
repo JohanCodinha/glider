@@ -25,6 +25,7 @@
    [:metadata {:optional true} [:or map? nil?]]
    [:payload map?]])
 
+
 (defn payload->events
   "Generate an event"
   [{:keys [:version :metadata :payload :stream-id :type :stream-id]}]

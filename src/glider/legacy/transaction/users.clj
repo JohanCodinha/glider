@@ -132,7 +132,7 @@
                            :content [{:tag :statusCde
                                       :content ["active"]}]}]}]}]})
 
-(defn all-users-transaction [] 
+(defn all-users-transaction []
   {:tag :transaction
    :attrs
    {:xsi:type "xsd:Object"
@@ -159,9 +159,12 @@
                            :content ["builtinApplication"]}
                           {:tag :operation
                            :content ["userInfoMainSearch"]}
-                          {:tag :oldValues
-                           :attrs {:xsi:type "xsd:Object"}
-                           :content []}]}]}]})
+                          {:tag :startRow
+                           :attrs {:xsi:type "xsd:long"}
+                           :content ["0"]}
+                          {:tag :endRow
+                           :attrs {:xsi:type "xsd:long"}
+                           :content ["1000"]}]}]}]})
 
 
 

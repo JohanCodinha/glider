@@ -1,10 +1,10 @@
 (ns glider.wrapper.login-test
   (:require [clojure.test :refer [deftest is run-tests]]
             [clj-http.client :refer [request] :as http]
-            [glider.wrapper.login :as login]))
+            #_[glider.wrapper.login :as login]))
 
 
-(deftest test-extract->cookie
+#_(deftest test-extract->cookie
   (let [http-response
         {:headers
          {"Set-Cookie"

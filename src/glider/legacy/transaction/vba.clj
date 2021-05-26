@@ -5,24 +5,11 @@
             [clojure.string :as str]
             [clojure.zip :as zip]
             [glider.legacy.transaction.general-obs :refer [get-user-general-obs]]
-            [glider.legacy.transaction.login
+            #_[glider.legacy.transaction.login
              :refer
              [get-user-details login->cookie]]
             [glider.legacy.transaction.xml :refer [parse-xml]]
             [glider.legacy.utils :refer [login-required? page-stream]]))
-
-(comment
-  (def cookie ((memoize login->cookie) "username" "password"))
-  (def kookie "JSESSIONID=9C7F8700F55FE2177FDF6712.worker1")
-  (try 
-    (-> cookie
-        get-user-details)
-    (catch Exception e
-      (println e)))
-
-  (def cfaobs2
-    (-> cookie
-        get-user-general-obs)))
 
 (defn println-to-str [m]
   (with-out-str (clojure.pprint/pprint m)))

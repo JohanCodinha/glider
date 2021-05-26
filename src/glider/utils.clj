@@ -4,5 +4,5 @@
 (defn uuid [] (java.util.UUID/randomUUID))
 
 (defn timestamp
-  ([] #_(.toEpochMilli (time/instant)) (time/instant))
+  ([] (.truncatedTo (time/instant) java.time.temporal.ChronoUnit/MILLIS))
   ([n] (time/instant n)))
