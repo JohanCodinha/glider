@@ -4,11 +4,18 @@
 (defn routes
   [env]
   (let [db (:db env)]
-    ["/legacy/synchronization/user"
-     {:post {:summary (str "One way synchronization of users from https://vba.dse.vic.gov.au
-                            Produced events: ")
-             :tags ["Command" "Legacy" "User"]
+    ["/legacy/synchronization/users/:userUid"
+     {:post {:summary (str "One way synchronization of a user from https://vba.dse.vic.gov.au")
+             :tags ["Command" "Legacy" "Users"]
              :responses {200 {:description "Synchronized a single user"
-                              :body [:map [:command map?]]}}
-             :parameters {:body (:params import-user-command)}
-             :handler (user/fetch-by-userUid db)}}]))
+                              :body (:produce import-user-command)}}
+             :parameters {:path (:params import-user-command)}
+             :handler (user/import-by-userUid db)}}]
+    
+    ["/legacy/synchronization/users"
+     {:post {:summary (str "One way synchronization of all users from https://vba.dse.vic.gov.au")
+             :tags ["Command" "Legacy" "Users"]
+             :responses {202 {:description "Synchronized a single user"
+                              :body [:map {:closed false}]}}
+             #_#_:parameters {:path (:params import-user-command)}
+             :handler (user/import-all db)}}]))

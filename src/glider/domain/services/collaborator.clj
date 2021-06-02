@@ -1,6 +1,6 @@
 (ns glider.domain.services.collaborator
   (:require [crypto.password.bcrypt :as crypto]
-            [glider.db :refer [select insert! execute!]]))
+            [glider.db :refer [select! insert! execute!]]))
 
 (def Schema
   [:map
@@ -11,7 +11,7 @@
 (defn fetch-credentials
   [{:keys [login-name uuid]}]
   (first
-   (select
+   (select!
      ["SELECT * FROM authentication WHERE uuid = ? OR login_name = ?"
       uuid login-name])))
 
@@ -43,8 +43,8 @@
 (def uuid (java.util.UUID/randomUUID))
 (insert! :authentication {:uuid uuid :password "hashedpw" :login_name "codeforvic"})
 
-(select ["SELECT * FROM authentication WHERE login_name = ?" "codeforvic"])
-(select ["SELECT * FROM authentication WHERE uuid = ?" uuid])
+(select! ["SELECT * FROM authentication WHERE login_name = ?" "codeforvic"])
+(select! ["SELECT * FROM authentication WHERE uuid = ?" uuid])
 
 (def encrypted (crypto/encrypt "foobars"))
 encrypted

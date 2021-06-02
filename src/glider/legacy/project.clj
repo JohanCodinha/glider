@@ -5,7 +5,7 @@
             [glider.system.command.core :as command]
             [glider.utils :refer [uuid timestamp]]
             [editscript.core :as diff]
-            [glider.db :refer [select insert! execute!]]))
+            [glider.db :refer [select! insert! execute!]]))
 
 (defn get-all-projects!
   "Fetch all projects, return a lazy seq"

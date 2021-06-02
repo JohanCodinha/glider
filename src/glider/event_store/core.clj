@@ -89,7 +89,7 @@
                      " = ?")]
     (println json-sql-path value)
     (println sql)
-    (db/select [sql
+    (db/select! [sql
                 (keyword->str stream-id)
                 value]))
  ;return list of events 
@@ -97,7 +97,7 @@
 
 (defn fetch-event-stream [stream-id]
   (let [sql "SELECT * FROM events WHERE stream_id = ?"]
-    (db/select [sql (java.util.UUID/fromString stream-id)])))
+    (db/select! [sql (java.util.UUID/fromString stream-id)])))
 
 (comment 
   (fetch-event-stream "d6382102-9106-4872-a39c-f747d8b76225")

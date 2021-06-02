@@ -1,6 +1,6 @@
 (ns glider.legacy.users
   (:require [clojure.data.xml :refer [emit-str]]
-            [glider.event-store.core :as es]
+            #_[glider.event-store.core :as es]
             [glider.legacy.auth :as legacy-auth]
             [glider.legacy.transaction.users :as transactions]
             [glider.legacy.utils :as utils]
@@ -18,7 +18,7 @@
             [java-time :as time]
             [editscript.core :as diff]
             [glider.utils :refer [uuid timestamp]]
-            [glider.db :refer [select insert! execute!]]
+            [glider.db :refer [select! insert! execute!]]
             [crypto.password.bcrypt :as crypto]
             [clojure.core.async :as cca]))
 
@@ -27,7 +27,8 @@
 (defn get-all-users!
   "Fetch all users, return a lazy seq"
   [cookie]
-  (utils/request2! (transactions/all-users-transaction) cookie ))
+  (println "get all users")
+  (first (utils/request2! (transactions/all-users-transaction) cookie)))
 
 
 (comment
@@ -60,16 +61,36 @@
          1 (legacy-auth/refresh-cookie)
          (throw (ex-info "Authentication loop" ctx)))))])
 
-(def import-user
-  [:imported-user
-   (fn [{{cookie :cookie} :cofx
-         {:keys [userUid username]} :params :as ctx}]
-     (try
-       (fetch-user-details! userUid cookie)
-       (catch clojure.lang.ExceptionInfo e
-         (if (= :cookie-expired (:type (ex-data e)))
-           (command/enqueue ctx legacy-cookie)
-           (throw e)))))])
+(defn import-user
+  [{{cookie :cookie} :cofx
+    {:keys [userUid username]} :params :as ctx}]
+  (try
+    (fetch-user-details! userUid cookie)
+    (catch clojure.lang.ExceptionInfo e
+      (if (= :cookie-expired (:type (ex-data e)))
+        (command/enqueue ctx legacy-cookie)
+        (throw e)))))
+
+(defn import-users-list!
+  [{{cookie :cookie} :cofx
+    environment :environment
+    :as ctx}]
+  (println "import-users-list made it here")
+  (try
+    (let [all-users (get-all-users! cookie)
+          users-count (count (:data all-users))]
+      (glider.system.operation.core/update!
+       (:db environment)
+       (assoc-in (:operation environment) [:metadata :user-count] users-count))
+      (println "Imported :")
+      (println users-count)
+      all-users)
+    (catch clojure.lang.ExceptionInfo e
+      (println "herrrrror")
+      (tap> e)
+      (if (= :cookie-expired (:type (ex-data e)))
+        (doto (command/enqueue ctx legacy-cookie) tap>)
+        (throw e)))))
 
 (defn legacy-user-synchronized-event
   [data userUid version]
@@ -95,7 +116,7 @@
 
 ;;Import users from legacy app
 (defn fetch-saved-user-stream [userUid]
-  (select ["SELECT * FROM legacy_events WHERE stream_id = ? ORDER BY version" userUid]))
+  (select! ["SELECT * FROM legacy_events WHERE stream_id = ? ORDER BY version" userUid]))
 
 (defn merge-diffs
   "Merge a stream of diff, return nil if passed empty vector"
@@ -105,12 +126,11 @@
      ([])
      ([a b]
       (mapv (fn [{operation :operation :as payload}]
-             (let [data-b (:data (first (get (group-by :operation b) operation)))]
-               (cond-> payload
-                 (and (some? data-b) (diff/valid-edits? data-b))
-                 (update :data #(diff/patch % (diff/edits->script data-b)))
-                )))
-           a)))
+              (let [data-b (:data (first (get (group-by :operation b) operation)))]
+                (cond-> payload
+                  (and (some? data-b) (diff/valid-edits? data-b))
+                  (update :data #(diff/patch % (diff/edits->script data-b))))))
+            a)))
    (map :payload stream)))
 
 (defn extract-credentials [user-data]
@@ -124,21 +144,21 @@
 (defn remove-key [user-data key]
   (clojure.walk/postwalk
    #(when-not (and (vector? %) (= (first %) key))
-     %)
+      %)
    user-data))
 
 (defn fetch-saved-user-password [userUid]
-  (first (select ["SELECT * FROM authentication WHERE legacy_uid = ?" userUid])))
+  (first (select! ["SELECT * FROM authentication WHERE legacy_uid = ?" userUid])))
 
 
 (defn fetch-credentials
   [{:keys [login uuid legacy-uid]}]
   (first
-   (select
-     ["SELECT * FROM authentication WHERE uuid = ? OR login = ? OR legacy_uid = ?"
-      uuid login legacy-uid])))
+   (select!
+    ["SELECT * FROM authentication WHERE uuid = ? OR login = ? OR legacy_uid = ?"
+     uuid login legacy-uid])))
 
-(defn persist-authentication-credentials!
+(defn upsert-authentication-credentials!
   [{:keys [uuid login legacy-uid] :as credentials} {db :db}]
   (let [exist (fetch-credentials credentials)]
     (when exist
@@ -163,31 +183,31 @@
          (string? new)
          (not (crypto/check new saved)))
     new))
+(defn user-exists? [imported-user]
+  (not-every? (fn [{data :data}]
+                (or (= data nil) (= data [])))
+              imported-user))
 
 (def import-user-command
   {:id ::import-user
-   :params [:and
-            [:map
-             [:userUid
-              :string]
-             [:username {:optional true}
-              [:re {:error/message "User name can contain letters, numbers and underscores. The length must be between 6 and 15 characters."}
-               #"^[a-zA-Z_\d]{6,}$"]]]
-            [:fn
-             {:error/path [:userUid]
-              :error/message "missing required key"}
-             '(fn [{:keys [userUid username]}]
-                (or userUid username))]]
+   :params [:map
+            [:userUid :string]]
+
    :coeffects [legacy-cookie
                [:saved-user-stream
-                (fn [{{:keys [userUid username]} :params}]
+                (fn [{{:keys [userUid]} :params}]
                   (fetch-saved-user-stream userUid))]
                [:saved-user-password
-                (fn [{{:keys [userUid username]} :params}]
+                (fn [{{:keys [userUid]} :params}]
                   (:password (fetch-saved-user-password userUid)))]
-               import-user]
+               [:imported-user import-user]]
+
+   :conditions [[(fn [{{:keys [imported-user]} :cofx}]
+                   (user-exists? imported-user))
+                 :not-found "User with this id does not exist"]]
+
    :effects (fn [{{:keys [saved-user-stream imported-user saved-user-password]} :cofx
-                  {:keys [userUid username]} :params}]
+                  {:keys [userUid]} :params}]
               (let [{password :password
                      login :login} (extract-credentials imported-user)
                     saved-user (merge-diffs saved-user-stream)
@@ -200,26 +220,37 @@
                                              #(select-keys % [:data :operation])
                                              (remove-key imported-user "userPasswordTxt")))
                     new-password (password-changed saved-user-password password)]
-                (merge nil
-                       (when-not (empty? data-diff)
-                         {:save-legacy-event
-                          {:id (uuid)
-                           :type :legacy-user-synchronized
-                           :stream-id userUid
-                           :created-at (timestamp)
-                           :version next-version
-                           :payload data-diff}})
-                       (when new-password
-                         {:save-credentials
-                          {:login login
-                           :legacy-uid userUid
-                           :password (crypto/encrypt new-password)}}))))
+                {:save-legacy-event
+                 (when-not (empty? data-diff)
+                   {:id (uuid)
+                    :type :legacy-user-synchronized
+                    :stream-id userUid
+                    :created-at (timestamp)
+                    :version next-version
+                    :payload data-diff})
+                 :save-credentials
+                 (when new-password
+                   {:login login
+                    :legacy-uid userUid
+                    :password (crypto/encrypt new-password)})}))
    :handler {:save-legacy-event (fn [payload environment]
                                   (insert! (:db environment) :legacy-events payload))
-             :save-credentials persist-authentication-credentials!}
-   :return (fn [{:keys [side-effects]}]
-             side-effects)
-   :produce [:legacy-user-synchronized]})
+             :save-credentials upsert-authentication-credentials!}
+   :return #(select-keys % [:side-effects])
+   :produce [:map
+             [:side-effects
+              [:map
+               [:save-legacy-event [:or map? nil?]
+                :save-credentials [:or map? nil?]]]]]})
+
+(def import-users-command
+  {:id ::import-users
+   :coeffects [legacy-cookie
+               [:users-list import-users-list!]]
+   :return identity})
+
+(comment (command/run! import-users-command)
+         )
 
 (comment
   (def ev (command/run! import-user-command
@@ -231,7 +262,7 @@
   (legacy-auth/refresh-cookie)
 
   (execute! ["DELETE FROM legacy_events WHERE stream_id = ?" "10660"])
-  (def re (first (select ["SELECT * FROM legacy_events WHERE stream_id = ?" "10660"])))
+  (def re (first (select! ["SELECT * FROM legacy_events WHERE stream_id = ?" "10660"])))
 
   ;; Test that merging all update bring aggregate to same state as current.
   (= (mapv #(dissoc % :operation) (:res iuser))

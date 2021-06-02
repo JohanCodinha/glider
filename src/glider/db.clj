@@ -131,8 +131,11 @@
   (set-parameter [^java.sql.Timestamp v ^PreparedStatement s ^long i]
     (.setTimestamp s i v)))
 
-(defn select [sql]
-  (jdbc.sql/query @datasource sql jdbc/unqualified-snake-kebab-opts)) 
+(defn select!
+  ([sql]
+   (select! @datasource sql))
+  ([db sql]
+   (jdbc.sql/query db sql jdbc/unqualified-snake-kebab-opts))) 
 
 (defn dash->underscore [kword]
   (-> kword
@@ -168,6 +171,8 @@
   ([db sql]
    (jdbc/execute! db sql)))
 
+(defn update!
+  ([sql]))
 ;; utils
 (defn events->rows-cols [events]
   [(->> events first keys) (map vals events)])
@@ -209,10 +214,10 @@
   (jdbc/execute! @datasource ["DROP TABLE authentication"])
   (jdbc/execute! @datasource ["DROP TABLE legacy_events"])
   (jdbc/query @datasource ["SELECT ?::json AS jsonobj" {"foo" "bar"}])
-  (select ["SELECT * FROM events WHERE data #> '{nope}' = ?" 1])
+  (select! ["SELECT * FROM events WHERE data #> '{nope}' = ?" 1])
 
-  (def res (select ["SELECT * FROM events WHERE uuid = ?" (java.util.UUID/fromString "bbaf95cb-b9c5-4bf5-871b-02c2340fea32")]))
-  (select ["SELECT * FROM events"])
+  (def res (select! ["SELECT * FROM events WHERE uuid = ?" (java.util.UUID/fromString "bbaf95cb-b9c5-4bf5-871b-02c2340fea32")]))
+  (select! ["SELECT * FROM events"])
   (-> res first :events/data)
   (prn @datasource) 
   ;

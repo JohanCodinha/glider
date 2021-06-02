@@ -18,6 +18,83 @@
             [jsonista.core :as json]
             [glider.api.legacy.user.routes :as legacy-user]))
 
+(defn routes [env]
+  [(legacy-user/routes env)
+   ["/debug/:data"
+    {:post {:summary "Debug route update"
+            :parameters {:body [:map [:userUid any?]]
+                         :query [:map [:all boolean?]]
+                         :path [:map [:data any?]]}
+            :handler (fn [req]
+                       (tap> req)
+                       {:status 200
+                        :body {:datasource (:db env)
+                               :parameters (:parameters req)}})}}]
+
+   ["/record"
+    {:coercion malli-coercion/coercion
+     :post {:summary "Upload a record of a species observation to the VBA"
+            :tags ["Contribution"]
+            :parameters {:body [:map
+                                [:latitude int?]
+                                [:accuracy int?]
+                                [:location-description string?]
+                                [:common-name string?]
+                                [:scientific-name string?]
+                                [:taxon-id string?]
+                                [:date-time string?]
+                                [:count int?]
+                                [:user-id string?]
+                                [:notes string?]
+                                [:observer-name string?]
+                                [:discipine [:enum "fi" "cd" "np"]]]}
+            :responses {200 {:description "A record Id is returned on success"
+                             :body [:map [:record_id uuid?]]}
+                        500 {:description "Server error, record was not save."}}
+            :handler (fn [req #_{{{:keys [x y]} :query
+                                  {:keys [z]} :path} :parameters}]
+                       (let [{{{:keys [x y]} :query
+                               {:keys [z]} :path} :parameters} req]
+                         (println "made it")
+                         (prn x y z)
+                         {:status 200, :body {:total ((fnil + 0 0 0) x y z)}}))}}]
+
+   ["/upload"
+    {:coercion malli-coercion/coercion
+
+     :post {:summary "Upload a species list CSV file"
+            :tags ["Contribution"]
+            :description "Accept a CSV file with column matching data model or darwin core field"
+            :parameters {:body [:map [:file string?]]}
+            :responses {200 {:body [:map [:batch-id uuid?]]}}
+            :handler (fn [{{{:keys [file]} :multipart} :parameters}]
+                       {:status 200
+                        :body {:name (:filename file)
+                               :size (:size file)}})}}]
+   ["/dashboard"
+    {:coercion malli-coercion/coercion
+     :get {:summary "System dashboard"
+           :tags ["Admin"]
+           :description "Features supporting admin to execute command against application state"
+           :parameters {:body [:map [:admin-username string?]]}
+           :handler (fn [{{{:keys [file]} :multipart} :parameters}]
+                      {:status 200
+                       :body {:name (:filename file)
+                              :size (:size file)}})}}]
+   ["/spacial"
+    {:coercion malli-coercion/coercion
+     :get {:summary "Run spacial queries against live system"
+           :tags ["Query"]
+           :description "Enabled by PostGIS"
+           :parameters {:body [:map
+                               [:latitude string?]
+                               [:longtude string?]
+                               [:species_name string?]
+                               [:species_id uuid?]]}
+           :handler (fn [{{{:keys [file]} :multipart} :parameters}]
+                      {:status 200
+                       :body {:name (:filename file)
+                              :size (:size file)}})}}]])
 (def router-config
   {:data
    {:coercion
@@ -51,79 +128,6 @@
                    (coercion/coerce-request-interceptor)
                        ;; multipart
                    (multipart/multipart-interceptor)]}})
-(defn routes [env]
-  [(legacy-user/routes env)
-    ["/debug"
-     {:get {:summary "Debug route update"
-            :handler (fn [req]
-                       (tap> req)
-                       {:status 200
-                        :body {:datasource (:db env)}})}}]
-
-    ["/record"
-     {:coercion malli-coercion/coercion
-      :post {:summary "Upload a record of a species observation to the VBA"
-             :tags ["Contribution"]
-             :parameters {:body [:map
-                                 [:latitude int?]
-                                 [:accuracy int?]
-                                 [:location-description string?]
-                                 [:common-name string?]
-                                 [:scientific-name string?]
-                                 [:taxon-id string?]
-                                 [:date-time string?]
-                                 [:count int?]
-                                 [:user-id string?]
-                                 [:notes string?]
-                                 [:observer-name string?]
-                                 [:discipine [:enum "fi" "cd" "np"]]]}
-             :responses {200 {:description "A record Id is returned on success"
-                              :body [:map [:record_id uuid?]]}
-                         500 {:description "Server error, record was not save."}}
-             :handler (fn [req #_{{{:keys [x y]} :query
-                                   {:keys [z]} :path} :parameters}]
-                        (let [{{{:keys [x y]} :query
-                                {:keys [z]} :path} :parameters} req]
-                          (println "made it")
-                          (prn x y z)
-                          {:status 200, :body {:total ((fnil + 0 0 0) x y z)}}))}}]
-
-    ["/upload"
-     {:coercion malli-coercion/coercion
-
-      :post {:summary "Upload a species list CSV file"
-             :tags ["Contribution"]
-             :description "Accept a CSV file with column matching data model or darwin core field"
-             :parameters {:body [:map [:file string?]]}
-             :responses {200 {:body [:map [:batch-id uuid?]]}}
-             :handler (fn [{{{:keys [file]} :multipart} :parameters}]
-                        {:status 200
-                         :body {:name (:filename file)
-                                :size (:size file)}})}}]
-    ["/dashboard"
-     {:coercion malli-coercion/coercion
-      :get {:summary "System dashboard"
-            :tags ["Admin"]
-            :description "Features supporting admin to execute command against application state"
-            :parameters {:body [:map [:admin-username string?]]}
-            :handler (fn [{{{:keys [file]} :multipart} :parameters}]
-                       {:status 200
-                        :body {:name (:filename file)
-                               :size (:size file)}})}}]
-    ["/spacial"
-     {:coercion malli-coercion/coercion
-      :get {:summary "Run spacial queries against live system"
-            :tags ["Query"]
-            :description "Enabled by PostGIS"
-            :parameters {:body [:map
-                                [:latitude string?]
-                                [:longtude string?]
-                                [:species_name string?]
-                                [:species_id uuid?]]}
-            :handler (fn [{{{:keys [file]} :multipart} :parameters}]
-                       {:status 200
-                        :body {:name (:filename file)
-                               :size (:size file)}})}}]])
 (def swagger-docs
   ["/swagger.json"
    {:get {:no-doc true
@@ -159,9 +163,16 @@
 
 (comment
   (->
-   {:uri "/legacy/synchronization/user"
+   {:uri "/legacy/synchronization/users/10660"
     :request-method :post
-    :body-params {:userUid "10660"}}
+    }
+   ((ring-handler {:db @glider.db/datasource}))
+   (update :body (comp json/read-value slurp)))
+
+  (->
+   {:uri "/legacy/synchronization/users"
+    :request-method :post
+    }
    ((ring-handler {:db @glider.db/datasource}))
    (update :body (comp json/read-value slurp)))
 
