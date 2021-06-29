@@ -16,20 +16,22 @@
             [reitit.http :as http]
             [reitit.interceptor.sieppari :as sieppari]
             [jsonista.core :as json]
-            [glider.api.legacy.user.routes :as legacy-user]))
+            [glider.api.legacy.user.routes :as legacy-user]
+            [glider.api.operation.routes :as operation]))
 
 (defn routes [env]
   [(legacy-user/routes env)
+   (operation/routes env)
    ["/debug/:data"
     {:post {:summary "Debug route update"
-            :parameters {:body [:map [:userUid any?]]
+            #_#_:parameters {:body [:map [:userUid any?]]
                          :query [:map [:all boolean?]]
                          :path [:map [:data any?]]}
             :handler (fn [req]
                        (tap> req)
                        {:status 200
                         :body {:datasource (:db env)
-                               :parameters (:parameters req)}})}}]
+                               #_#_:parameters (:parameters req)}})}}]
 
    ["/record"
     {:coercion malli-coercion/coercion
@@ -149,6 +151,7 @@
     [swagger-docs
      (routes env)]
     router-config))
+(router {})
 
 (defn ring-handler [env]
   (http/ring-handler
@@ -164,22 +167,27 @@
 (comment
   (->
    {:uri "/legacy/synchronization/users/10660"
-    :request-method :post
-    }
+    :request-method :post}
    ((ring-handler {:db @glider.db/datasource}))
    (update :body (comp json/read-value slurp)))
 
   (->
    {:uri "/legacy/synchronization/users"
-    :request-method :post
-    }
+    :request-method :post}
    ((ring-handler {:db @glider.db/datasource}))
    (update :body (comp json/read-value slurp)))
 
   (->
+   {:uri (str "/operation/" "93af550e-7e08-4ee4-80a4-49845c97a776")
+    :request-method :get}
+   ((ring-handler {:db @glider.db/datasource}))
+   #_(update :body (comp json/read-value slurp)))
+
+  "8fe30d94-6f71-4c2d-9368-e91f8fce9ae0"
+
+  (->
    {:uri "/debug"
     :request-method :get
-    :parameters {:userUid "10660"}
-    }
+    :parameters {:userUid "10660"}}
    ((ring-handler {:db @glider.db/datasource}))
    (update :body (comp json/read-value slurp))))

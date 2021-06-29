@@ -17,10 +17,13 @@
             [malli.util :as mu]
             [java-time :as time]
             [editscript.core :as diff]
+            [lib.editscript.core :as editscript]
             [glider.utils :refer [uuid timestamp]]
             [glider.db :refer [select! insert! execute!]]
             [crypto.password.bcrypt :as crypto]
-            [clojure.core.async :as cca]))
+            [clojure.core.async :as cca]
+            [glider.system.operation.core :as operation]
+            [clojure.walk :refer [postwalk]]))
 
 ;; Aggregate
 ;; Handling users management sync with legacy system.
@@ -28,7 +31,9 @@
   "Fetch all users, return a lazy seq"
   [cookie]
   (println "get all users")
-  (first (utils/request2! (transactions/all-users-transaction) cookie)))
+  (-> (utils/request2! (transactions/all-users-transaction) cookie)
+      first
+      :data))
 
 
 (comment
@@ -73,21 +78,10 @@
 
 (defn import-users-list!
   [{{cookie :cookie} :cofx
-    environment :environment
     :as ctx}]
-  (println "import-users-list made it here")
   (try
-    (let [all-users (get-all-users! cookie)
-          users-count (count (:data all-users))]
-      (glider.system.operation.core/update!
-       (:db environment)
-       (assoc-in (:operation environment) [:metadata :user-count] users-count))
-      (println "Imported :")
-      (println users-count)
-      all-users)
+    (get-all-users! cookie)
     (catch clojure.lang.ExceptionInfo e
-      (println "herrrrror")
-      (tap> e)
       (if (= :cookie-expired (:type (ex-data e)))
         (doto (command/enqueue ctx legacy-cookie) tap>)
         (throw e)))))
@@ -101,19 +95,294 @@
    :version version
    :payload data})
 
-(defn diff-payload [saved imported]
-  (let [saved-by-operation (into {} (map (juxt :operation identity) saved))]
-  (if saved
-    (->> imported
-         (map (fn [{operation :operation :as i}]
-                (update i :data #(diff/get-edits
-                                  (diff/diff (:data (get saved-by-operation
-                                                         operation))
-                                             %)))))
-         (remove #(empty? (:data %)))
-         vec)
-    imported)))
 
+
+
+(defn diff-payload [saved imported]
+  (try
+    (let [saved-by-operation (into {} (map (juxt :operation identity) saved))]
+      (if saved
+        (->> imported
+             (map (fn [{operation :operation :as i}]
+                    (update i :data #(editscript/diff->edits
+                                      (:data (get saved-by-operation
+                                                  operation))
+                                      %))))
+             (remove #(empty? (:data %)))
+             vec)
+        imported))
+    (catch Exception e
+      (println "diff failled, why ?")
+      (tap> saved)
+      (tap> imported)
+      (throw e))))
+
+
+(comment
+  (diff-payload [{:operation {:content [{:content [{:content ["34"]
+                                         :attrs nil
+                                         :tag :userUid}]
+                              :attrs {:xsi:type "xsd:Object"}
+                              :tag :criteria}
+                             {:content [{:content ["UserInfoView_DS"]
+                                         :attrs nil
+                                         :tag :dataSource}
+                                        {:content ["fetch"]
+                                         :attrs nil
+                                         :tag :operationType}]
+                              :attrs {:xsi:type "xsd:Object"}
+                              :tag :operationConfig}
+                             {:content ["builtinApplication"]
+                              :attrs nil
+                              :tag :appID}
+                             {:content ["userInfoById"]
+                              :attrs nil
+                              :tag :operation}]
+                   :attrs {:xsi:type "xsd:Object"}
+                   :tag :elem}
+       :data-source "UserInfoView_DS"
+       :data [{"confirmUserPasswordTxt" nil
+               "creationTsp" 1313416800000
+               "preferredContactMethodCde" "pcme"
+               "statusCde" "active"
+               "nameId" 34
+               "organisationId" 99
+               "modifiedTsp" 1469664556170
+               "changePasswordCde" "false"
+               "fullName" "Dale Smithyman"
+               "statusDesc" "Active"
+               "organisationNme" "Golden Plains Shire Council"
+               "roleDesc" "Contributor"
+               "primaryAddressId" 1
+               "roleCde" "con"
+               "primaryContactId" 3445
+               "loginNameNme" "Smithyman"
+               "surnameNme" "Smithyman"
+               "otherNme" nil
+               "batchUploadViewCde" "false"
+               "givenNme" "Dale"
+               "lastSystemAccessTsp" 1469664556138
+               "userUid" 34
+               "reasonTxt" "LGA user"
+               "restrictedViewingCde" "false"
+               "dateAcceptedTcTsp" nil}]}
+      {:operation {:content [{:content [{:content ["34"]
+                                         :attrs {:xsi:type "xsd:long"}
+                                         :tag :USER_UID}]
+                              :attrs {:xsi:type "xsd:Object"}
+                              :tag :criteria}
+                             {:content [{:content ["AddressDetail_DS"]
+                                         :attrs nil
+                                         :tag :dataSource}
+                                        {:content ["fetch"]
+                                         :attrs nil
+                                         :tag :operationType}
+                                        {:content ["exact"]
+                                         :attrs nil
+                                         :tag :textMatchStyle}]
+                              :attrs {:xsi:type "xsd:Object"}
+                              :tag :operationConfig}
+                             {:content ["isc_ListGrid_1"]
+                              :attrs nil
+                              :tag :componentId}
+                             {:content ["builtinApplication"]
+                              :attrs nil
+                              :tag :appID}
+                             {:content ["fetchUserAddresses"]
+                              :attrs nil
+                              :tag :operation}]
+                   :attrs {:xsi:type "xsd:Object"}
+                   :tag :elem}
+       :data-source "AddressDetail_DS"
+       :data [{"addressId" 1
+               "creationTsp" 1313416800000
+               "mainAddressId" ""
+               "modifiedTsp" nil
+               "streetNme" nil
+               "countryNme" nil
+               "postcodeTxt" nil
+               "cityNme" nil
+               "streetNumberTxt" nil
+               "stateNme" nil}
+              {"addressId" 1832
+               "creationTsp" 1469084015579
+               "mainAddressId" ""
+               "modifiedTsp" nil
+               "streetNme" "P. O. Box 111"
+               "countryNme" "Australia"
+               "postcodeTxt" "3328"
+               "cityNme" "Bannockburn"
+               "streetNumberTxt" nil
+               "stateNme" "VIC"}]}
+      {:operation {:content [{:content [{:content ["34"]
+                                         :attrs {:xsi:type "xsd:long"}
+                                         :tag :USER_UID}]
+                              :attrs {:xsi:type "xsd:Object"}
+                              :tag :criteria}
+                             {:content [{:content ["ContactDetail_DS"]
+                                         :attrs nil
+                                         :tag :dataSource}
+                                        {:content ["fetch"]
+                                         :attrs nil
+                                         :tag :operationType}
+                                        {:content ["exact"]
+                                         :attrs nil
+                                         :tag :textMatchStyle}]
+                              :attrs {:xsi:type "xsd:Object"}
+                              :tag :operationConfig}
+                             {:content ["isc_ListGrid_2"]
+                              :attrs nil
+                              :tag :componentId}
+                             {:content ["builtinApplication"]
+                              :attrs nil
+                              :tag :appID}
+                             {:content ["fetchContactByUserUid"]
+                              :attrs nil
+                              :tag :operation}]
+                   :attrs {:xsi:type "xsd:Object"}
+                   :tag :elem}
+       :data-source "ContactDetail_DS"
+       :data [{"creationTsp" nil
+               "contactCde" nil
+               "emailOrPhoneTxt" nil
+               "modifiedTsp" nil
+               "contactId" 1}
+              {"creationTsp" 1469069246595
+               "contactCde" "cde"
+               "emailOrPhoneTxt" "dsmithyman@gplains.vic.gov.au"
+               "modifiedTsp" nil
+               "contactId" 3445}]}]
+
+                [{:data [{"confirmUserPasswordTxt" nil
+               "creationTsp" 1313416800000
+               "preferredContactMethodCde" "pcme"
+               "statusCde" "active"
+               "nameId" 34
+               "organisationId" 99
+               "modifiedTsp" 1469664556170
+               "changePasswordCde" "false"
+               "fullName" "Dale Smithyman"
+               "statusDesc" "Active"
+               "organisationNme" "Golden Plains Shire Council"
+               "roleDesc" "Contributor"
+               "primaryAddressId" 1
+               "roleCde" "con"
+               "primaryContactId" 3445
+               "loginNameNme" "Smithyman"
+               "surnameNme" "Smithyman"
+               "otherNme" nil
+               "batchUploadViewCde" "false"
+               "givenNme" "Dale"
+               "lastSystemAccessTsp" 1469664556138
+               "userUid" 34
+               "reasonTxt" "LGA user"
+               "restrictedViewingCde" "false"
+               "dateAcceptedTcTsp" nil}]
+       :operation {:tag :elem
+                   :attrs {:xsi:type "xsd:Object"}
+                   :content [{:tag :criteria
+                              :attrs {:xsi:type "xsd:Object"}
+                              :content [{:tag :userUid
+                                         :attrs nil
+                                         :content ["34"]}]}
+                             {:tag :operationConfig
+                              :attrs {:xsi:type "xsd:Object"}
+                              :content [{:tag :dataSource
+                                         :attrs nil
+                                         :content ["UserInfoView_DS"]}
+                                        {:tag :operationType
+                                         :attrs nil
+                                         :content ["fetch"]}]}
+                             {:tag :appID
+                              :attrs nil
+                              :content ["builtinApplication"]}
+                             {:tag :operation
+                              :attrs nil
+                              :content ["userInfoById"]}]}}
+      {:data [{"addressId" 1832
+               "creationTsp" 1469084015579
+               "mainAddressId" ""
+               "modifiedTsp" nil
+               "streetNme" "P. O. Box 111"
+               "countryNme" "Australia"
+               "postcodeTxt" "3328"
+               "cityNme" "Bannockburn"
+               "streetNumberTxt" nil
+               "stateNme" "VIC"}
+              {"addressId" 1
+               "creationTsp" 1313416800000
+               "mainAddressId" ""
+               "modifiedTsp" nil
+               "streetNme" nil
+               "countryNme" nil
+               "postcodeTxt" nil
+               "cityNme" nil
+               "streetNumberTxt" nil
+               "stateNme" nil}]
+       :operation {:tag :elem
+                   :attrs {:xsi:type "xsd:Object"}
+                   :content [{:tag :criteria
+                              :attrs {:xsi:type "xsd:Object"}
+                              :content [{:tag :USER_UID
+                                         :attrs {:xsi:type "xsd:long"}
+                                         :content ["34"]}]}
+                             {:tag :operationConfig
+                              :attrs {:xsi:type "xsd:Object"}
+                              :content [{:tag :dataSource
+                                         :attrs nil
+                                         :content ["AddressDetail_DS"]}
+                                        {:tag :operationType
+                                         :attrs nil
+                                         :content ["fetch"]}
+                                        {:tag :textMatchStyle
+                                         :attrs nil
+                                         :content ["exact"]}]}
+                             {:tag :componentId
+                              :attrs nil
+                              :content ["isc_ListGrid_1"]}
+                             {:tag :appID
+                              :attrs nil
+                              :content ["builtinApplication"]}
+                             {:tag :operation
+                              :attrs nil
+                              :content ["fetchUserAddresses"]}]}}
+      {:data [{"contactCde" nil
+               "contactId" 1
+               "creationTsp" nil
+               "emailOrPhoneTxt" nil
+               "modifiedTsp" nil}
+              {"contactCde" "cde"
+               "contactId" 3445
+               "creationTsp" 1469069246595
+               "emailOrPhoneTxt" "dsmithyman@gplains.vic.gov.au"
+               "modifiedTsp" nil}]
+       :operation {:tag :elem
+                   :attrs {:xsi:type "xsd:Object"}
+                   :content [{:tag :criteria
+                              :attrs {:xsi:type "xsd:Object"}
+                              :content [{:tag :USER_UID
+                                         :attrs {:xsi:type "xsd:long"}
+                                         :content ["34"]}]}
+                             {:tag :operationConfig
+                              :attrs {:xsi:type "xsd:Object"}
+                              :content [{:tag :dataSource
+                                         :attrs nil
+                                         :content ["ContactDetail_DS"]}
+                                        {:tag :operationType
+                                         :attrs nil
+                                         :content ["fetch"]}
+                                        {:tag :textMatchStyle
+                                         :attrs nil
+                                         :content ["exact"]}]}
+                             {:tag :componentId
+                              :attrs nil
+                              :content ["isc_ListGrid_2"]}
+                             {:tag :appID
+                              :attrs nil
+                              :content ["builtinApplication"]}
+                             {:tag :operation
+                              :attrs nil
+                              :content ["fetchContactByUserUid"]}]}}]))
 ;;Import users from legacy app
 (defn fetch-saved-user-stream [userUid]
   (select! ["SELECT * FROM legacy_events WHERE stream_id = ? ORDER BY version" userUid]))
@@ -192,7 +461,6 @@
   {:id ::import-user
    :params [:map
             [:userUid :string]]
-
    :coeffects [legacy-cookie
                [:saved-user-stream
                 (fn [{{:keys [userUid]} :params}]
@@ -208,6 +476,10 @@
 
    :effects (fn [{{:keys [saved-user-stream imported-user saved-user-password]} :cofx
                   {:keys [userUid]} :params}]
+              (println userUid)
+              (tap> saved-user-stream)
+              (tap> imported-user)
+              (tap> saved-user-password)
               (let [{password :password
                      login :login} (extract-credentials imported-user)
                     saved-user (merge-diffs saved-user-stream)
@@ -216,7 +488,7 @@
                                      (get :version 0)
                                      inc)
                     data-diff (diff-payload saved-user
-                                            (map
+                                            (mapv
                                              #(select-keys % [:data :operation])
                                              (remove-key imported-user "userPasswordTxt")))
                     new-password (password-changed saved-user-password password)]
@@ -243,10 +515,26 @@
                [:save-legacy-event [:or map? nil?]
                 :save-credentials [:or map? nil?]]]]]})
 
+(defn fetch-users
+  [{{:keys [cookie users-list]} :cofx :as ctx}]
+  (reduce (fn [acc id]
+            (let [user (fetch-user-details! id cookie)]
+              (operation/update!
+               (get-in ctx [:environment :db])
+               (update-in (:operation ctx) [:metadata :users-fetched] (fnil inc 0)))
+              (conj acc user)))
+          [] (map #(get % "userUid") users-list)))
+
 (def import-users-command
   {:id ::import-users
    :coeffects [legacy-cookie
-               [:users-list import-users-list!]]
+               [:users-list import-users-list!]
+               [:update-operation
+                (fn [{{:keys [users-list]} :cofx :as ctx}]
+                  (operation/update!
+                   (get-in ctx [:environment :db])
+                   (assoc-in (:operation ctx) [:metadata :users-to-fetch] (count users-list))))]
+               [:fetch-users fetch-users]]
    :return identity})
 
 (comment (command/run! import-users-command)
@@ -254,8 +542,9 @@
 
 (comment
   (def ev (command/run! import-user-command
-                        {:userUid "10660"}
-                        {:side-effects false}))
+                        {:userUid "16"}
+                        {:environment {:db @glider.db/datasource}}
+                        #_{:side-effects false}))
 
   (def iuser (import-user-by-userUid! "10660" @legacy-auth/admin-cookie))
 
@@ -276,7 +565,7 @@
 
   (def lookups-data
     (utils/request! {:tag :transaction
-                     :attrs
+                     :attrsiy
                      {:xsi:type "xsd:Object",
                       :xmlns:xsi "http://www.w3.org/2000/10/XMLSchema-instance"},
                      :content

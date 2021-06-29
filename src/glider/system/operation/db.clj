@@ -17,6 +17,12 @@
   [db]
   (select! db [(format "SELECT * FROM %s WHERE done = false" DEFAULT-JOB-TABLE)]))
 
+(defn delete-all!
+  [db]
+  (jdbc/execute!
+   db
+   [(format "DELETE FROM %s"
+            DEFAULT-JOB-TABLE)]))
 (comment
   (jdbc/execute!
    @db/datasource
@@ -26,8 +32,10 @@
   (jdbc/execute! @db/datasource
                  [(format "DROP TABLE %s "
                           DEFAULT-JOB-TABLE)])
+
+  (delete-all! @db/datasource)
   
-  (get-by-uuid! @db/datasource (java.util.UUID/fromString "13398eb7-7d9a-4d4e-8b98-ecc67813eeea"))
+  (get-by-uuid! @db/datasource (java.util.UUID/fromString "8bdbde0e-eba4-4117-bed1-3fb97b7585b4"))
 
   (enqueue! @db/datasource {:id (utils/uuid "13398eb7-7d9a-4d4e-8b98-ecc67813eeea")
                            :enqueued_at (utils/timestamp)

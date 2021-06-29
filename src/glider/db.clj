@@ -61,9 +61,14 @@
   [^org.postgresql.util.PGobject v]
   (let [type  (.getType v)
         value (.getValue v)]
+    (tap> value)
+    (tap> type)
     (if (#{"jsonb" "json"} type)
       (with-meta (<-json value) {:pgtype type})
       value)))
+
+
+(with-meta (<-json "{\"a\":true}") {:pgtype "json"})
 
 (set! *warn-on-reflection* true)
 

@@ -145,7 +145,7 @@
 
         :else
         (parse-js-object! (:body response))))))
-(http/get "https://vba.dse.vic.gov.au/")
+
 (def send-request-m! (memoize send-request!))
 
 (defn fetched-rows-report [res]
