@@ -40,28 +40,31 @@
 (def context-keys #{:interceptor/done :interceptor/queue :interceptor/tasks})
 
 (defn exit [ctx]
-  (assoc ctx :interceptor/queue []))
+  (-> ctx
+      (dissoc :pause)
+      (assoc  :interceptor/paused true)))
 
 (def pause-interceptor
   {:name :pause
-   :fn (fn [{p :pause queue :queue :as ctx}]
-         (let [exit-ctx (dissoc (exit ctx) :pause)]
+   :fn (fn [{p :pause queue :interceptor/queue :as ctx}]
+         (let [exit-ctx (exit ctx)]
            (cond
              (and p (realized? p))
              (do (deliver @p exit-ctx)
                  exit-ctx)
              (empty? queue)
-             (deliver p exit-ctx)
+             (do (deliver p exit-ctx)
+                 exit-ctx)
              :else ctx)))})
 
 (defn inject
   "Inject interceptor into queue, add pause when :pause present in ctx"
-  [ctx {name :name :as interceptor}]
+  [ctx [name args]]
   (let [queue (:interceptor/queue ctx)]
     (assoc ctx :interceptor/queue
            (vec (if (:pause ctx)
-                  (cons [[nil :pause]  pause-interceptor] (cons [[nil name] interceptor] queue))
-                  (cons [[nil name] interceptor] queue))))))
+                  (cons [:pause] (cons [name args] queue))
+                  (cons [name args] queue))))))
 
 (def registry (atom {}))
 
@@ -131,27 +134,30 @@
 (def debug-ctx (atom []))
 
 (defn execute
-  ([ctx] (execute nil ctx))
-  ([old-ctx ctx]
+  ([registry ctx] (execute registry nil ctx))
+  ([registry old-ctx ctx]
    (def c ctx)
    (cond
      (async? ctx) (continue ctx old-ctx execute)
      (context? ctx)
      (let [queue (:interceptor/queue ctx)
            done (:interceptor/done ctx)
-           [interceptor-key {fn :fn error-handler :error}] (first queue)]
+           [interceptor-key args :as interceptor] (first queue)]
        (println (str "Current interceptor: " interceptor-key))
        (swap! debug-ctx conj ctx)
        (if (or (:interceptor/error ctx)
-               (not fn))
+               (not interceptor-key)
+               (:interceptor/paused ctx))
          ctx
-         (let [next-ctx
+         (let [{f :fn e :error} ((get registry interceptor-key) args)
+               next-ctx
                (-> ctx
                    (assoc :interceptor/queue ((comp vec rest) queue))
-                   (assoc :interceptor/done ((fnil  conj []) done interceptor-key)))]
+                   (assoc :interceptor/done ((fnil  conj []) done interceptor)))]
            (recur
+            registry
             next-ctx
-            (-try next-ctx fn error-handler)))))
+            (-try next-ctx f e)))))
      :else (throw
             (ex-info
              (str "Unsupported Context :" ctx " returned by "
@@ -160,32 +166,23 @@
               :old-ctx old-ctx})))))
 (context? c)
 
-
 (defn dispatch
-  [tasks- registry ctx]
+  [tasks registry ctx]
   (reset! debug-ctx [])
-  (let [tasks (mapv (fn [t]
-                     (let [[name params] t]
-                       ((get registry name) params)))
-                   tasks-)
-        _ (tap> tasks)
-        tasks* (map-indexed
-                (fn [i {name :name :as interceptor}] [[i name] interceptor])
-                tasks)
-        ctx* (if (seq (:interceptor/done ctx))
+  (let [
+        ctx* (if (seq (:interceptor/queue ctx))
+               ctx
                (assoc ctx :interceptor/queue
                       (if (:pause ctx)
                         (interleave
-                         (remove-processed tasks* (:interceptor/done ctx))
-                         (repeat [[nil :pause] pause-interceptor]))
-                        (remove-processed tasks* (:interceptor/done ctx))))
-               (assoc ctx :interceptor/queue
-                      (if (:pause ctx)
-                        (interleave
-                         tasks*
-                         (repeat [[nil :pause] pause-interceptor]))
-                        tasks*)))]
-    (execute ctx*)))
+                         tasks
+                         (repeat [:pause]))
+                        tasks)))]
+    (tap> ctx*)
+    (execute (if (:pause ctx)
+               (assoc registry :pause (constantly pause-interceptor))
+               registry)
+             ctx*)))
 
 (defn resume [result task]
   (let [pause (promise)]

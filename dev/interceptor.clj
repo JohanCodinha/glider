@@ -43,8 +43,8 @@
        (if (and (< (count fetched) 5) after)
          (-> ctx
              (update-in [:cofx :fetch-api] #((fnil conj []) % response))
-             (i/inject (fetch-interceptor
-                        (assoc req :url (str (:base-url req) "?after=" after)))))
+             (i/inject [:fetch
+                        (assoc req :url (str (:base-url req) "?after=" after))]))
          (-> ctx
              (update-in [:cofx :fetch-api] #((fnil conj []) % response))
              (update-in [:cofx :fetch-api]
@@ -57,6 +57,7 @@
               :website
               (fn [{{url :url} :params}]
                 (future (Thread/sleep 2000)
+                        (prn "fetched done")
                         (format % url))))
    :now (constantly
          (i/cofx->interceptor
@@ -98,14 +99,24 @@
                                      {:params {:url "http://www.reddit.com/r/Clojure.json"}
                                       :uuid uuid
                                       :pause p}))]
-      (Thread/sleep 1000)
-      (i/pause p)))
-  (let [p (promise)]
-    (future (i/dispatch tasks
-                        (assoc r :pause p)))
-    (Thread/sleep 1000)
-    (i/pause p))
+      #_#_(Thread/sleep 1000)
+      (i/pause p)
+      @result))
+
+  ;;Need to do interceptor effect handler
   
+  (def r2
+    (let [p (promise)
+          res (future (i/dispatch tasks
+                                  registry
+                                  (dissoc
+                                   (assoc r :pause p)
+                                   :interceptor/paused)))]
+
+      (Thread/sleep 2000)
+      [(i/pause p) res]))
+  (dissoc (first r2) :cofx)
+
   (def paused @(second *1))
 
   (i/resume paused tasks)
