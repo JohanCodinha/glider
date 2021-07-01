@@ -1,16 +1,3 @@
-
-
-I want to list all users from legacy
-  Process command "Sync legacy users"
-  	  Fetch users
-	  If not in system then
- 	     Generate new event fact
-	     Generate updated event fact
-  	  Publish system event	     
-  Generate view layer
-  	  Build denormalized view
-  Serve data via http API
-
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
