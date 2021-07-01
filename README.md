@@ -44,8 +44,8 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://i.imgur.com/rj5YKjY.png)
-[![Product docs][product-docs]](https://i.imgur.com/WLNQfI5.png)
+![Product Name Screen Shot](https://i.imgur.com/rj5YKjY.png)
+![Product docs](https://i.imgur.com/WLNQfI5.png)
 
 With a flexible data model, elastic cloud scaling, and rich queries, Glider is able to fulfi the needs of governments processes and programs that impact native species.
 
@@ -61,7 +61,9 @@ With a flexible data model, elastic cloud scaling, and rich queries, Glider is a
 ## Getting Started
 
 The project can be started with:
+	```clojure
 	clojure -Sdeps '{:deps {reply {:mvn/version 0.4.3}}}' -m reply.main --attach localhost:$(echo .nrepl-port)
+	```
 
 ### Prerequisites
 
