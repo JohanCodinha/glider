@@ -11,14 +11,11 @@
     Glider is a project aiming at improving and replacing the <a href="https://www.environment.vic.gov.au/biodiversity/victorian-biodiversity-atlas">Victorian Biodiversity Atlas</a>. 
     Showing where wildlife is now and how this has changed over time. This makes it a core input to the majority of the governments processes and programs that impact native species.
     <br />
-    ·
-    <a href="https://gitlab.com/JohanCodinha/glider/issues">Report Bug</a>
-    ·
-    <a href="https://gitlab.com/JohanCodinha/glider/issues">Request Feature</a>
+	<a href="https://gitlab.com/JohanCodinha/glider/issues">Report Bug</a>
+	<a href="https://gitlab.com/JohanCodinha/glider/issues">Request Feature</a>
   </p>
 </p>
 
-  	
 <!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary>Table of Contents</summary>
@@ -44,8 +41,6 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
@@ -65,7 +60,8 @@ With a flexible data model, elastic cloud scaling, and rich queries, Glider is a
 <!-- GETTING STARTED -->
 ## Getting Started
 
-The project can be started with : clojure -Sdeps '{:deps {reply {:mvn/version 0.4.3}}}' -m reply.main --attach localhost:$(echo .nrepl-port)
+The project can be started with :
+	clojure -Sdeps '{:deps {reply {:mvn/version 0.4.3}}}' -m reply.main --attach localhost:$(echo .nrepl-port)
 
 ### Prerequisites
 
