@@ -60,7 +60,7 @@ With a flexible data model, elastic cloud scaling, and rich queries, Glider is a
 <!-- GETTING STARTED -->
 ## Getting Started
 
-The project can be started with :
+The project can be started with:
 	clojure -Sdeps '{:deps {reply {:mvn/version 0.4.3}}}' -m reply.main --attach localhost:$(echo .nrepl-port)
 
 ### Prerequisites
